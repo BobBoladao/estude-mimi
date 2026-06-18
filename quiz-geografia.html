@@ -6,56 +6,113 @@
 <title>Estude Mimi - Quiz de Geografia</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#FBF7EF;color:#26221B;padding:20px 16px 60px;display:flex;justify-content:center}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#26221B;padding:20px 16px 60px;display:flex;justify-content:center;transition:background .6s}
+body.normal{background:#FBF7EF}
+body.hard{background:#2D0A0A}
 .col{width:100%;max-width:600px}
 h1{font-family:Georgia,serif;font-size:22px;font-weight:700;margin-bottom:4px}
-.sub{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:#A9620A;font-weight:700;margin-bottom:16px}
+.sub{font-size:11px;text-transform:uppercase;letter-spacing:.2em;font-weight:700;margin-bottom:16px}
+body.normal .sub{color:#A9620A}
+body.hard .sub{color:#FF6B6B}
+body.normal h1{color:#26221B}
+body.hard h1{color:#FFE4E4}
+.modo-badge{display:none;background:#FF0000;color:#fff;font-size:13px;font-weight:900;letter-spacing:.25em;text-transform:uppercase;padding:8px 20px;border-radius:99px;margin-bottom:14px;text-align:center;box-shadow:0 0 20px rgba(255,0,0,.5);animation:pulse 1.5s infinite}
+body.hard .modo-badge{display:block}
+@keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(255,0,0,.5)}50%{box-shadow:0 0 40px rgba(255,0,0,.9)}}
 .progress-row{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-.bar{flex:1;height:7px;background:#EDE4D3;border-radius:99px;overflow:hidden}
-.fill{height:100%;background:#D9831A;border-radius:99px;transition:width .3s}
-.lbl{font-size:12px;color:#736B5E;white-space:nowrap}
-.score{background:#fff;border:1px solid #EDE4D3;border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;margin-bottom:18px;display:inline-block}
-.card{background:#fff;border:1px solid #EDE4D3;border-radius:16px;padding:20px;box-shadow:0 8px 24px -16px rgba(0,0,0,.3)}
-.topic{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#736B5E;font-weight:700;margin-bottom:6px}
-.qnum{color:#A9620A}
+.bar{flex:1;height:7px;border-radius:99px;overflow:hidden}
+body.normal .bar{background:#EDE4D3}
+body.hard .bar{background:#5C1A1A}
+.fill{height:100%;border-radius:99px;transition:width .3s}
+body.normal .fill{background:#D9831A}
+body.hard .fill{background:#FF4444}
+.lbl{font-size:12px;white-space:nowrap}
+body.normal .lbl{color:#736B5E}
+body.hard .lbl{color:#FF9999}
+.score{border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;margin-bottom:18px;display:inline-block}
+body.normal .score{background:#fff;border:1px solid #EDE4D3;color:#26221B}
+body.hard .score{background:#5C1A1A;border:1px solid #8B0000;color:#FFE4E4}
+.card{border-radius:16px;padding:20px;box-shadow:0 8px 24px -16px rgba(0,0,0,.5)}
+body.normal .card{background:#fff;border:1px solid #EDE4D3}
+body.hard .card{background:#3D0F0F;border:1px solid #8B0000}
+.topic{font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:6px}
+body.normal .topic{color:#736B5E}
+body.hard .topic{color:#FF9999}
+.qnum{font-weight:800}
+body.normal .qnum{color:#A9620A}
+body.hard .qnum{color:#FF4444}
 .question{font-family:Georgia,serif;font-size:18px;line-height:1.4;font-weight:600;margin-bottom:16px}
-.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:#fff;border:1.5px solid #EDE4D3;border-radius:12px;padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:14px;line-height:1.35;color:#26221B;transition:border-color .1s,background .1s}
-.opt:hover:not(:disabled){border-color:#D9831A}
+body.normal .question{color:#26221B}
+body.hard .question{color:#FFE4E4}
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border-radius:12px;padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:14px;line-height:1.35;transition:border-color .1s,background .1s}
+body.normal .opt{background:#fff;border:1.5px solid #EDE4D3;color:#26221B}
+body.hard .opt{background:#4A1010;border:1.5px solid #8B0000;color:#FFE4E4}
+body.normal .opt:hover:not(:disabled){border-color:#D9831A}
+body.hard .opt:hover:not(:disabled){border-color:#FF4444}
 .opt:disabled{cursor:default}
-.letra{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:700;background:#FBF7EF;border:1px solid #EDE4D3}
-.opt.certo{border-color:#2E8B6B;background:#E7F4EE}
-.opt.certo .letra{background:#2E8B6B;color:#fff;border-color:#2E8B6B}
-.opt.errado{border-color:#CC4636;background:#FBEAE7}
-.opt.errado .letra{background:#CC4636;color:#fff;border-color:#CC4636}
-.opt.dim{opacity:.5}
-.feedback{margin-top:8px;border-radius:12px;padding:14px;border:1px solid #EDE4D3;text-align:center}
-.feedback.ok{background:#E7F4EE;border-color:#BFE3D2}
-.feedback.no{background:#FBEAE7;border-color:#F0CCC5}
-.feedback img{width:100%;max-width:260px;border-radius:12px;margin:0 auto 10px;display:block}
+.letra{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:700}
+body.normal .letra{background:#FBF7EF;border:1px solid #EDE4D3;color:#26221B}
+body.hard .letra{background:#5C1A1A;border:1px solid #8B0000;color:#FF9999}
+.opt.certo{border-color:#2E8B6B!important;background:#E7F4EE!important}
+.opt.certo .letra{background:#2E8B6B!important;color:#fff!important;border-color:#2E8B6B!important}
+.opt.errado{border-color:#CC4636!important;background:#FBEAE7!important}
+.opt.errado .letra{background:#CC4636!important;color:#fff!important;border-color:#CC4636!important}
+.opt.dim{opacity:.4}
+.feedback{margin-top:8px;border-radius:12px;padding:14px;text-align:center}
+.feedback.ok{background:#E7F4EE;border:1px solid #BFE3D2}
+.feedback.no{background:#FBEAE7;border:1px solid #F0CCC5}
+.feedback img{width:100%;max-width:240px;border-radius:12px;margin:0 auto 10px;display:block}
 .fhead{font-weight:800;font-size:17px;margin-bottom:6px}
 .ok .fhead{color:#2E8B6B}
 .no .fhead{color:#CC4636}
-.fwhy{font-size:13px;color:#736B5E;margin-top:6px;text-align:left}
-.fcorreto{font-size:13px;color:#26221B;font-weight:600;margin-top:4px;text-align:left}
-.btn{margin-top:14px;width:100%;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;background:#D9831A;color:#fff}
-.btn:active{opacity:.9}
+.fwhy{font-size:13px;color:#555;margin-top:6px;text-align:left}
+.fcorreto{font-size:13px;font-weight:600;margin-top:4px;text-align:left;color:#333}
+.btn{margin-top:14px;width:100%;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;color:#fff;transition:opacity .2s}
+body.normal .btn{background:#D9831A}
+body.hard .btn{background:#CC0000}
+.btn:active{opacity:.85}
 .resultado{text-align:center;padding:20px 0}
-.big{font-family:Georgia,serif;font-size:56px;font-weight:700;color:#A9620A;line-height:1}
+.big{font-family:Georgia,serif;font-size:56px;font-weight:700;line-height:1}
+body.normal .big{color:#A9620A}
+body.hard .big{color:#FF4444}
 .big small{font-size:20px;color:#736B5E}
 .rmsg{font-size:15px;margin:10px 0 24px;line-height:1.4}
-.trow{display:flex;align-items:center;gap:8px;padding:10px 0;border-top:1px solid #EDE4D3}
+body.normal .rmsg{color:#26221B}
+body.hard .rmsg{color:#FFE4E4}
+.trow{display:flex;align-items:center;gap:8px;padding:10px 0}
+body.normal .trow{border-top:1px solid #EDE4D3}
+body.hard .trow{border-top:1px solid #5C1A1A}
 .trow:last-child{border-bottom:1px solid #EDE4D3}
+body.hard .trow:last-child{border-bottom:1px solid #5C1A1A}
 .tnome{flex:1;font-size:13px;font-weight:600}
-.tbar{width:80px;height:5px;background:#EDE4D3;border-radius:99px;overflow:hidden}
+body.normal .tnome{color:#26221B}
+body.hard .tnome{color:#FFE4E4}
+.tbar{width:80px;height:5px;border-radius:99px;overflow:hidden}
+body.normal .tbar{background:#EDE4D3}
+body.hard .tbar{background:#5C1A1A}
 .tfill{height:100%}
-.tsc{font-size:12px;color:#736B5E;font-weight:700}
-.foot{text-align:center;font-size:12px;color:#736B5E;margin-top:16px}
+.tsc{font-size:12px;font-weight:700}
+body.normal .tsc{color:#736B5E}
+body.hard .tsc{color:#FF9999}
+.foot{text-align:center;font-size:12px;margin-top:16px}
+body.normal .foot{color:#736B5E}
+body.hard .foot{color:#FF9999}
+.fase-banner{border-radius:16px;padding:30px 20px;text-align:center;margin-bottom:20px}
+body.normal .fase-banner{background:#fff;border:2px solid #EDE4D3}
+body.hard .fase-banner{background:#3D0F0F;border:2px solid #FF0000;box-shadow:0 0 30px rgba(255,0,0,.3)}
+.fase-emoji{font-size:48px;margin-bottom:12px}
+.fase-titulo{font-family:Georgia,serif;font-size:26px;font-weight:700;margin-bottom:8px}
+body.normal .fase-titulo{color:#26221B}
+body.hard .fase-titulo{color:#FF4444}
+.fase-desc{font-size:15px;line-height:1.5}
+body.normal .fase-desc{color:#736B5E}
+body.hard .fase-desc{color:#FF9999}
 </style>
 </head>
-<body>
+<body class="normal" id="body">
 <div class="col" id="app"></div>
 <script>
-var Q=[{t:"Anos iniciais e BNCC",q:"O ensino de geografia nos anos iniciais deve partir do:",o:["Espaço global e abstrato","Espaço vivido, relações sociais e cotidiano da criança","Estudo de países distantes","Memorização de capitais"],c:1,w:"Parte-se do espaço vivido e do cotidiano da criança."},
+var EASY=[{t:"Anos iniciais e BNCC",q:"O ensino de geografia nos anos iniciais deve partir do:",o:["Espaço global e abstrato","Espaço vivido, relações sociais e cotidiano da criança","Estudo de países distantes","Memorização de capitais"],c:1,w:"Parte-se do espaço vivido e do cotidiano da criança."},
 {t:"Anos iniciais e BNCC",q:"A BNCC propõe que o ensino de geografia relacione:",o:["A experiência cotidiana do estudante à leitura do mundo e do espaço","Apenas conteúdos teóricos","Somente cartografia avançada","Geografia física à matemática"],c:0,w:"A BNCC liga a experiência cotidiana do estudante à leitura do mundo e do espaço."},
 {t:"Anos iniciais e BNCC",q:"Pedir aos alunos que desenhem o caminho de casa até a escola é exemplo de:",o:["Alfabetização cartográfica por meio do croqui","Avaliação somativa","Aula expositiva","Memorização de mapas"],c:0,w:"O desenho do trajeto é alfabetização cartográfica por meio do croqui."},
 {t:"Anos iniciais e BNCC",q:"Comparar fotos antigas do bairro com imagens atuais trabalha a compreensão de:",o:["Geografia astronômica","Transformações do espaço geográfico","Cálculo de áreas","Regras ortográficas"],c:1,w:"A comparação evidencia as transformações do espaço geográfico."},
@@ -106,13 +163,86 @@ var Q=[{t:"Anos iniciais e BNCC",q:"O ensino de geografia nos anos iniciais deve
 {t:"Metodologias ativas",q:"Relacionar geografia a questões socioambientais contribui para formar:",o:["Cidadãos críticos e conscientes","Alunos alienados","Estudantes desinteressados","Apenas técnicos em mapas"],c:0,w:"A abordagem socioambiental forma cidadania crítica e consciente."},
 {t:"Metodologias ativas",q:"O uso combinado de metodologias ativas e tecnologia tem como objetivo:",o:["Ensino mais atrativo, significativo e próximo da realidade","Substituir o professor","Aumentar memorização","Reduzir participação"],c:0,w:"O objetivo é um ensino mais atrativo e conectado à vida do estudante."}];
 
-var idx=0,sel=null,answered=false,score=0,results=[];
+var HARD=[
+{t:"BNCC e Currículo",q:"A BNCC organiza o ensino de geografia em torno de quais unidades temáticas nos anos iniciais?",o:["O sujeito e seu lugar no mundo; Conexões e escalas; Mundo do trabalho; Formas de representação e pensamento espacial; Natureza, ambientes e qualidade de vida","Apenas mapas e localização","Somente relevo e clima","Economia e política internacional"],c:0,w:"A BNCC estrutura a geografia em cinco unidades temáticas que vão do local ao global."},
+{t:"BNCC e Currículo",q:"O conceito de 'literacia cartográfica' na BNCC refere-se a:",o:["Apenas decorar mapas","Capacidade de ler, interpretar e produzir representações espaciais criticamente","Somente usar o Google Maps","Memorizar coordenadas geográficas"],c:1,w:"Literacia cartográfica é a capacidade crítica de ler, interpretar e produzir representações do espaço."},
+{t:"BNCC e Currículo",q:"Segundo a BNCC, o raciocínio geográfico envolve:",o:["Apenas localização no mapa","Localização, distribuição, extensão, diferenciação, conexão, escala e analogia/síntese","Somente descrição de paisagens","Memorização de capitais"],c:1,w:"O raciocínio geográfico na BNCC abrange múltiplas operações cognitivas sobre o espaço."},
+{t:"BNCC e Currículo",q:"A transversalidade no ensino de geografia significa:",o:["Estudar só temas geográficos isolados","Articular temas geográficos com outras áreas do conhecimento e questões sociais","Ignorar outras disciplinas","Focar apenas em conteúdos do livro didático"],c:1,w:"A transversalidade conecta a geografia a outras áreas e temas sociais relevantes."},
+{t:"BNCC e Currículo",q:"O que são habilidades na estrutura da BNCC de geografia?",o:["Apenas os conteúdos a memorizar","Aprendizagens específicas que os alunos devem desenvolver em cada ano","Os livros didáticos obrigatórios","As provas bimestrais"],c:1,w:"Habilidades são aprendizagens específicas esperadas para cada etapa escolar."},
+{t:"Teorias e pensadores",q:"Paulo Freire contribui para o ensino de geografia ao defender:",o:["A memorização de conteúdos como base do aprendizado","A educação como ato político de leitura crítica do mundo","O ensino bancário como modelo ideal","A neutralidade política do professor"],c:1,w:"Freire defende a leitura crítica do mundo, o que inclui a leitura do espaço geográfico."},
+{t:"Teorias e pensadores",q:"A pedagogia histórico-crítica de Saviani aplicada à geografia propõe:",o:["Ignorar a realidade social do aluno","Partir da prática social, problematizar, instrumentalizar e retornar à prática transformada","Apenas ensinar conteúdos técnicos","Isolar a escola da sociedade"],c:1,w:"A pedagogia histórico-crítica segue o movimento prática-teoria-prática transformada."},
+{t:"Teorias e pensadores",q:"Vigotsky contribui para o ensino de geografia com o conceito de:",o:["Inteligências múltiplas","Zona de Desenvolvimento Proximal (ZDP) e mediação","Aprendizagem por descoberta pura","Condicionamento behaviorista"],c:1,w:"A ZDP e a mediação de Vigotsky fundamentam práticas pedagógicas na geografia."},
+{t:"Teorias e pensadores",q:"O geógrafo Yi-Fu Tuan é conhecido por desenvolver o conceito de:",o:["Território e poder","Topofilia — vínculo afetivo entre pessoa e lugar","Paisagem cultural","Espaço concebido"],c:1,w:"Topofilia (amor ao lugar) é o principal conceito de Tuan, ligado à categoria lugar."},
+{t:"Teorias e pensadores",q:"Henri Lefebvre contribuiu para a geografia ao propor que o espaço é:",o:["Apenas um receptáculo neutro de objetos","Uma produção social — percebido, concebido e vivido","Somente o território político","Uma representação cartográfica"],c:1,w:"Lefebvre propõe a tríade espaço percebido, concebido e vivido como produção social."},
+{t:"Categorias avançadas",q:"A diferença entre lugar e não-lugar (Marc Augé) está em:",o:["O tamanho físico do espaço","Lugar tem identidade e história; não-lugar é espaço de passagem sem vínculo","São termos idênticos","Lugar é urbano; não-lugar é rural"],c:1,w:"Augé: lugares têm identidade, relação e história; não-lugares (aeroportos, shoppings) são espaços de passagem."},
+{t:"Categorias avançadas",q:"O conceito de 'desterritorialização' refere-se a:",o:["Construção de novos territórios","Perda ou enfraquecimento dos vínculos territoriais, geralmente associada à globalização","Fortalecimento da identidade local","Criação de mapas detalhados"],c:1,w:"Desterritorialização é o enfraquecimento dos vínculos com o território, frequente na globalização."},
+{t:"Categorias avançadas",q:"Reterritorialização é o processo de:",o:["Destruição permanente do território","Construção de novos vínculos e territórios após a desterritorialização","Apenas o retorno físico a um lugar","Criação de fronteiras políticas"],c:1,w:"Após a desterritorialização, grupos constroem novos territórios — reterritorialização."},
+{t:"Categorias avançadas",q:"O espaço percebido (Lefebvre) corresponde a:",o:["O espaço planejado por urbanistas","As práticas espaciais cotidianas — o espaço vivido materialmente","Apenas a representação artística do espaço","O espaço imaginário"],c:1,w:"Espaço percebido = práticas espaciais do cotidiano, o espaço material e vivido."},
+{t:"Categorias avançadas",q:"Para David Harvey, a compressão espaço-tempo na globalização significa:",o:["O espaço ficou maior e o tempo mais lento","Aceleração das comunicações e transportes que encurta distâncias e tempo","O tempo parou de existir","O espaço deixou de ser relevante"],c:1,w:"Harvey: tecnologia e capital encurtam distâncias e aceleram o tempo — compressão espaço-tempo."},
+{t:"Avaliação e currículo",q:"A avaliação diagnóstica no ensino de geografia serve para:",o:["Punir alunos com baixo desempenho","Identificar conhecimentos prévios e lacunas antes de iniciar o ensino","Substituir a avaliação formativa","Apenas atribuir notas iniciais"],c:1,w:"A diagnóstica mapeia o que o aluno já sabe, orientando o planejamento docente."},
+{t:"Avaliação e currículo",q:"A diferença entre avaliação somativa e formativa é:",o:["São idênticas","Somativa classifica ao final; formativa acompanha e orienta o processo contínuo","Formativa só usa provas escritas","Somativa nunca usa notas"],c:1,w:"Formativa: acompanha o processo. Somativa: classifica ao final de um período."},
+{t:"Avaliação e currículo",q:"O portfólio como instrumento avaliativo em geografia permite:",o:["Apenas verificar cópia de textos","Registrar a evolução do aluno ao longo do tempo com produções diversas","Substituir completamente as provas sem critério","Avaliar só a memorização"],c:1,w:"O portfólio documenta a trajetória de aprendizado com produções variadas."},
+{t:"Avaliação e currículo",q:"A avaliação por rubricas oferece vantagem porque:",o:["É mais rápida que qualquer outro método","Define critérios claros e transparentes para alunos e professores","Elimina a subjetividade completamente","Serve só para trabalhos em grupo"],c:1,w:"Rubricas definem critérios explícitos, tornando a avaliação mais justa e transparente."},
+{t:"Avaliação e currículo",q:"O planejamento por sequência didática na geografia deve:",o:["Ser improvisado a cada aula","Articular objetivos, conteúdos, metodologias e avaliação de forma coerente","Focar só em conteúdos teóricos","Ignorar o contexto dos alunos"],c:1,w:"A sequência didática articula todos os elementos do ensino de forma coerente."},
+{t:"Tecnologias e recursos",q:"O uso de drones e imagens de satélite no ensino de geografia contribui para:",o:["Substituir completamente o professor","Desenvolver a leitura de imagens e análise espacial em múltiplas escalas","Apenas entretenimento dos alunos","Eliminar a necessidade de mapas"],c:1,w:"Drones e satélites ampliam a leitura espacial e o trabalho com múltiplas escalas."},
+{t:"Tecnologias e recursos",q:"A webquest como metodologia no ensino de geografia é:",o:["Uma atividade de pesquisa orientada usando recursos da internet","Apenas um jogo online","Uma prova realizada no computador","Uma forma de substituir o livro didático"],c:1,w:"Webquest é uma metodologia de pesquisa orientada e estruturada usando a internet."},
+{t:"Tecnologias e recursos",q:"O mapeamento colaborativo (ex: OpenStreetMap) no ensino de geografia desenvolve:",o:["Apenas habilidades técnicas isoladas","Cidadania digital, colaboração e leitura crítica do espaço","Somente memorização de ruas","Competição entre alunos"],c:1,w:"Mapear colaborativamente desenvolve cidadania digital e senso crítico espacial."},
+{t:"Tecnologias e recursos",q:"A cartografia social difere da cartografia tradicional porque:",o:["É menos precisa e inútil","Valoriza os saberes e perspectivas das comunidades na representação do espaço","Usa apenas tecnologia avançada","É feita exclusivamente por especialistas"],c:1,w:"Cartografia social dá voz às comunidades, representando o espaço a partir de seus próprios saberes."},
+{t:"Tecnologias e recursos",q:"O livro didático no ensino de geografia deve ser usado como:",o:["Único e absoluto recurso didático","Um dos recursos, complementado por outras fontes e metodologias","Substituto completo do planejamento docente","Fonte única e inquestionável"],c:1,w:"O livro didático é um recurso entre muitos — deve ser complementado e criticado."},
+{t:"Diversidade e inclusão",q:"A educação do campo na perspectiva da geografia crítica defende:",o:["Que alunos rurais estudem apenas temas urbanos","Uma educação contextualizada na realidade e na identidade do campo","A eliminação das diferenças entre campo e cidade no currículo","Que a geografia rural não existe"],c:1,w:"Educação do campo valoriza a identidade, cultura e realidade do aluno do campo."},
+{t:"Diversidade e inclusão",q:"A geografia cultural no ensino valoriza:",o:["Apenas aspectos físicos da paisagem","As manifestações culturais, identidades e diversidade dos povos no espaço","Somente dados econômicos","A uniformização cultural"],c:1,w:"A geografia cultural centra-se nas identidades, práticas culturais e diversidade espacial."},
+{t:"Diversidade e inclusão",q:"O etnoconhecimento no ensino de geografia refere-se a:",o:["Conhecimentos científicos ocidentais apenas","Saberes tradicionais de povos indígenas e comunidades sobre o espaço","Apenas turismo cultural","Estudo de etnias em museus"],c:1,w:"Etnoconhecimento valoriza os saberes territoriais e espaciais de povos tradicionais."},
+{t:"Diversidade e inclusão",q:"A perspectiva decolonial no ensino de geografia propõe:",o:["Manter o eurocentrismo como base do currículo","Questionar e superar a visão eurocêntrica, valorizando outros saberes e perspectivas espaciais","Eliminar o estudo da Europa","Ignorar a história colonial"],c:1,w:"A decolonialidade questiona o eurocentrismo e valoriza perspectivas marginalizadas."},
+{t:"Diversidade e inclusão",q:"O ensino de geografia para alunos com deficiência visual deve priorizar:",o:["Apenas provas escritas adaptadas","Mapas táteis, maquetes e recursos multissensoriais","Dispensar o aluno das aulas de geografia","Somente descrições verbais longas"],c:1,w:"Mapas táteis e recursos multissensoriais tornam a geografia acessível a alunos com deficiência visual."},
+{t:"Questões ambientais",q:"A pegada ecológica como conceito no ensino de geografia serve para:",o:["Medir apenas o tamanho físico das cidades","Calcular o impacto ambiental do consumo humano sobre os recursos naturais","Estudar animais em extinção exclusivamente","Analisar apenas a pegada física das pessoas"],c:1,w:"Pegada ecológica mede o impacto do consumo humano sobre os recursos do planeta."},
+{t:"Questões ambientais",q:"A diferença entre tempo meteorológico e clima no ensino de geografia é:",o:["São termos sinônimos","Tempo é o estado atmosférico momentâneo; clima é o padrão atmosférico de longo prazo","Clima é sempre mais quente que o tempo","Tempo é estudado só por físicos"],c:1,w:"Tempo = estado atmosférico atual; clima = padrão atmosférico médio de anos ou décadas."},
+{t:"Questões ambientais",q:"O conceito de desenvolvimento sustentável no ensino de geografia envolve:",o:["Crescimento econômico sem limites","Atender necessidades do presente sem comprometer as gerações futuras","Apenas preservação ambiental sem desenvolvimento","Crescimento industrial ilimitado"],c:1,w:"Desenvolvimento sustentável equilibra necessidades presentes e futuras — econômico, social e ambiental."},
+{t:"Questões ambientais",q:"A questão dos resíduos sólidos no ensino de geografia articula:",o:["Apenas química e biologia","Produção, consumo, descarte, impacto espacial e políticas públicas","Somente reciclagem técnica","Apenas a coleta seletiva"],c:1,w:"Resíduos sólidos articulam consumo, espaço, políticas e cidadania ambiental."},
+{t:"Questões ambientais",q:"As ilhas de calor urbanas são resultado principalmente de:",o:["Excesso de áreas verdes","Alta concentração de superfícies impermeáveis, construções e emissão de calor nas cidades","Fenômenos naturais exclusivamente","Baixa densidade populacional"],c:1,w:"Ilhas de calor resultam da urbanização densa com poucos espaços verdes e muitas superfícies que retêm calor."},
+{t:"Urbanização",q:"O processo de metropolização refere-se a:",o:["Crescimento de cidades pequenas no interior","Expansão e integração de cidades formando grandes aglomerações urbanas","Redução da população urbana","Migração do campo para a cidade apenas"],c:1,w:"Metropolização é a formação de grandes aglomerações urbanas integradas."},
+{t:"Urbanização",q:"A segregação socioespacial urbana caracteriza-se por:",o:["Distribuição igualitária de grupos sociais no espaço urbano","Separação de grupos sociais no espaço urbano segundo renda, raça ou etnia","Apenas a localização industrial","Planejamento urbano democrático"],c:1,w:"Segregação socioespacial é a separação no espaço urbano por condição socioeconômica ou identitária."},
+{t:"Urbanização",q:"O conceito de gentrificação refere-se a:",o:["Construção de favelas","Revalorização de áreas urbanas que expulsa moradores originais de baixa renda","Criação de parques públicos","Expansão agrária"],c:1,w:"Gentrificação: requalificação de áreas que eleva preços e expulsa moradores originais."},
+{t:"Urbanização",q:"A conurbação é o processo pelo qual:",o:["Uma cidade se divide em bairros","Duas ou mais cidades crescem e se unem formando uma mancha urbana contínua","Ocorre migração rural","Uma cidade é abandonada"],c:1,w:"Conurbação: fusão de malhas urbanas de cidades vizinhas formando continuidade urbana."},
+{t:"Urbanização",q:"O direito à cidade, conceito de Henri Lefebvre, defende:",o:["Que apenas proprietários tenham direito ao espaço urbano","O acesso igualitário de todos os cidadãos aos espaços, serviços e decisões urbanas","Que a cidade seja apenas para turistas","A privatização total dos espaços urbanos"],c:1,w:"Direito à cidade: todos devem ter acesso pleno e participação nas decisões sobre o espaço urbano."},
+{t:"Geopolítica",q:"O conceito de soberania territorial relaciona-se com:",o:["Apenas a extensão física de um país","O poder exclusivo de um Estado sobre seu território, incluindo leis e decisões","A influência cultural de um povo","Somente as fronteiras marítimas"],c:1,w:"Soberania: poder exclusivo do Estado sobre seu território — base do sistema internacional."},
+{t:"Geopolítica",q:"As fronteiras na geografia política são compreendidas como:",o:["Apenas linhas naturais como rios e montanhas","Construções históricas, políticas e sociais que delimitam territórios e geram conflitos","Limites permanentes e imutáveis","Apenas demarcações cartográficas sem significado real"],c:1,w:"Fronteiras são construções políticas e históricas, geradoras de tensões e negociações."},
+{t:"Geopolítica",q:"A globalização no ensino de geografia deve ser trabalhada como:",o:["Processo neutro e uniformizador que beneficia todos igualmente","Processo contraditório que gera integração e exclusão, homogeneização e fragmentação","Apenas integração econômica positiva","Fenômeno exclusivamente cultural"],c:1,w:"A globalização é contraditória: integra e exclui, homogeneíza e fragmenta simultaneamente."},
+{t:"Geopolítica",q:"O conceito de diáspora no ensino de geografia refere-se a:",o:["Migração temporária de trabalhadores","Dispersão de um povo pelo mundo, mantendo identidade cultural e vínculos com a origem","Apenas turismo internacional","Colonização de novos territórios"],c:1,w:"Diáspora: dispersão de grupos que mantêm identidade e vínculos com a terra de origem."},
+{t:"Geopolítica",q:"A questão dos refugiados climáticos no ensino de geografia articula:",o:["Apenas biologia e ecologia","Mudanças ambientais, deslocamentos forçados, direitos humanos e geopolítica","Somente economia internacional","Apenas política interna dos países"],c:1,w:"Refugiados climáticos articulam crise ambiental, migração forçada, direitos e geopolítica."},
+{t:"Epistemologia da geografia",q:"A geografia tradicional ou clássica caracterizava-se por:",o:["Análise crítica das relações sociais no espaço","Descrição e inventário dos fenômenos naturais e humanos sem análise crítica","Foco nas desigualdades socioespaciais","Estudo das relações de poder no território"],c:1,w:"A geografia clássica era descritiva e inventariante, sem análise crítica das relações sociais."},
+{t:"Epistemologia da geografia",q:"A renovação crítica da geografia (anos 1970) foi influenciada principalmente por:",o:["O positivismo lógico","O marxismo e a crítica às desigualdades socioespaciais","O behaviorismo","A fenomenologia exclusivamente"],c:1,w:"A geografia crítica emergiu com influência marxista, focando nas desigualdades e contradições espaciais."},
+{t:"Epistemologia da geografia",q:"A geografia humanista diferencia-se da crítica por:",o:["Focar exclusivamente nas estruturas econômicas","Valorizar a experiência subjetiva, os sentimentos e a percepção dos indivíduos sobre o espaço","Ignorar completamente a dimensão social","Usar apenas métodos quantitativos"],c:1,w:"A geografia humanista valoriza a experiência subjetiva, percepção e sentimentos sobre o espaço."},
+{t:"Epistemologia da geografia",q:"O método regressivo-progressivo de Henri Lefebvre aplicado à geografia propõe:",o:["Estudar só o presente","Partir do presente, regredir ao passado e retornar ao presente para compreender a produção do espaço","Ignorar a história na análise espacial","Focar apenas no futuro"],c:1,w:"O método regressivo-progressivo articula presente, passado e presente para compreender o espaço."},
+{t:"Epistemologia da geografia",q:"A pluriescalaridade no ensino de geografia significa:",o:["Estudar apenas a escala local","Articular diferentes escalas (local, regional, nacional, global) na análise dos fenômenos","Usar apenas mapas em escala pequena","Ignorar a escala global"],c:1,w:"Pluriescalaridade: analisar fenômenos articulando múltiplas escalas simultaneamente."}];
+
+var idx=0,sel=null,answered=false,score=0,results=[],fase=1,mostrandoBanner=false;
+
+function Q(){return fase===1?EASY:HARD;}
+function totalFase(){return Q().length;}
+function idxFase(){return idx-(fase===1?0:EASY.length);}
+function isHard(){return fase===2;}
+
 function L(i){return String.fromCharCode(65+i);}
+
+function setModo(){
+  var b=document.getElementById("body");
+  b.className=isHard()?"hard":"normal";
+}
+
 function render(){
+  setModo();
   var app=document.getElementById("app");
-  if(idx>=Q.length){
-    var pct=Math.round((score/Q.length)*100);
-    var msg=pct>=85?"Excelente! Voce domina o conteudo.":pct>=70?"Bom desempenho! Reforce os pontos fracos.":pct>=50?"No caminho! Revise antes da prova.":"Hora de rever o resumo com calma.";
+
+  // Banner de transição
+  if(mostrandoBanner){
+    app.innerHTML="<div class='fase-banner'><div class='fase-emoji'>🔥</div><div class='fase-titulo'>MODO DIFÍCIL ATIVADO</div><div class='fase-desc'>Parabéns! Você completou a fase normal com "+score+" acertos!<br><br>Agora as questões são de nível universitário avançado.<br>Boa sorte... você vai precisar! 💀</div><button class='btn' style='margin-top:20px' onclick='iniciarFase2()'>Aceitar o desafio →</button></div>";
+    return;
+  }
+
+  // Resultado final
+  if(idx>=EASY.length+HARD.length){
+    var pct=Math.round((score/(EASY.length+HARD.length))*100);
+    var msg=pct>=85?"Monstro! Você domina a matéria completamente!":pct>=70?"Muito bom! Só revisar alguns pontos.":pct>=50?"No caminho! Revise bem antes da prova.":"Força! Revise o material e tente de novo.";
     var byT={};
     results.forEach(function(r){if(!byT[r.t])byT[r.t]={ok:0,n:0};byT[r.t].n++;if(r.ok)byT[r.t].ok++;});
     var trows="";
@@ -121,11 +251,13 @@ function render(){
       var cor=p>=70?"#2E8B6B":p>=50?"#D9831A":"#CC4636";
       trows+="<div class='trow'><div class='tnome'>"+t+"</div><div class='tbar'><div class='tfill' style='width:"+p+"%;background:"+cor+"'></div></div><div class='tsc'>"+byT[t].ok+"/"+byT[t].n+"</div></div>";
     });
-    app.innerHTML="<div class='resultado'><div class='big'>"+score+"<small>/"+Q.length+"</small></div><div style='font-size:13px;color:#736B5E;font-weight:700;margin-top:4px'>"+pct+"% de acerto</div><p class='rmsg'>"+msg+"</p></div><div class='card'><div class='sub'>Desempenho por topico</div>"+trows+"<button class='btn' onclick='reiniciar()'>Refazer o quiz</button></div><div class='foot'>Estude com a Mimi! 🐕</div>";
+    app.innerHTML="<div class='resultado'><div class='big'>"+score+"<small>/"+(EASY.length+HARD.length)+"</small></div><div style='font-size:13px;font-weight:700;margin-top:4px;color:"+(isHard()?"#FF9999":"#736B5E")+"'>"+pct+"% de acerto total</div><p class='rmsg'>"+msg+"</p></div><div class='card'><div class='sub'>Desempenho por tópico</div>"+trows+"<button class='btn' onclick='reiniciar()'>Recomeçar do zero</button></div><div class='foot'>Estude com a Mimi! 🐕</div>";
     return;
   }
-  var q=Q[idx];
-  var prog=Math.round(((idx+(answered?1:0))/Q.length)*100);
+
+  var q=Q()[idxFase()];
+  var totalGeral=EASY.length+HARD.length;
+  var prog=Math.round(((idx+(answered?1:0))/totalGeral)*100);
   var opts="";
   q.o.forEach(function(o,i){
     var cls="opt";
@@ -137,13 +269,40 @@ function render(){
     var ok=sel===q.c;
     var img=ok?"dog-acertou.png":"dog-errou.png";
     var titulo=ok?"🎉 Você Acertou!":"❌ Você Errou";
-    fb="<div class='feedback "+(ok?"ok":"no")+"'><img src='"+img+"' alt='feedback'><div class='fhead'>"+titulo+"</div><div class='fcorreto'>Resposta correta: "+L(q.c)+"</div><div class='fwhy'>"+q.w+"</div></div><button class='btn' onclick='proximo()'>"+(idx+1>=Q.length?"Ver resultado":"Proxima questao →")+"</button>";
+    fb="<div class='feedback "+(ok?"ok":"no")+"'><img src='"+img+"' alt='feedback'><div class='fhead'>"+titulo+"</div><div class='fcorreto'>Resposta correta: "+L(q.c)+"</div><div class='fwhy'>"+q.w+"</div></div><button class='btn' onclick='proximo()'>"+(idx+1>=totalGeral?"Ver resultado final":"Próxima →")+"</button>";
   }
-  app.innerHTML="<div class='sub'>Preparacao para a prova</div><h1>Fundamentos de Geografia</h1><div style='display:flex;justify-content:space-between;align-items:center;margin:12px 0 8px'><div class='progress-row' style='flex:1;margin:0'><div class='bar'><div class='fill' style='width:"+prog+"%'></div></div><span class='lbl'>"+(idx+1)+"/"+Q.length+"</span></div><span class='score'>✓ "+score+"/"+Q.length+"</span></div><div class='card'><div class='topic'><span class='qnum'>Questao "+(idx+1)+"</span> · "+q.t+"</div><div class='question'>"+q.q+"</div>"+opts+fb+"</div><div class='foot'>"+(answered?"Leia a explicacao e continue.":"Toque na alternativa correta.")+"</div>";
+  var badge=isHard()?"<div class='modo-badge'>💀 MODO DIFÍCIL 💀</div>":"";
+  var faseInfo=isHard()?"FASE 2 — MODO DIFÍCIL":"FASE 1 — MODO NORMAL";
+  app.innerHTML=badge+"<div class='sub'>"+faseInfo+"</div><h1>Fundamentos de Geografia</h1><div style='display:flex;justify-content:space-between;align-items:center;margin:12px 0 8px'><div class='progress-row' style='flex:1;margin:0'><div class='bar'><div class='fill' style='width:"+prog+"%'></div></div><span class='lbl'>"+(idx+1)+"/"+totalGeral+"</span></div><span class='score'>✓ "+score+"/"+totalGeral+"</span></div><div class='card'><div class='topic'><span class='qnum'>Q"+(idx+1)+"</span> · "+q.t+"</div><div class='question'>"+q.q+"</div>"+opts+fb+"</div><div class='foot'>"+(answered?"Leia e continue.":"Toque na alternativa correta.")+"</div>";
 }
-function escolher(i){if(answered)return;sel=i;answered=true;var ok=i===Q[idx].c;if(ok)score++;results.push({t:Q[idx].t,ok:ok});render();}
-function proximo(){idx++;sel=null;answered=false;render();}
-function reiniciar(){idx=0;sel=null;answered=false;score=0;results=[];render();}
+
+function escolher(i){
+  if(answered)return;
+  sel=i;answered=true;
+  var ok=i===Q()[idxFase()].c;
+  if(ok)score++;
+  results.push({t:Q()[idxFase()].t,ok:ok});
+  render();
+}
+
+function proximo(){
+  idx++;sel=null;answered=false;
+  if(idx===EASY.length){
+    fase=2;mostrandoBanner=true;
+    setModo();
+  }
+  render();
+}
+
+function iniciarFase2(){
+  mostrandoBanner=false;
+  render();
+}
+
+function reiniciar(){
+  idx=0;sel=null;answered=false;score=0;results=[];fase=1;mostrandoBanner=false;render();
+}
+
 render();
 </script>
 </body>
