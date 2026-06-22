@@ -2,267 +2,705 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Estude Mimi - Taxonomia de Bloom</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Estude Mimi 📚</title>
 <style>
+:root{
+  --p1:#1a3a6b;--p1l:#e8eef8;--p1m:#3b69c0;--p1d:#0f2347;
+  --p2:#5b1a6b;--p2l:#f2e8f8;--p2m:#9b3bc0;--p2d:#3a0f47;
+  --ok:#1d7a55;--okl:#e3f5ec;--okb:#a8dcc4;
+  --err:#b52a1a;--errl:#fce8e5;--errb:#f0b8b0;
+  --warn:#b87000;--warnl:#fff4e0;
+  --bg:#f0ede8;--card:#ffffff;--ink:#1a1a1a;--muted:#6b6b6b;
+  --line:#dedad4;--radius:14px;
+  --shadow:0 2px 12px rgba(0,0,0,.07),0 1px 3px rgba(0,0,0,.04);
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#26221B;padding:20px 16px 60px;display:flex;justify-content:center;transition:background .6s}
-body.normal{background:#F4F7FB}
-body.hard{background:#2D0A0A}
-.col{width:100%;max-width:600px}
-h1{font-family:Georgia,serif;font-size:22px;font-weight:700;margin-bottom:4px}
-.sub{font-size:11px;text-transform:uppercase;letter-spacing:.2em;font-weight:700;margin-bottom:16px}
-body.normal .sub{color:#2B5EA7}
-body.hard .sub{color:#FF6B6B}
-body.normal h1{color:#26221B}
-body.hard h1{color:#FFE4E4}
-.modo-badge{display:none;background:#CC0000;color:#fff;font-size:13px;font-weight:900;letter-spacing:.25em;text-transform:uppercase;padding:8px 20px;border-radius:99px;margin-bottom:14px;text-align:center;animation:pulse 1.5s infinite}
-body.hard .modo-badge{display:block}
-@keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(255,0,0,.5)}50%{box-shadow:0 0 40px rgba(255,0,0,.9)}}
-.progress-row{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-.bar{flex:1;height:7px;border-radius:99px;overflow:hidden}
-body.normal .bar{background:#D6DFE9}
-body.hard .bar{background:#5C1A1A}
-.fill{height:100%;border-radius:99px;transition:width .3s}
-body.normal .fill{background:#2B5EA7}
-body.hard .fill{background:#FF4444}
-.lbl{font-size:12px;white-space:nowrap}
-body.normal .lbl{color:#6B7A8D}
-body.hard .lbl{color:#FF9999}
-.score{border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;display:inline-block}
-body.normal .score{background:#fff;border:1px solid #D6DFE9;color:#26221B}
-body.hard .score{background:#5C1A1A;border:1px solid #8B0000;color:#FFE4E4}
-.card{border-radius:16px;padding:20px;box-shadow:0 8px 24px -16px rgba(0,0,0,.4)}
-body.normal .card{background:#fff;border:1px solid #D6DFE9}
-body.hard .card{background:#3D0F0F;border:1px solid #8B0000}
-.topic{font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:6px}
-body.normal .topic{color:#6B7A8D}
-body.hard .topic{color:#FF9999}
-.qnum{font-weight:800}
-body.normal .qnum{color:#2B5EA7}
-body.hard .qnum{color:#FF4444}
-.question{font-family:Georgia,serif;font-size:17px;line-height:1.45;font-weight:600;margin-bottom:16px}
-body.normal .question{color:#26221B}
-body.hard .question{color:#FFE4E4}
-.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border-radius:12px;padding:12px 14px;margin-bottom:9px;cursor:pointer;font-size:14px;line-height:1.35;transition:border-color .1s,background .1s}
-body.normal .opt{background:#fff;border:1.5px solid #D6DFE9;color:#26221B}
-body.hard .opt{background:#4A1010;border:1.5px solid #8B0000;color:#FFE4E4}
-body.normal .opt:hover:not(:disabled){border-color:#2B5EA7}
-body.hard .opt:hover:not(:disabled){border-color:#FF4444}
+html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+.screen{display:none;min-height:100vh;padding:20px 16px 80px;animation:fi .22s ease}
+.screen.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.inner{max-width:560px;margin:0 auto}
+
+/* HOME */
+.home-top{padding-top:16px;margin-bottom:28px}
+.home-emoji{font-size:44px;margin-bottom:10px}
+.home-title{font-size:30px;font-weight:900;letter-spacing:-.6px;line-height:1.1;margin-bottom:6px}
+.home-sub{font-size:14px;color:var(--muted);line-height:1.5}
+.scard{border-radius:var(--radius);padding:18px;margin-bottom:12px;cursor:pointer;border:2px solid transparent;transition:transform .15s,box-shadow .15s;display:flex;align-items:center;gap:14px;text-align:left}
+.scard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.13)}
+.scard:active{transform:scale(.98)}
+.scard.s1{background:var(--p1l);border-color:var(--p1m)}
+.scard.s2{background:var(--p2l);border-color:var(--p2m)}
+.sc-ico{font-size:30px;flex:none}
+.sc-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.18em;font-weight:800;margin-bottom:2px}
+.s1 .sc-lbl{color:var(--p1)}
+.s2 .sc-lbl{color:var(--p2)}
+.sc-tit{font-size:16px;font-weight:700;line-height:1.25}
+.sc-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.phase-bar{display:flex;gap:8px;margin-top:8px}
+.phase-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
+.s1 .phase-tag.med{background:#d0ddf5;color:var(--p1)}
+.s1 .phase-tag.hard{background:#fde8e8;color:#b00}
+.s2 .phase-tag.med{background:#ead5f5;color:var(--p2)}
+.s2 .phase-tag.hard{background:#fde8e8;color:#b00}
+
+/* PHASE BANNER */
+.phase-banner{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);text-align:center;margin-bottom:16px}
+.pb-emoji{font-size:44px;margin-bottom:10px}
+.pb-title{font-size:22px;font-weight:900;margin-bottom:8px}
+.pb-desc{font-size:14px;color:var(--muted);line-height:1.5;margin-bottom:16px}
+.pb-btn{width:100%;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;color:#fff}
+.s1 .pb-btn{background:var(--p1)}
+.s2 .pb-btn{background:var(--p2)}
+
+/* QUIZ HEADER */
+.qhdr{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.back-btn{background:none;border:none;cursor:pointer;font-size:22px;padding:4px 8px 4px 0;color:var(--muted);line-height:1}
+.qhdr-info{flex:1;min-width:0}
+.qhdr-sname{font-size:10px;text-transform:uppercase;letter-spacing:.15em;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s1 .qhdr-sname{color:var(--p1)}
+.s2 .qhdr-sname{color:var(--p2)}
+.qhdr-meta{font-size:12px;color:var(--muted)}
+.score-pill{background:var(--card);border:1.5px solid var(--line);border-radius:99px;padding:5px 11px;font-size:13px;font-weight:700;white-space:nowrap;flex:none}
+.phase-pill{font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;white-space:nowrap;flex:none}
+.phase-pill.med{background:#d0ddf5;color:var(--p1)}
+.phase-pill.hard{background:#fde8e8;color:#b00}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.prog-bar{flex:1;height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;transition:width .3s}
+.s1 .prog-fill{background:var(--p1m)}
+.s2 .prog-fill{background:var(--p2m)}
+.prog-lbl{font-size:11px;color:var(--muted);white-space:nowrap}
+
+/* DOTS */
+.dots-wrap{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:14px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer;transition:background .12s,transform .1s;flex:none}
+.dot.ok{background:var(--ok)}
+.dot.wrong{background:var(--err)}
+.dot.cur{transform:scale(1.5)}
+.dot.s1.cur{background:var(--p1m)}
+.dot.s2.cur{background:var(--p2m)}
+.dot.s1.pend{background:#b0c4e8}
+.dot.s2.pend{background:#c4a0d8}
+
+/* QUESTION */
+.qcard{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:10px}
+.qtopic{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--muted);margin-bottom:8px}
+.qnum{font-weight:900}
+.s1 .qnum{color:var(--p1)}
+.s2 .qnum{color:var(--p2)}
+.qtext{font-size:16px;font-weight:600;line-height:1.55;color:var(--ink)}
+
+/* OPTIONS */
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:12px 13px;margin-top:8px;cursor:pointer;font-size:14px;line-height:1.4;color:var(--ink);transition:border-color .1s,background .1s;word-break:break-word}
 .opt:disabled{cursor:default}
-.letra{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:12px;font-weight:700}
-body.normal .letra{background:#F4F7FB;border:1px solid #D6DFE9;color:#26221B}
-body.hard .letra{background:#5C1A1A;border:1px solid #8B0000;color:#FF9999}
-.opt.certo{border-color:#2E8B6B!important;background:#E7F4EE!important}
-.opt.certo .letra{background:#2E8B6B!important;color:#fff!important;border-color:#2E8B6B!important}
-.opt.errado{border-color:#CC4636!important;background:#FBEAE7!important}
-.opt.errado .letra{background:#CC4636!important;color:#fff!important;border-color:#CC4636!important}
-.opt.dim{opacity:.4}
-.feedback{margin-top:8px;border-radius:12px;padding:14px;text-align:center}
-.feedback.ok{background:#E7F4EE;border:1px solid #BFE3D2}
-.feedback.no{background:#FBEAE7;border:1px solid #F0CCC5}
-.feedback img{width:100%;max-width:220px;border-radius:12px;margin:0 auto 10px;display:block}
-.fhead{font-weight:800;font-size:17px;margin-bottom:6px}
-.ok .fhead{color:#2E8B6B}
-.no .fhead{color:#CC4636}
-.fwhy{font-size:13px;color:#555;margin-top:6px;text-align:left;line-height:1.4}
-.fcorreto{font-size:13px;font-weight:700;margin-top:4px;text-align:left;color:#333}
-.btn{margin-top:14px;width:100%;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;color:#fff}
-body.normal .btn{background:#2B5EA7}
-body.hard .btn{background:#CC0000}
-.btn:active{opacity:.85}
-.resultado{text-align:center;padding:20px 0}
-.big{font-family:Georgia,serif;font-size:56px;font-weight:700;line-height:1}
-body.normal .big{color:#2B5EA7}
-body.hard .big{color:#FF4444}
-.big small{font-size:20px;color:#6B7A8D}
-.rmsg{font-size:15px;margin:10px 0 24px;line-height:1.4}
-body.normal .rmsg{color:#26221B}
-body.hard .rmsg{color:#FFE4E4}
-.trow{display:flex;align-items:center;gap:8px;padding:10px 0}
-body.normal .trow{border-top:1px solid #D6DFE9}
-body.hard .trow{border-top:1px solid #5C1A1A}
-.trow:last-child{border-bottom:1px solid #D6DFE9}
-body.hard .trow:last-child{border-bottom:1px solid #5C1A1A}
-.tnome{flex:1;font-size:13px;font-weight:600}
-body.normal .tnome{color:#26221B}
-body.hard .tnome{color:#FFE4E4}
-.tbar{width:80px;height:5px;border-radius:99px;overflow:hidden}
-body.normal .tbar{background:#D6DFE9}
-body.hard .tbar{background:#5C1A1A}
-.tfill{height:100%}
-.tsc{font-size:12px;font-weight:700}
-body.normal .tsc{color:#6B7A8D}
-body.hard .tsc{color:#FF9999}
-.foot{text-align:center;font-size:12px;margin-top:16px}
-body.normal .foot{color:#6B7A8D}
-body.hard .foot{color:#FF9999}
-.banner{border-radius:16px;padding:30px 20px;text-align:center}
-body.hard .banner{background:#3D0F0F;border:2px solid #FF0000;box-shadow:0 0 30px rgba(255,0,0,.3)}
-.banner-emoji{font-size:48px;margin-bottom:12px}
-.banner-titulo{font-family:Georgia,serif;font-size:24px;font-weight:700;margin-bottom:10px;color:#FF4444}
-.banner-desc{font-size:14px;line-height:1.6;color:#FF9999}
+.s1 .opt:hover:not(:disabled){border-color:var(--p1m);background:var(--p1l)}
+.s2 .opt:hover:not(:disabled){border-color:var(--p2m);background:var(--p2l)}
+.opt-l{flex:none;width:23px;height:23px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--bg);border:1.5px solid var(--line);color:var(--muted)}
+.opt.ok{border-color:var(--ok)!important;background:var(--okl)!important}
+.opt.ok .opt-l{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.err{border-color:var(--err)!important;background:var(--errl)!important}
+.opt.err .opt-l{background:var(--err);color:#fff;border-color:var(--err)}
+.opt.dim{opacity:.35}
+
+/* FEEDBACK */
+.feedback{border-radius:var(--radius);padding:14px;margin-top:10px;border:1.5px solid}
+.feedback.ok{background:var(--okl);border-color:var(--okb)}
+.feedback.err{background:var(--errl);border-color:var(--errb)}
+.fb-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.fb-dog{width:64px;height:64px;border-radius:9px;object-fit:cover;flex:none}
+.fb-right{}
+.fb-verdict{font-weight:900;font-size:15px;margin-bottom:2px}
+.feedback.ok .fb-verdict{color:var(--ok)}
+.feedback.err .fb-verdict{color:var(--err)}
+.fb-cor{font-size:12px;font-weight:700;color:var(--ink)}
+.fb-why{font-size:13px;color:#444;line-height:1.55}
+
+/* NAV */
+.list-btn{width:100%;background:none;border:1.5px solid var(--line);border-radius:11px;padding:10px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;margin-top:8px;transition:background .1s}
+.list-btn:hover{background:var(--line)}
+.nav-btns{display:flex;gap:8px;margin-top:10px}
+.nbtn{flex:1;border:none;border-radius:11px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .12s,transform .1s}
+.nbtn:active{transform:scale(.98)}
+.nbtn.prev{background:var(--card);border:1.5px solid var(--line);color:var(--ink)}
+.nbtn.nxt-s1{background:var(--p1);color:#fff}
+.nbtn.nxt-s2{background:var(--p2);color:#fff}
+.nbtn:disabled{opacity:.3;cursor:default}
+.foot{text-align:center;font-size:11px;color:var(--muted);margin-top:14px}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
+.modal-ov.open{display:flex}
+.modal-box{background:var(--card);border-radius:var(--radius) var(--radius) 0 0;padding:20px;width:100%;max-width:560px;max-height:72vh;overflow-y:auto}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.modal-title{font-weight:900;font-size:16px}
+.modal-close-x{background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);line-height:1}
+.phase-section{margin-bottom:14px}
+.phase-section-title{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:800;color:var(--muted);margin-bottom:8px}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px}
+.qi{border:1.5px solid var(--line);border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;font-size:12px;font-weight:700;transition:transform .1s}
+.qi:hover{transform:scale(1.06)}
+.qi.ok{background:var(--okl);border-color:var(--ok);color:var(--ok)}
+.qi.wrong{background:var(--errl);border-color:var(--err);color:var(--err)}
+.qi.pend{background:var(--bg);color:var(--muted)}
+.qi.cur{outline:2.5px solid var(--ink)}
+.modal-close-btn{width:100%;margin-top:14px;border:none;border-radius:11px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;background:var(--ink);color:#fff}
+
+/* RESULT */
+.result-hero{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);text-align:center;margin-bottom:16px}
+.result-big{font-size:72px;font-weight:900;letter-spacing:-3px;line-height:1}
+.s1 .result-big{color:var(--p1)}
+.s2 .result-big{color:var(--p2)}
+.result-total{font-size:24px;color:var(--muted);font-weight:700}
+.result-pct{font-size:14px;font-weight:700;color:var(--muted);margin-top:4px}
+.result-msg{font-size:15px;line-height:1.55;margin:14px 0}
+.result-dog{width:90px;height:90px;border-radius:12px;object-fit:cover;margin:0 auto 14px;display:block}
+
+/* SYNTHESIS */
+.synthesis-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:14px}
+.synth-title{font-size:14px;font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.synth-sub{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.4}
+.topic-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid var(--line)}
+.topic-row:last-child{border-bottom:1px solid var(--line)}
+.topic-ico{font-size:16px;flex:none}
+.topic-info{flex:1;min-width:0}
+.topic-name{font-size:13px;font-weight:700;line-height:1.3}
+.topic-rec{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.35}
+.topic-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:none}
+.topic-pct{font-size:13px;font-weight:800}
+.topic-bar{width:70px;height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.topic-fill{height:100%}
+.priority-badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px}
+.pri-high{background:#fde8e8;color:#b00}
+.pri-mid{background:var(--warnl);color:var(--warn)}
+.pri-ok{background:var(--okl);color:var(--ok)}
+.by-phase{background:var(--card);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);margin-bottom:14px}
+.by-phase-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:10px}
+.phase-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pc-box{border-radius:10px;padding:12px;text-align:center}
+.pc-box.med{background:var(--p1l)}
+.pc-box.hard{background:var(--errl)}
+.pc-num{font-size:28px;font-weight:900;line-height:1}
+.pc-lbl{font-size:11px;font-weight:700;color:var(--muted);margin-top:3px}
+.action-box{background:var(--warnl);border:1.5px solid #f0c060;border-radius:var(--radius);padding:16px 18px;margin-bottom:14px}
+.action-title{font-size:13px;font-weight:900;color:var(--warn);margin-bottom:8px}
+.action-item{font-size:13px;color:#5a3a00;line-height:1.5;display:flex;gap:6px;margin-bottom:4px}
+.action-item:last-child{margin-bottom:0}
+.rbtn{width:100%;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;color:#fff;margin-bottom:8px}
+.s1 .rbtn{background:var(--p1)}
+.s2 .rbtn{background:var(--p2)}
+.home-lnk{display:block;text-align:center;font-size:14px;color:var(--muted);cursor:pointer;text-decoration:underline;padding:8px}
 </style>
 </head>
-<body class="normal" id="body">
-<div class="col" id="app"></div>
+<body>
+
+<div class="screen active" id="sc-home">
+<div class="inner">
+  <div class="home-top">
+    <div class="home-emoji">📚</div>
+    <div class="home-title">Estude, Mimi!</div>
+    <div class="home-sub">Escolha a matéria da prova de hoje.<br>70 questões · 35 médias + 35 difíceis</div>
+  </div>
+  <div class="scard s1" onclick="startQuiz(0)">
+    <div class="sc-ico">✍️</div>
+    <div style="flex:1">
+      <div class="sc-lbl">Prova 1</div>
+      <div class="sc-tit">Oralidade, Leitura e Escrita</div>
+      <div class="sc-desc">Crase · Concordância verbal · Uso do 'se'</div>
+      <div class="phase-bar s1">
+        <span class="phase-tag med">35 Médias</span>
+        <span class="phase-tag hard">35 Difíceis</span>
+      </div>
+    </div>
+  </div>
+  <div class="scard s2" onclick="startQuiz(1)">
+    <div class="sc-ico">🏛️</div>
+    <div style="flex:1">
+      <div class="sc-lbl">Prova 2</div>
+      <div class="sc-tit">Fundamentos do Ensino de História</div>
+      <div class="sc-desc">Tempo histórico · BNCC · Metodologias · Memória</div>
+      <div class="phase-bar s2">
+        <span class="phase-tag med">35 Médias</span>
+        <span class="phase-tag hard">35 Difíceis</span>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:32px">com ❤️ do seu amor</div>
+</div>
+</div>
+
+<div class="screen" id="sc-quiz"><div class="inner" id="quiz-inner"></div></div>
+<div class="screen" id="sc-result"><div class="inner" id="result-inner"></div></div>
+
+<div class="modal-ov" id="modal" onclick="maybeCloseModal(event)">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-title">📋 Todas as questões</div>
+      <button class="modal-close-x" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+    <button class="modal-close-btn" onclick="closeModal()">Fechar</button>
+  </div>
+</div>
+
 <script>
-var EASY=[
-{t:"Definição",q:"A Taxonomia de Bloom é uma ferramenta para:",o:["Avaliar o comportamento disciplinar dos alunos","Classificar conteúdos por ordem alfabética","Organizar o trabalho pedagógico classificando objetivos educacionais de forma hierárquica","Medir a inteligência inata dos estudantes"],c:2,w:"A Taxonomia de Bloom oferece uma estrutura lógica e hierárquica para classificar os objetivos educacionais."},
-{t:"Definição",q:"A estrutura da Taxonomia de Bloom é considerada hierárquica porque:",o:["Todos os níveis têm a mesma complexidade","Os níveis são independentes entre si","Cada nível cognitivo se apoia no anterior, do mais simples ao mais complexo","A ordem dos níveis é aleatória e flexível"],c:2,w:"A hierarquia significa que cada nível depende do anterior — não se analisa sem compreender, por exemplo."},
-{t:"Definição",q:"O principal objetivo da Taxonomia de Bloom é garantir que o ensino:",o:["Se resuma à transmissão de informações factuais","Promova o desenvolvimento progressivo das capacidades cognitivas do aluno","Foque exclusivamente na memorização de conteúdos","Elimine a necessidade de avaliações"],c:1,w:"A taxonomia existe para que o ensino promova o avanço progressivo do raciocínio, não apenas a transmissão de dados."},
-{t:"Níveis",q:"Na versão revisada da Taxonomia de Bloom, a sequência correta dos 6 níveis cognitivos é:",o:["Criar → Avaliar → Analisar → Aplicar → Compreender → Lembrar","Lembrar → Aplicar → Compreender → Criar → Analisar → Avaliar","Compreender → Lembrar → Aplicar → Avaliar → Analisar → Criar","Lembrar → Compreender → Aplicar → Analisar → Avaliar → Criar"],c:3,w:"A sequência vai do mais simples ao mais complexo: Lembrar → Compreender → Aplicar → Analisar → Avaliar → Criar."},
-{t:"Lembrar",q:"O nível 'Lembrar' da Taxonomia de Bloom envolve:",o:["Emitir julgamentos fundamentados sobre um tema","Recuperar informações armazenadas na memória","Criar soluções originais para problemas","Transferir conceitos para contextos novos"],c:1,w:"Lembrar é o nível mais básico: recuperar, reconhecer e recordar informações da memória."},
-{t:"Lembrar",q:"Qual atividade corresponde ao nível 'Lembrar'?",o:["Elaborar um projeto artístico original","Julgar a qualidade de uma obra de arte","Listar os países participantes de um evento histórico","Comparar duas teorias pedagógicas"],c:2,w:"Listar e citar são verbos do nível Lembrar — apenas recuperam informações armazenadas."},
-{t:"Lembrar",q:"São verbos associados ao nível 'Lembrar':",o:["Julgar, defender e justificar","Elaborar, projetar e inventar","Apontar, listar, relembrar e nomear","Comparar, classificar e diferenciar"],c:2,w:"Apontar, listar, relembrar, nomear, registrar, sublinhar são verbos do nível Lembrar."},
-{t:"Compreender",q:"O nível 'Compreender' da Taxonomia de Bloom exige que o aluno:",o:["Apenas repita informações memorizadas","Construa significado a partir do conteúdo, explicando ou interpretando","Produza algo completamente original","Emita julgamentos sobre a validade de uma teoria"],c:1,w:"Compreender vai além de lembrar — o aluno precisa explicar, interpretar e dar significado ao conteúdo."},
-{t:"Compreender",q:"São verbos associados ao nível 'Compreender':",o:["Listar, nomear e repetir","Descrever, explicar, identificar e interpretar","Elaborar, inventar e projetar","Usar, calcular e executar"],c:1,w:"Descrever, explicar, identificar, interpretar, traduzir e expressar são verbos de Compreender."},
-{t:"Aplicar",q:"O nível 'Aplicar' se caracteriza por:",o:["Memorizar fórmulas e definições","Transferir o conhecimento para uma situação ou problema novo","Separar o todo em partes para análise","Emitir julgamentos sobre dados apresentados"],c:1,w:"Aplicar = transferir e usar o conhecimento em um contexto diferente do original."},
-{t:"Aplicar",q:"Uma atividade que pede ao aluno para usar o conceito de causa e consequência em um contexto diferente corresponde ao nível:",o:["Lembrar","Compreender","Aplicar","Criar"],c:2,w:"O aluno não apenas lembra do conceito — ele o transfere e usa em nova situação. Isso é Aplicar."},
-{t:"Aplicar",q:"São verbos típicos do nível 'Aplicar':",o:["Apontar, listar e relembrar","Julgar, defender e validar","Usar, calcular, executar e demonstrar","Elaborar, projetar e compor"],c:2,w:"Usar, calcular, executar, demonstrar, empregar, praticar são verbos do nível Aplicar."},
-{t:"Analisar",q:"O nível 'Analisar' envolve:",o:["Apenas recuperar informações da memória","Elaborar produtos originais e criativos","Separar o todo em partes e identificar relações entre elas","Memorizar dados estatísticos"],c:2,w:"Analisar = decompor em partes, comparar, relacionar, diferenciar — ver a estrutura interna."},
-{t:"Analisar",q:"São verbos associados ao nível 'Analisar':",o:["Listar, nomear e sublinhar","Comparar, classificar, diferenciar e distinguir","Repetir, marcar e registrar","Elaborar, inventar e desenhar"],c:1,w:"Comparar, classificar, diferenciar, distinguir, examinar, investigar são verbos de Analisar."},
-{t:"Analisar",q:"Quando um aluno compara duas obras de arte identificando semelhanças e diferenças, ele está no nível:",o:["Lembrar","Aplicar","Analisar","Criar"],c:2,w:"Comparar e diferenciar são operações do nível Analisar — decomposição e relação entre partes."},
-{t:"Avaliar",q:"O nível 'Avaliar' na Taxonomia de Bloom corresponde a:",o:["Repetir informações de memória","Aplicar fórmulas em exercícios","Emitir julgamento fundamentado com base em critérios","Criar produtos artísticos originais"],c:2,w:"Avaliar = julgar, defender, justificar — emissão de julgamento fundamentado, não apenas opinião."},
-{t:"Avaliar",q:"São verbos típicos do nível 'Avaliar':",o:["Listar, apontar e nomear","Descrever, explicar e interpretar","Julgar, defender, justificar e validar","Usar, calcular e executar"],c:2,w:"Julgar, defender, justificar, validar, selecionar, estimar são verbos do nível Avaliar."},
-{t:"Criar",q:"O nível 'Criar' é o mais complexo da taxonomia porque exige que o aluno:",o:["Apenas recupere dados memorizados","Elabore, projete ou invente algo original a partir dos conhecimentos dominados","Repita procedimentos já conhecidos","Descreva conceitos com suas próprias palavras"],c:1,w:"Criar é o topo da hierarquia: elaborar, projetar, inventar — produção original e síntese criativa."},
-{t:"Criar",q:"São verbos associados ao nível 'Criar':",o:["Apontar, listar e relembrar","Comparar, diferenciar e classificar","Julgar, defender e justificar","Elaborar, projetar, inventar e compor"],c:3,w:"Elaborar, projetar, inventar, compor, formular e planejar são verbos do nível mais alto: Criar."},
-{t:"Criar",q:"Pedir que um aluno elabore um projeto artístico original a partir dos conceitos estudados corresponde ao nível:",o:["Lembrar","Compreender","Avaliar","Criar"],c:3,w:"Elaborar algo original é a essência do nível Criar — o topo da taxonomia."},
-{t:"Hierarquia",q:"A frase 'não se analisa o que não se compreende' expressa qual princípio da taxonomia?",o:["Que os níveis são independentes entre si","Que a memorização é o objetivo final do ensino","Que cada nível se apoia no anterior (hierarquia cumulativa)","Que todos os alunos aprendem no mesmo ritmo"],c:2,w:"A hierarquia cumulativa significa que dominar um nível é pré-requisito para o próximo."},
-{t:"Hierarquia",q:"Segundo o resumo, 'não se cria o que não se domina'. Isso significa que:",o:["Criar é mais fácil que lembrar","O nível Criar exige domínio dos níveis anteriores","Os níveis podem ser trabalhados em qualquer ordem","A memorização é suficiente para a criação"],c:1,w:"Criar exige que todos os níveis anteriores tenham sido dominados — é o topo da pirâmide."},
-{t:"Hierarquia",q:"Na estrutura hierárquica de Bloom, qual é o nível imediatamente anterior a 'Avaliar'?",o:["Aplicar","Compreender","Analisar","Criar"],c:2,w:"A sequência é: Lembrar → Compreender → Aplicar → Analisar → Avaliar → Criar. Analisar vem antes de Avaliar."},
-{t:"Hierarquia",q:"Qual é o nível mais básico (mais simples) da Taxonomia de Bloom?",o:["Aplicar","Lembrar","Compreender","Analisar"],c:1,w:"Lembrar é a base da pirâmide — o nível cognitivo mais simples."},
-{t:"Hierarquia",q:"Qual é o nível mais complexo da Taxonomia de Bloom revisada?",o:["Avaliar","Analisar","Lembrar","Criar"],c:3,w:"Criar é o topo da hierarquia — exige síntese criativa e domínio de todos os níveis anteriores."},
-{t:"Etapas",q:"A Taxonomia de Bloom auxilia o educador em quantas etapas do trabalho pedagógico?",o:["2 etapas","5 etapas","3 etapas","6 etapas"],c:2,w:"São 3 etapas: Planejamento, Definição de conteúdo e Criação de avaliações."},
-{t:"Etapas",q:"Na etapa de 'Planejamento', a Taxonomia de Bloom permite ao professor:",o:["Eliminar a necessidade de avaliações","Definir objetivos claros e graduais para o ensino","Aplicar provas padronizadas sem adaptação","Substituir os conteúdos por atividades lúdicas"],c:1,w:"O planejamento com Bloom permite definir objetivos claros, graduais e progressivos."},
-{t:"Etapas",q:"A etapa de 'Definição de conteúdo' com base em Bloom ajuda o professor a:",o:["Selecionar quais conteúdos serão reconhecidos, compreendidos ou usados para raciocínio complexo","Eliminar conteúdos difíceis do currículo","Repetir os mesmos conteúdos em todos os bimestres","Definir conteúdos sem relação com os objetivos"],c:0,w:"Bloom ajuda a decidir o nível cognitivo que cada conteúdo deve atingir — do reconhecimento ao raciocínio complexo."},
-{t:"Etapas",q:"A etapa 'Criação de avaliações' com Bloom garante que:",o:["As provas testem apenas memorização","Os exercícios não tenham relação com as aulas","As avaliações correspondam ao que foi ensinado e ao nível cognitivo trabalhado","As avaliações sejam sempre objetivas"],c:2,w:"Bloom alinha avaliações ao que foi ensinado — a prova deve corresponder ao nível cognitivo trabalhado."},
-{t:"Aplicação",q:"A Taxonomia de Bloom torna o trabalho pedagógico:",o:["Aleatório e improvisado","Intencional, organizado e eficaz","Baseado apenas na intuição do professor","Centrado exclusivamente no livro didático"],c:1,w:"Bloom torna o trabalho pedagógico intencional (tem propósito), organizado (tem estrutura) e eficaz (gera resultados)."},
-{t:"Hierarquia",q:"A importância da estrutura hierárquica de Bloom está em:",o:["Permitir que o professor pule etapas para acelerar o ensino","Garantir que o aluno domine as bases antes dos conteúdos mais complexos","Tornar o ensino mais rápido e superficial","Focar exclusivamente na avaliação final"],c:1,w:"A hierarquia garante domínio das bases antes de avançar — sem lacunas no aprendizado."},
-{t:"Aplicação",q:"A estrutura de Bloom é fundamental para desenvolver nos alunos:",o:["Apenas a capacidade de memorização","O pensamento crítico e a aprendizagem significativa","A passividade e a repetição","A submissão às respostas prontas"],c:1,w:"Bloom promove pensamento crítico, aprendizagem significativa e evita lacunas no raciocínio."},
-{t:"Aplicação",q:"Evitar lacunas no aprendizado, segundo o resumo, exige:",o:["Avançar rapidamente para os níveis mais complexos","Pular a etapa de compreensão quando o aluno memoriza bem","Garantir o domínio das bases antes de avançar para conteúdos mais complexos","Focar apenas no nível Criar desde o início"],c:2,w:"Sem dominar as bases, o aluno tem lacunas que impedem o avanço — a hierarquia previne isso."},
-{t:"Níveis",q:"Se um aluno consegue descrever um conceito com suas palavras mas não aplicá-lo em situação nova, ele domina até o nível:",o:["Lembrar","Compreender","Aplicar","Analisar"],c:1,w:"Descrever com suas palavras é Compreender. Se não consegue aplicar, ainda não chegou ao nível Aplicar."},
-{t:"Níveis",q:"Qual nível de Bloom é necessário para que um aluno compare duas teorias pedagógicas e identifique suas diferenças?",o:["Lembrar","Compreender","Aplicar","Analisar"],c:3,w:"Comparar e diferenciar exigem decomposição e relação entre partes — isso é Analisar."},
-{t:"Níveis",q:"Um aluno que julga a qualidade de uma produção artística usando critérios fundamentados está operando no nível:",o:["Aplicar","Compreender","Avaliar","Lembrar"],c:2,w:"Julgar com fundamentação é o cerne do nível Avaliar."},
-{t:"Níveis",q:"Inventar uma solução nova para um problema corresponde a qual nível?",o:["Compreender","Analisar","Avaliar","Criar"],c:3,w:"Inventar e projetar algo novo é o nível mais alto: Criar."},
-{t:"Níveis",q:"Qual é a diferença entre 'Compreender' e 'Lembrar'?",o:["São níveis idênticos com nomes diferentes","Lembrar exige mais raciocínio que Compreender","Compreender exige dar significado; Lembrar é apenas recuperar dados","Compreender é mais simples que Lembrar"],c:2,w:"Lembrar = recuperar dados. Compreender = interpretar, explicar, dar significado ao que foi lembrado."},
-{t:"Níveis",q:"Qual é a diferença essencial entre 'Aplicar' e 'Analisar'?",o:["São o mesmo nível cognitivo","Aplicar é mais complexo que Analisar","Aplicar transfere conhecimento para nova situação; Analisar decompõe e relaciona partes","Analisar é mais simples que Aplicar"],c:2,w:"Aplicar = usar em novo contexto. Analisar = decompor, comparar e relacionar componentes."},
-{t:"Níveis",q:"Qual é a diferença entre 'Avaliar' e 'Criar'?",o:["Avaliar é mais complexo que Criar","Criar é mais simples que Avaliar","São termos intercambiáveis","Avaliar emite julgamento fundamentado; Criar produz algo original e novo"],c:3,w:"Avaliar = julgar com critérios. Criar = produzir algo novo. Criar é o nível mais alto."},
-{t:"Classificação",q:"'Registrar as datas de eventos artísticos importantes' corresponde ao nível:",o:["Analisar","Avaliar","Lembrar","Criar"],c:2,w:"Registrar é apenas guardar informação — nível Lembrar, o mais básico."},
-{t:"Classificação",q:"'Explicar com suas palavras o significado de uma obra de arte' corresponde ao nível:",o:["Compreender","Lembrar","Aplicar","Avaliar"],c:0,w:"Explicar com suas próprias palavras demonstra compreensão — vai além da simples memorização."},
-{t:"Classificação",q:"'Usar uma técnica de pintura aprendida em aula para criar uma composição em outro contexto' corresponde ao nível:",o:["Lembrar","Compreender","Avaliar","Aplicar"],c:3,w:"Transferir uma técnica para novo contexto é Aplicar — usar o conhecimento em situação diferente."},
-{t:"Classificação",q:"'Classificar obras de arte por período histórico identificando características comuns' é um exemplo de:",o:["Lembrar","Aplicar","Avaliar","Analisar"],c:3,w:"Classificar exige decompor, comparar e identificar padrões — operações do nível Analisar."},
-{t:"Classificação",q:"'Defender sua opinião sobre uma exposição artística com argumentos fundamentados' corresponde ao nível:",o:["Criar","Avaliar","Lembrar","Aplicar"],c:1,w:"Defender com argumentos = julgamento fundamentado = nível Avaliar."},
-{t:"Classificação",q:"'Projetar uma instalação artística original integrando conceitos estudados no semestre' corresponde ao nível:",o:["Lembrar","Compreender","Criar","Analisar"],c:2,w:"Projetar algo original integrando conhecimentos é o topo da taxonomia: Criar."},
-{t:"Versão revisada",q:"A principal mudança da versão revisada da Taxonomia de Bloom em relação à original é:",o:["A eliminação dos níveis inferiores","A substituição de substantivos por verbos de ação nos nomes dos níveis","A redução para apenas 3 níveis","A inversão completa da hierarquia"],c:1,w:"A versão revisada (2001) trocou substantivos (Conhecimento, Compreensão...) por verbos (Lembrar, Compreender...)."},
-{t:"Versão revisada",q:"Na versão revisada, o nível que antes se chamava 'Síntese' na taxonomia original passou a se chamar:",o:["Avaliar","Analisar","Compreender","Criar"],c:3,w:"Síntese (original) → Criar (revisada), colocado como nível mais alto, acima de Avaliar."}
+// ═══════════════════════
+// DATA
+// ═══════════════════════
+var SUBJECTS=[
+{
+name:"Oralidade, Leitura e Escrita",
+icon:"✍️",cls:"s1",
+questions:[
+// ─── 35 MÉDIAS ───
+{t:"Crase obrigatória",p:0,q:"Qual das frases abaixo apresenta crase OBRIGATÓRIA e corretamente empregada?",o:["Ele foi a praia de manhã","Enviou o e-mail à professora responsável","Começou à chover forte lá fora","Entregou o relatório à ele mesmo"],c:1,w:"'À professora' = preposição 'a' + artigo 'a' antes de substantivo feminino que aceita artigo. Crase obrigatória. 'À praia' estaria correto; 'à chover' é proibido (verbo); 'à ele' é proibido (pronome pessoal reto)."},
+{t:"Crase obrigatória",p:0,q:"Em 'Agradeceu à amiga pelo presente', a crase indica:",o:["Um acento facultativo de ênfase","A fusão da preposição 'a' com o artigo feminino 'a'","Que 'amiga' é palavra esdrúxula","Um erro ortográfico do autor"],c:1,w:"'Agradecer a alguém' exige preposição 'a'. 'Amiga' aceita artigo definido 'a'. Logo: a (prep.) + a (art.) = à. Fusão obrigatória."},
+{t:"Crase obrigatória",p:0,q:"'Estava acostumado àquela situação.' O acento grave em 'àquela' ocorre porque:",o:["'Àquela' é pronome pessoal oblíquo","Há fusão de preposição 'a' com pronome demonstrativo 'aquela'","'Àquela' é invariável e sempre recebe acento","É exigência da norma poética"],c:1,w:"'Acostumado a' exige preposição. 'Aquela' é pronome demonstrativo que admite fusão com 'a'. Logo: a + aquela = àquela."},
+{t:"Crase obrigatória",p:0,q:"'A mulher à qual me referi era sua professora.' A crase em 'à qual' ocorre porque:",o:["'Qual' é pronome indefinido feminino","Há fusão de preposição 'a' com o artigo 'a' que integra o pronome relativo 'a qual'","'À qual' é locução conjuntiva fixa","Pronomes relativos nunca admitem artigo"],c:1,w:"'Referi-me a' + 'a qual' (artigo + pronome relativo) = à qual. A crase resulta da fusão entre a preposição exigida pelo verbo e o artigo que compõe o pronome relativo."},
+{t:"Crase obrigatória",p:0,q:"Assinale a frase com uso CORRETO de crase em locução adverbial:",o:["Saiu a tarde do trabalho","Chegou às pressas e foi embora","Ele foi a escola à tarde","Voltou a noite cansado"],c:1,w:"'Às pressas' é locução adverbial feminina no plural — crase obrigatória. 'Saiu a tarde' / 'voltou a noite': locuções adverbiais femininas SEM crase = erro. 'à tarde' na última opção estaria certo, mas 'a escola' fica sem crase incorretamente."},
+{t:"Crase obrigatória",p:0,q:"'Fui à tarde ao mercado.' A primeira crase é obrigatória porque:",o:["'Tarde' é palavra masculina que exige artigo","'À tarde' é locução adverbial feminina de tempo","O verbo 'ir' dispensa preposição","A segunda crase também está errada"],c:1,w:"'À tarde' = locução adverbial feminina de tempo. Toda locução adverbial de base feminina (à tarde, às vezes, à noite, às pressas) recebe crase obrigatória."},
+{t:"Crase obrigatória",p:0,q:"Em qual frase há dupla crase corretamente empregada?",o:["Às vezes vou à academia às 6h","Às vezes vou a academia as 6h","A vezes vou à academia à 6h","Às vezes vou a academia à 6h"],c:0,w:"'Às vezes' (locução adverbial feminina plural), 'à academia' (substantivo feminino com artigo) e 'às 6h' (horas no plural = as + as = às). Todos os três corretos na opção A."},
+{t:"Crase obrigatória",p:0,q:"'Cheguei às três da tarde.' A crase em 'às' está correta porque:",o:["Horas sempre dispensam crase","Horas são substantivos masculinos","Indicações de horas representam locuções adverbiais femininas que exigem crase","A crase em 'às' é sempre facultativa"],c:2,w:"Horas (uma hora, duas horas...) são locuções adverbiais femininas. A crase é obrigatória: a (preposição) + as (artigo plural) = às."},
+{t:"Crase proibida",p:0,q:"Em qual frase o uso da crase é PROIBIDO?",o:["Fomos à festa de formatura","Ela se referiu à diretora","Começou à falar sem parar","Chegamos à conclusão certa"],c:2,w:"Antes de verbo no infinitivo ('falar'), a crase é proibida — verbos não aceitam artigo antes de si. O correto é 'Começou a falar'."},
+{t:"Crase proibida",p:0,q:"'Entreguei o caderno a José.' Não há crase porque:",o:["José tem artigo implícito e não precisa de fusão","Nomes masculinos próprios que não aceitam o artigo 'a' não formam crase","A preposição é 'para', não 'a'","O verbo 'entregar' dispensa preposição"],c:1,w:"'José' é nome masculino que não aceita o artigo feminino 'a'. Sem artigo, não há fusão possível — portanto, sem crase."},
+{t:"Crase proibida",p:0,q:"'Não vi a nenhuma aluna.' Há erro nesta frase. O correto seria:",o:["'Não vi à nenhuma aluna'","'Não vi nenhuma aluna' (sem preposição nem crase)","'Não vi a nenhuma aluna' (preposição sem crase, pois pronome indefinido não aceita artigo)","'Não vi às nenhumas alunas'"],c:2,w:"Antes de pronomes indefinidos (nenhum, algum, todo, qualquer, outro...) a crase é proibida — eles não admitem artigo definido antes de si. O 'a' presente é apenas preposição."},
+{t:"Crase proibida",p:0,q:"'Iremos sair daqui a uma hora.' A ausência de crase é correta porque:",o:["'Hora' é masculino","O artigo antes de 'hora' é indefinido ('uma'), e crase exige artigo definido","A preposição é 'de', não 'a'","Locuções de tempo dispensam artigo"],c:1,w:"Crase = fusão de preposição + artigo DEFINIDO 'a'. O artigo 'uma' é INDEFINIDO. Com artigo indefinido, não há crase possível."},
+{t:"Crase proibida",p:0,q:"'Fui a Fortaleza visitar minha família.' A ausência de crase está correta porque:",o:["Fortaleza é nome feminino e não aceita artigo","Fortaleza é nome de cidade que não costuma ser precedida do artigo 'a'","A preposição usada é 'para'","Nomes de cidades sempre dispensam preposição"],c:1,w:"Cidades que não pedem o artigo definido 'a' antes de si não formam crase. Fortaleza = 'vou a Fortaleza' (sem artigo, sem crase). Diferente de 'vou ao Rio' (masculino) ou 'vou à Bahia' (usa artigo)."},
+{t:"Crase proibida",p:0,q:"Assinale a alternativa onde a crase é PROIBIDA:",o:["Antes de locução adverbial feminina","Antes de substantivo feminino com artigo definido","Antes de pronome demonstrativo 'este' e 'esta'","Antes de 'aquela', 'aquele' precedidos de preposição 'a'"],c:2,w:"Antes de 'este', 'esta', 'esse', 'essa', 'isto', 'isso', a crase é PROIBIDA — esses pronomes demonstrativos não admitem artigo antes de si."},
+{t:"Crase proibida",p:0,q:"'Corpo a corpo foi o confronto mais difícil.' A ausência de crase está correta porque:",o:["'Corpo' é masculino","Antes de palavras repetidas a crase é proibida","A expressão é informal e dispensa regras","'A' nesse caso é artigo, não preposição"],c:1,w:"Antes de palavras repetidas ('cara a cara', 'corpo a corpo', 'frente a frente'), a crase é proibida. O 'a' é preposição pura, sem fusão com artigo."},
+{t:"Crase facultativa",p:0,q:"'Referi-me à minha professora.' A crase é:",o:["Obrigatória, pois há fusão com artigo definido","Proibida, pois há pronome possessivo","Facultativa, pois antes de pronome possessivo a crase é opcional","Errada em qualquer contexto formal"],c:2,w:"Antes de pronomes possessivos femininos singulares (minha, sua, tua, nossa, vossa), a crase é facultativa. Tanto 'a minha professora' quanto 'à minha professora' são aceitos pela norma culta."},
+{t:"Crase facultativa",p:0,q:"'Caminhou até (a/à) esquina.' A crase aqui é:",o:["Obrigatória","Proibida","Facultativa","Errada"],c:2,w:"Antes de substantivo feminino com a preposição 'até', a crase é facultativa: 'até a esquina' ou 'até à esquina' são ambas aceitas."},
+{t:"Crase facultativa",p:0,q:"'Ela se referiu (a/à) Ana durante a reunião.' A crase é:",o:["Proibida porque Ana é nome próprio","Obrigatória porque Ana é feminino","Facultativa, pois nomes próprios femininos podem ou não aceitar artigo","Obrigatória apenas em textos formais"],c:2,w:"Nomes próprios femininos (Ana, Maria, Clara, Beatriz) admitem crase de forma facultativa, pois podem ou não receber artigo 'a' antes de si."},
+{t:"Concordância verbal",p:0,q:"A regra fundamental da concordância verbal é:",o:["O verbo concorda com o substantivo mais próximo","O verbo concorda em número e pessoa com o sujeito da oração","O verbo sempre fica no singular quando houver dúvida","O verbo concorda com o predicativo do sujeito"],c:1,w:"Concordância verbal = o verbo se flexiona em número (singular/plural) e pessoa (1ª, 2ª, 3ª) para concordar com o sujeito da oração."},
+{t:"Concordância verbal",p:0,q:"'As flores do jardim perfumam o ambiente.' O verbo está no plural porque:",o:["'Jardim' é o sujeito real da frase","'Ambiente' exige verbo no plural","'As flores' é o sujeito e está no plural","O verbo pode concordar com qualquer substantivo próximo"],c:2,w:"O sujeito é 'as flores' (plural). O adjunto adnominal 'do jardim' não interfere na concordância. Erro clássico é atrair o verbo para 'jardim' (singular) — chamado erro por atração."},
+{t:"Concordância verbal",p:0,q:"'Pedro e Ana cantaram juntos.' O verbo está no plural porque:",o:["'Ana' é feminino e exige plural","'Juntos' exige verbo plural","O sujeito é composto (Pedro + Ana), formando conjunto plural","'Pedro' é o sujeito principal e está no plural"],c:2,w:"Sujeito composto (dois ou mais núcleos ligados por 'e') exige verbo no plural: Pedro + Ana = eles → cantaram."},
+{t:"Verbo haver/fazer",p:0,q:"Qual frase está CORRETA quanto ao uso do verbo 'haver' impessoal?",o:["Haviam muitos candidatos inscritos","Houveram reclamações sobre o serviço","Havia muitas crianças na festa","Deveriam haver mais vagas"],c:2,w:"'Haver' no sentido de 'existir' é impessoal e invariável: sempre no singular. 'Havia muitas crianças' = correto. 'Haviam', 'houveram' e 'deveriam haver' são erros comuns — o verbo auxiliar também não varia quando o 'haver' é impessoal."},
+{t:"Verbo haver/fazer",p:0,q:"'Faz dois anos que me formei.' O verbo 'faz' está no singular porque:",o:["'Dois anos' é sujeito que concorda no singular","'Fazer' indicando tempo decorrido é verbo impessoal e não varia","O sujeito oculto 'eu' exige singular","'Anos' é palavra invariável"],c:1,w:"'Fazer' indicando tempo transcorrido é impessoal: não tem sujeito, fica sempre no singular. 'Fazem dois anos' é erro frequente e grave."},
+{t:"Verbo haver/fazer",p:0,q:"Assinale a frase com ERRO de concordância verbal:",o:["Faz três meses que não te vejo","Havia muitos problemas a resolver","Fazia tempo que não nos falávamos","Fazem dois anos que ela partiu"],c:3,w:"'Fazem dois anos' é erro: 'fazer' impessoal = singular. O correto é 'Faz dois anos que ela partiu'. As demais estão corretas."},
+{t:"Partícula se",p:0,q:"'Vendem-se casas na região.' O 'se' nesta frase é pronome:",o:["Índice de indeterminação do sujeito","Reflexivo","Apassivador (voz passiva sintética)","Expletivo ou de realce"],c:2,w:"Verbo transitivo direto + se → voz passiva sintética. 'Casas' se torna sujeito paciente. O verbo concorda com ele: 'casas' → 'vendem-se'."},
+{t:"Partícula se",p:0,q:"'Precisa-se de bons profissionais.' O 'se' é:",o:["Pronome apassivador","Índice de indeterminação do sujeito","Pronome reflexivo","Pronome pessoal oblíquo"],c:1,w:"Com verbo transitivo indireto ('precisar de'), o 'se' é índice de indeterminação do sujeito. O verbo fica no singular — não há sujeito determinado."},
+{t:"Partícula se",p:0,q:"Na frase 'Alugam-se apartamentos', o verbo está no plural porque:",o:["'Se' exige plural","O sujeito indeterminado está no plural","'Apartamentos' é sujeito paciente na voz passiva sintética e o verbo concorda com ele","O predicado está no plural"],c:2,w:"Passiva sintética: verbo + se + sujeito paciente. O verbo concorda com o sujeito paciente 'apartamentos' (plural) → 'alugam-se'."},
+{t:"Partícula se",p:0,q:"'Come-se bem neste restaurante.' O 'se' é índice de indeterminação porque:",o:["O verbo 'comer' é transitivo direto","O verbo não tem objeto direto expresso, tornando o sujeito indeterminado","'Bem' indica que o sujeito é determinado","Toda frase com 'se' tem sujeito indeterminado"],c:1,w:"'Comer' aqui é usado intransitivamente. Com verbos intransitivos ou de ligação, o 'se' é sempre índice de indeterminação — verbo no singular."},
+{t:"Identificação",p:0,q:"Assinale a alternativa com CRASE e CONCORDÂNCIA ambas corretas:",o:["Houveram problemas à lista enviada","Havia problemas à lista, à qual me referi","Fazem dois anos à data de hoje","Haviam questões às quais me referi"],c:1,w:"'Havia problemas' (impessoal correto) + 'à qual me referi' (a + a = à, crase correta). Demais erros: 'houveram'/'haviam'/'fazem' = erros com impessoais; 'às quais' incorreto com 'questões' sem preposição anterior."},
+{t:"Identificação",p:0,q:"'Chegou a tempo de apresentar o trabalho.' A ausência de crase em 'a tempo' é porque:",o:["'Tempo' é palavra masculina","Nessa expressão, 'tempo' não aceita artigo definido","A preposição usada é 'em'","Locuções de tempo nunca recebem crase"],c:1,w:"'A tempo' é locução adverbial em que 'tempo' não aceita o artigo 'a' nesse contexto específico. Sem artigo definido, não há fusão e não há crase."},
+{t:"Identificação",p:0,q:"Em qual par a crase diferencia os sentidos das frases?",o:["Fui a Lisboa / Fui à Lisboa","Chegou a tarde / Chegou à tarde","Ele foi a reunião / Ele foi à reunião","Fui a escola / Fui à escola"],c:1,w:"'Chegou a tarde' (= chegou quando era tarde, sentido adverbial temporal sem artigo) ≠ 'Chegou à tarde' (= chegou no período da tarde). A crase distingue sentidos reais."},
+{t:"Identificação",p:0,q:"Qual alternativa apresenta apenas erros de concordância verbal?",o:["Havia muitas pessoas / Faz dois anos","Haviam muitas pessoas / Fazem dois anos","Havia poucas vagas / Fez um mês","Houve reclamações / Faz tempo"],c:1,w:"'Haviam muitas pessoas' e 'fazem dois anos' são os dois erros clássicos com verbos impessoais. 'Haver' e 'fazer' (tempo) nunca variam no padrão culto."},
+{t:"Identificação",p:0,q:"Complete: 'Fui ___ escola ___ pé e cheguei ___ tarde.'",o:["à / a / a","à / a / à","a / a / à","a / à / à"],c:1,w:"'à escola' (a + a = à, feminino com artigo); 'a pé' (masculino, sem crase); 'à tarde' (locução adverbial feminina = à). Sequência correta: à / a / à."},
+{t:"Identificação",p:0,q:"Assinale a alternativa CORRETA segundo a norma culta:",o:["Aluga-se quartos no centro","Procura-se funcionários competentes","Vende-se casas no litoral","Precisa-se de vendedores experientes"],c:3,w:"'Precisa-se de vendedores': transitivo indireto + se indeterminador → verbo no singular. Correto. Nas demais: 'aluga-se quartos' / 'vende-se casas' deveriam ter verbo no plural (passiva sintética); 'procura-se funcionários' deveria ser 'procuram-se'."},
+{t:"Síntese",p:0,q:"Leia: 'Às vezes penso ___ ir ___ casa da Ana.' Quais os dois termos corretos?",o:["à / à","em / à","à / a","em / a"],c:1,w:"'Penso em' = verbo + preposição 'em' (não 'a'). 'À casa da Ana' = ir + a + a casa (feminino com artigo) = à. Correto: 'penso em ir à casa da Ana'."},
+{t:"Síntese",p:0,q:"Qual sequência preenche corretamente: '___ três da tarde, havia ___ dez candidatos ___ espera.'",o:["As / cerca de / à","À / mais de / à","Às / mais de / à","Às / mais de / a"],c:2,w:"'Às três da tarde' (crase em horas femininas plural); 'mais de dez' (numeral, sem artigo); 'à espera' (locução adverbial feminina = crase obrigatória)."},
+
+// ─── 35 DIFÍCEIS ───
+{t:"Crase — nível difícil",p:1,q:"(FUVEST) 'Assisto ___ televisão todos os dias.' Segundo a norma culta:",o:["'a televisão' — transitivo direto, sem preposição","'à televisão' — 'assistir' é transitivo indireto e exige preposição 'a'; 'televisão' aceita artigo","'em televisão' — preposição correta para o verbo","'na televisão' — única forma aceita pela norma culta"],c:1,w:"'Assistir televisão' (sem preposição) é aceitável coloquialmente, mas a norma culta exige 'assistir a'. 'Televisão' aceita artigo 'a', logo: a + a = à televisão."},
+{t:"Crase — nível difícil",p:1,q:"(VUNESP) Assinale a alternativa em que a crase está INCORRETAMENTE empregada:",o:["Fomos à exposição de arte moderna","Refiro-me à decisão tomada ontem","A cerimônia ocorreu à noite","Ele chegou à uma hora da tarde"],c:3,w:"'À uma hora' está errado. 'Uma' é artigo indefinido. Crase exige artigo DEFINIDO 'a'. O correto é 'a uma hora' (sem crase). As demais estão corretas."},
+{t:"Crase — nível difícil",p:1,q:"(CESPE) 'O documento equivale ___ solicitação feita em abril.' Complete corretamente:",o:["a a","à","a","em"],c:1,w:"'Equivaler a' + 'a solicitação' (feminino com artigo) = à solicitação. Fusão obrigatória: a (preposição do verbo) + a (artigo de 'solicitação') = à."},
+{t:"Crase — nível difícil",p:1,q:"Em qual frase o acento grave NÃO representa crase mas sim outro fenômeno?",o:["Fomos à praia pela manhã","Chegou à conclusão errada","Eles saíram às pressas","Àquele momento ela sorriu"],c:3,w:"'Àquele' não envolve artigo + preposição no sentido usual: é fusão da preposição 'a' com o pronome demonstrativo 'aquele'. Tecnicamente ainda é crase, mas o elemento fundido é pronome, não artigo. As demais são fusões clássicas com artigo."},
+{t:"Crase — nível difícil",p:1,q:"Analise: 'Vou à Bahia nas férias.' A crase está correta porque:",o:["Todos os estados recebem crase","Bahia é nome feminino que normalmente se usa com artigo ('a Bahia')","Estados nunca dispensam crase","A crase é facultativa aqui"],c:1,w:"A Bahia, a Paraíba, a Amazônia, a Normandia — topônimos femininos que pedem o artigo 'a' formam crase quando precedidos de preposição 'a'. Diferente de 'vou a Minas' (alguns estados dispensam o artigo)."},
+{t:"Crase — nível difícil",p:1,q:"(MODELO CONCURSO) 'Comunicou ao público ___ chegada do ministro.' O correto é:",o:["a chegada","à chegada","de chegada","em chegada"],c:1,w:"'Comunicou a [algo]' = preposição 'a'. 'A chegada' = artigo 'a' + substantivo feminino. Fusão: a + a = à chegada."},
+{t:"Crase — nível difícil",p:1,q:"Em qual opção há crase ERRADA por não haver fusão com artigo definido?",o:["Referiu-se àquele problema","Fui à padaria do bairro","Escreveu à sua maneira","Chegou à meia-noite em ponto"],c:2,w:"'À sua maneira': antes de pronome possessivo a crase é FACULTATIVA, não obrigatória. Poderia ser 'a sua maneira'. As demais têm crase obrigatória. A questão exige identificar onde a fusão não é com artigo definido puro."},
+{t:"Crase — nível difícil",p:1,q:"(ENEM-modelo) 'As regras se aplicam ___ todos os participantes.' A regência correta do verbo 'aplicar-se' exige qual preposição?",o:["a — e como 'todos' é pronome indefinido, sem crase","à — fusão obrigatória","para — sem artigo, sem crase","em — regência diferente"],c:0,w:"'Aplicar-se a' = preposição 'a'. Antes de 'todos' (pronome indefinido), a crase é proibida — pronomes indefinidos não admitem artigo definido antes de si."},
+{t:"Concordância — nível difícil",p:1,q:"(FUVEST) 'Precisa-se de bons professores.' Qual transformação mantém o sentido E respeita a concordância na voz passiva analítica?",o:["'Bons professores precisam-se'","'Bons professores são precisados'","'É preciso bons professores'","'Bons professores necessitam-se'"],c:1,w:"Passiva analítica de 'precisar de' não é natural em português; 'são precisados' é artificial mas a questão testa o conceito de passivação. A opção que mantém o sentido mais próximo com verbo 'ser' + particípio."},
+{t:"Concordância — nível difícil",p:1,q:"'Mais de um aluno faltou à aula.' O verbo está no singular porque:",o:["'Mais de um' é expressão que, apesar do sentido plural, idiomaticamente acompanha o verbo no singular","O verbo concorda com 'um' (singular)","'Aluno' exige singular","A expressão 'mais de um' é sempre plural"],c:0,w:"Expressão 'mais de um + singular' idiomaticamente leva verbo ao singular. Diferente de 'mais de dois' que pede plural. É regra específica da norma culta."},
+{t:"Concordância — nível difícil",p:1,q:"'A maioria dos alunos chegou atrasada.' O verbo no singular é porque:",o:["'Alunos' é o sujeito real","'Maioria' é o núcleo do sujeito (singular) e o verbo pode concordar com ele","A concordância com 'alunos' (plural) seria obrigatória","'Dos alunos' é adjunto e nunca interfere"],c:1,w:"'A maioria' é o núcleo do sujeito (singular). O verbo pode concordar com ele (singular) ou com o especificador 'dos alunos' (plural). Ambas as formas são aceitas, mas o singular ('chegou') segue o núcleo 'maioria'."},
+{t:"Concordância — nível difícil",p:1,q:"'Nem Pedro nem Ana compareceu à reunião.' O verbo no singular está:",o:["Errado: sujeitos ligados por 'nem...nem' exigem plural","Correto: sujeitos ligados por 'nem...nem' podem ficar no singular quando o verbo vem depois","Errado: sempre plural com sujeito composto","Correto apenas na língua oral"],c:1,w:"Com 'nem...nem', o verbo pode ficar no singular (concordando com o último sujeito) ou no plural. 'Nem Pedro nem Ana compareceu' ou 'nem Pedro nem Ana compareceram' — ambas são aceitas."},
+{t:"Concordância — nível difícil",p:1,q:"Assinale a alternativa com verbo corretamente empregado segundo a norma culta:",o:["Hão de haver soluções para isso","Devem haver mais opções","Deve haver mais opções","Haverão melhores tempos"],c:2,w:"'Haver' impessoal é invariável. O verbo auxiliar que acompanha 'haver' impessoal também deve ficar no singular: 'deve haver' (não 'devem haver'). 'Haverão' e 'hão de haver' são erros."},
+{t:"Concordância — nível difícil",p:1,q:"'São Paulo é uma das cidades que mais ___ crescido no Brasil.' Qual verbo preenche corretamente?",o:["tem","têm","tinha","tinham"],c:1,w:"'Uma das cidades que' → o antecedente do pronome relativo 'que' é 'cidades' (plural). O verbo concorda com 'cidades': 'cidades que têm crescido'. Correto: 'têm'."},
+{t:"Partícula se — nível difícil",p:1,q:"(CESPE) 'Não se pode duvidar da competência dela.' O 'se' nesta frase é:",o:["Pronome apassivador","Índice de indeterminação do sujeito","Pronome reflexivo","Partícula expletiva"],c:1,w:"'Duvidar' é verbo intransitivo/transitivo indireto. Com esse tipo de verbo, o 'se' é índice de indeterminação. O verbo fica no singular: 'pode' (não 'podem')."},
+{t:"Partícula se — nível difícil",p:1,q:"'Construíram-se pontes e estradas.' Na norma culta, o verbo está:",o:["Errado: deveria ser 'construiu-se'","Correto: 'pontes e estradas' é sujeito composto no plural — verbo concorda","Errado: verbo com 'se' apassivador fica sempre no singular","Correto apenas se houver inversão"],c:1,w:"Passiva sintética com sujeito composto plural: 'pontes e estradas' (plural) → 'construíram-se'. O verbo concorda com o sujeito paciente composto."},
+{t:"Partícula se — nível difícil",p:1,q:"'Vive-se bem nesta cidade.' O 'se' é índice de indeterminação e o verbo está no singular. Isso ocorre porque:",o:["O sujeito está no plural oculto","'Viver' aqui é usado como intransitivo — sem objeto direto expresso, tornando o sujeito indeterminado","'Bem' determina o singular do verbo","'Esta cidade' é o sujeito da oração"],c:1,w:"'Viver' intransitivo + 'se' = indeterminação. Não há sujeito determinado. Verbo no singular. Se fosse 'vendem-se casas', seria passiva sintética com sujeito paciente e concordância com 'casas'."},
+{t:"Regência e crase — nível difícil",p:1,q:"(UNICAMP) 'O médico ___ atendeu era especialista.' Qual preposição/fusão completa corretamente com pronome relativo?",o:["que o","a quem","à qual","a qual"],c:1,w:"'O médico a quem o médico atendeu' — 'atender a alguém' exige preposição 'a'. Com pronome relativo pessoal, usa-se 'a quem'. Como 'médico' é masculino, não há fusão com artigo feminino — apenas preposição simples 'a quem'."},
+{t:"Regência e crase — nível difícil",p:1,q:"Analise a frase: 'Assista à palestra, atente ___ detalhes e refira-se ___ questões levantadas.' Complete na ordem:",o:["aos / às","a / a","à / às","aos / a"],c:0,w:"'Atente a' + 'os detalhes' (masculino plural) = 'atentar aos detalhes'. 'Referir-se a' + 'as questões' (feminino plural) = 'às questões'. Sequência: aos / às."},
+{t:"Norma culta — nível difícil",p:1,q:"(ENEM) Leia: 'Há dez anos, mais de mil pessoas ___ beneficiadas pelo programa.' Qual verbo preenche corretamente?",o:["foram","foi","haviam sido","serão"],c:0,w:"'Mais de mil pessoas' = sujeito plural. Voz passiva analítica: 'foram beneficiadas'. 'Foi' (singular) estaria errado. 'Haviam sido' erro duplo (haver impessoal). 'Serão' muda o tempo."},
+{t:"Norma culta — nível difícil",p:1,q:"'Fazem dez anos que a empresa foi fundada.' Esta frase tem um erro de:",o:["Crase","Ortografia","Concordância verbal: 'fazer' impessoal deve ficar no singular — 'Faz dez anos'","Regência verbal"],c:2,w:"'Fazer' indicando tempo decorrido é impessoal e invariável: SEMPRE no singular. 'Fazem dez anos' é um dos erros mais cobrados em concursos e vestibulares."},
+{t:"Norma culta — nível difícil",p:1,q:"(FGV) Assinale a frase SEM erro de concordância verbal ou crase:",o:["Haviam muitos erros à lista","Havia muitos erros na lista à qual me referi","Fazem dois anos à data de hoje","Houveram problemas às listas enviadas"],c:1,w:"'Havia muitos erros' (impessoal singular correto) + 'à qual me referi' (crase correta). As demais: 'haviam'/'fazem'/'houveram' = erros com impessoais."},
+{t:"Norma culta — nível difícil",p:1,q:"'Não ___ dúvidas de que ___ erros graves no relatório.' Complete corretamente:",o:["há / há","há / haviam","houve / havia","hão / houveram"],c:0,w:"'Não há dúvidas' (impessoal singular) + 'há erros graves' (impessoal singular). Ambos 'há' são corretos. 'Haviam' e 'houveram' são erros com verbo impessoal."},
+{t:"Crase avançada — nível difícil",p:1,q:"(MODELO CONCURSO) 'Às vezes me pergunto ___ que nível chegamos.' Complete:",o:["a","à","ao","em"],c:2,w:"'Chegar a' + 'o nível' (masculino com artigo 'o') = 'ao nível'. Fusão de 'a + o = ao'. Não é crase (que só ocorre com artigo/pronome feminino 'a'), é a contração 'a + o = ao'."},
+{t:"Crase avançada — nível difícil",p:1,q:"Assinale o item em que TODAS as crases estão corretas:",o:["Às vezes, vou à padaria às 7h","Às vezes, vou a padaria às 7h","A vezes, vou à padaria à 7h","Às vezes, vou à padaria a 7h"],c:0,w:"'Às vezes' (locução adverbial), 'à padaria' (feminino com artigo), 'às 7h' (horas no plural = às). Todos corretos apenas na opção A."},
+{t:"Crase avançada — nível difícil",p:1,q:"(CONCURSO TJ) 'O ofício foi encaminhado ___ Defensoria Pública.' Complete:",o:["a","à","para a","de"],c:1,w:"'Encaminhar a' + 'a Defensoria' (feminino com artigo) = à Defensoria. Fusão obrigatória: a + a = à."},
+{t:"Concordância avançada — nível difícil",p:1,q:"'Qualquer que ___ as dificuldades, ele não desistirá.' Preencha:",o:["sejam","seja","for","forem"],c:0,w:"'Qualquer que sejam as dificuldades' — o verbo 'ser' concorda com o predicativo/sujeito posposto 'as dificuldades' (plural). Correto: 'sejam'. 'Seja' (singular) seria o erro frequente por atração de 'qualquer'."},
+{t:"Concordância avançada — nível difícil",p:1,q:"'Um e outro candidato ___ aprovado.' Qual a concordância correta?",o:["foram aprovados","foi aprovado","foram aprovado","foi aprovados"],c:1,w:"'Um e outro' + singular: a expressão 'um e outro' tende a puxar o verbo para o singular quando seguida de substantivo no singular. 'Um e outro candidato foi aprovado' é o padrão culto mais aceito."},
+{t:"Aplicação — nível difícil",p:1,q:"(ENEM) Leia o trecho: 'Entregou-se o prêmio ___ vencedoras do concurso.' Complete e justifique:",o:["a — preposição simples, sem fusão, pois há artigo indefinido","às — fusão obrigatória: a (preposição) + as (artigo plural de 'vencedoras')","para as — regência alternativa correta","as — sem preposição"],c:1,w:"'Entregar a' + 'as vencedoras' (feminino plural com artigo) = às vencedoras. Fusão: a + as = às."},
+{t:"Aplicação — nível difícil",p:1,q:"Todas as afirmativas são verdadeiras, EXCETO:",o:["'Haver' no sentido de existir é sempre impessoal e invariável","O 'se' apassivador ocorre com verbos transitivos diretos e o verbo concorda com o sujeito paciente","'Fazer' indicando tempo transcorrido é impessoal e varia normalmente","Antes de verbo no infinitivo, a crase é terminantemente proibida"],c:2,w:"'Fazer' indicando tempo é impessoal e NÃO VARIA — fica sempre no singular. Dizer que 'varia normalmente' é a afirmativa falsa."},
+{t:"Síntese avançada — nível difícil",p:1,q:"(FGVMODEL) Qual período está inteiramente correto quanto à crase e à concordância verbal?",o:["Às vezes haviam dúvidas às quais me referia","Às vezes havia dúvidas às quais me referia","A vezes haviam dúvidas a quais me referia","Às vezes houveram dúvidas às quais me referia"],c:1,w:"'Às vezes' (crase correta), 'havia dúvidas' (impessoal singular correto), 'às quais me referia' (crase correta com pronome relativo composto). Apenas a opção B não tem erros."}
+]
+},
+
+// ──────────────────────────
+// MATÉRIA 2
+// ──────────────────────────
+{
+name:"Fundamentos do Ensino de História",
+icon:"🏛️",cls:"s2",
+questions:[
+// ─── 35 MÉDIAS ───
+{t:"O que é História",p:0,q:"A História como área do conhecimento tem como função principal:",o:["Memorizar datas e nomes de batalhas em ordem cronológica","Compreender quem somos, como a sociedade foi construída e como o passado influencia o presente","Estudar apenas eventos políticos de governantes","Descrever fatos isolados sem conexão com o presente"],c:1,w:"História não é decoreba. Seu papel é desenvolver a compreensão de identidade coletiva, a construção da sociedade e a influência do passado no presente — formando o pensamento crítico."},
+{t:"O que é História",p:0,q:"'História não é apenas decorar datas.' Essa afirmação reforça a ideia de que o ensino deve priorizar:",o:["A memorização cronológica de todos os eventos","A análise crítica das relações entre passado, presente e futuro","O estudo exclusivo de guerras e disputas políticas","A repetição dos conteúdos do livro didático"],c:1,w:"O ensino de História significativo desenvolve análise, interpretação de fontes e pensamento crítico — não se limita à memorização de datas."},
+{t:"O que é História",p:0,q:"O desenvolvimento do pensamento crítico no ensino de História permite ao aluno:",o:["Repetir o discurso oficial sem questionamento","Decorar listas de fatos históricos na ordem cronológica","Analisar fontes, questionar versões e construir argumentos fundamentados sobre o passado","Apenas reconhecer personagens históricos consagrados"],c:2,w:"Pensamento crítico histórico = análise de fontes, questionamento de narrativas hegemônicas e construção de argumentos. É o oposto da simples memorização."},
+{t:"Anos iniciais",p:0,q:"O ensino de História nos anos iniciais deve partir da:",o:["Memorização de datas nacionais e efemérides oficiais","Realidade concreta da criança e de sua experiência cotidiana","Leitura de textos históricos do século XIX","Análise de documentos históricos primários complexos"],c:1,w:"Nos anos iniciais, a História parte do concreto e próximo: a realidade, a família, o bairro e a escola da criança — antes de ampliar para contextos mais distantes."},
+{t:"Anos iniciais",p:0,q:"Segundo o resumo, o estudante aprende História quando consegue relacionar:",o:["Apenas datas a fatos isolados","EU → FAMÍLIA → ESCOLA → BAIRRO → CIDADE → SOCIEDADE","Eventos internacionais ao contexto local imediato","Matemática e ciências ao contexto histórico"],c:1,w:"A progressão EU→FAMÍLIA→ESCOLA→BAIRRO→CIDADE→SOCIEDADE representa o caminho pedagógico do particular ao geral, do concreto ao abstrato, no ensino de História nos anos iniciais."},
+{t:"Anos iniciais",p:0,q:"A construção da árvore genealógica como atividade pedagógica tem como objetivo:",o:["Desenvolver habilidades de desenho e caligrafia","Compreender relações familiares, memória coletiva e identidade","Estudar genética e hereditariedade biológica","Praticar a escrita de nomes próprios e datas"],c:1,w:"A árvore genealógica conecta a criança à História por meio da memória familiar, da identidade e das relações entre gerações — tornando o aprendizado concreto e significativo."},
+{t:"Anos iniciais",p:0,q:"O ensino de História nos anos iniciais parte do princípio didático de ir do:",o:["Abstrato para o concreto e do global para o local","Concreto e próximo (o cotidiano da criança) para o abstrato e distante (a sociedade)","Passado remoto para o presente imediato","Global para o nacional e do nacional para o local"],c:1,w:"O princípio didático é do próximo ao distante, do concreto ao abstrato. A criança aprende história a partir de sua própria experiência antes de ampliar o olhar."},
+{t:"Tempo histórico",p:0,q:"A diferença fundamental entre tempo histórico e tempo cronológico é:",o:["São conceitos intercambiáveis na historiografia","Tempo histórico analisa mudanças e permanências; tempo cronológico é a medição objetiva do tempo (horas, dias, anos)","Tempo cronológico é qualitativo e tempo histórico é quantitativo","Tempo histórico é exclusivo do Ensino Médio"],c:1,w:"Tempo cronológico = medição objetiva (calendário, relógio). Tempo histórico = análise qualitativa de transformações e permanências ao longo do tempo."},
+{t:"Tempo histórico",p:0,q:"Comparar uma escola de 1950 com uma escola atual é um trabalho com:",o:["Tempo cronológico apenas","Tempo histórico — análise de mudanças e permanências","Tempo geológico e biológico","Tempo psicológico subjetivo do aluno"],c:1,w:"Identificar o que mudou e o que permaneceu ao longo do tempo é exercitar o pensamento histórico. A comparação envolve análise de transformações e continuidades."},
+{t:"Tempo histórico",p:0,q:"'Horas, dias, meses, anos e o calendário' são exemplos de:",o:["Tempo histórico","Tempo psicológico","Tempo cronológico","Tempo geológico"],c:2,w:"Tempo cronológico é o tempo medido por instrumentos e convenções sociais: relógio, calendário, datas. É linear, quantitativo e objetivo."},
+{t:"Tempo histórico",p:0,q:"O conceito de 'permanências' no tempo histórico refere-se a:",o:["Eventos que transformaram a história de forma rápida e irreversível","Aspectos culturais, sociais ou políticos que continuam existindo apesar das transformações","Apenas tradições religiosas de longa duração","O tempo fixo e imutável marcado pelo calendário"],c:1,w:"Permanências = elementos que resistem às mudanças históricas e continuam presentes. Elas se contrapõem às rupturas e mudanças no estudo do tempo histórico."},
+{t:"Memória e identidade",p:0,q:"Segundo o resumo, a memória no ensino de História serve para:",o:["Apenas registrar fatos do passado sem interpretação crítica","Construir a identidade: a criança aprende história ao perceber quem ela é, de onde veio e a quais grupos sociais pertence","Substituir completamente as fontes históricas primárias","Memorizar datas e nomes de personagens históricos"],c:1,w:"Memória é constituinte de identidade. Ao resgatar sua história pessoal e coletiva, a criança constrói pertencimento, identidade e consciência histórica."},
+{t:"Memória e identidade",p:0,q:"Pedir ao estudante que leve um objeto significativo e conte sua história é exemplo de:",o:["Uso de fonte secundária de pesquisa histórica","Memória e pertencimento como recurso didático no ensino de História","Avaliação somativa tradicional por nota","Tecnologia educacional aplicada ao ensino"],c:1,w:"O objeto significativo ativa a memória afetiva — conecta a história pessoal do aluno à construção do conhecimento histórico de forma concreta e motivadora."},
+{t:"Memória e identidade",p:0,q:"Fotografias e relatos pessoais são usados no ensino de História como:",o:["Apenas decoração pedagógica da sala de aula","Recursos para trabalhar memória, identidade e pertencimento","Substituição completa do livro didático","Formas de avaliação exclusiva de conteúdos factuais"],c:1,w:"Fotografias e relatos são fontes históricas que ativam memória, constroem identidade e desenvolvem o pertencimento — recursos didáticos valiosos nos anos iniciais."},
+{t:"BNCC e História",p:0,q:"A BNCC orienta que o ensino de História busque desenvolver:",o:["Apenas memorização de datas e eventos oficiais do país","Pensamento crítico, consciência histórica, cidadania e respeito à diversidade","O estudo exclusivo da história europeia e ocidental","A reprodução do discurso oficial sobre o passado nacional"],c:1,w:"A BNCC para História propõe: pensamento crítico + consciência histórica + cidadania + respeito à diversidade. É muito mais amplo que a simples memorização."},
+{t:"BNCC e História",p:0,q:"A BNCC valoriza no ensino de História:",o:["A decoração de textos históricos clássicos","Investigação, análise de fontes, construção de argumentos e protagonismo do estudante","Reprodução fiel dos conteúdos do livro didático","Avaliação exclusivamente por provas objetivas padronizadas"],c:1,w:"A BNCC privilegia: investigação ativa, análise crítica de fontes, argumentação e o aluno como protagonista do processo de aprender História."},
+{t:"BNCC e História",p:0,q:"O 'protagonismo do estudante' no ensino de História (BNCC) significa:",o:["O professor transmite e o aluno apenas escuta e anota","O aluno participa ativamente, investiga, questiona e constrói o conhecimento histórico","Que o aluno escolhe livremente o que quer aprender sem orientação","A substituição total do professor por recursos digitais"],c:1,w:"Protagonismo = o aluno é ativo e central. Investiga fontes, formula hipóteses e constrói interpretações. O professor é mediador, não mero transmissor de informações."},
+{t:"Metodologias",p:0,q:"Por que o ensino tradicional de História baseado apenas em memorização é insuficiente?",o:["Porque os alunos já sabem as datas antes de aprender","Porque não desenvolve pensamento crítico, análise de fontes nem capacidade de interpretação","Porque exige muito tempo de aula e desgasta o professor","Porque os livros didáticos tornaram a memorização desnecessária"],c:1,w:"Memorização sem contexto e sem análise não desenvolve as competências históricas que a escola deve promover. O aluno precisa saber mais do que o 'quê' — precisa entender o 'por quê' e o 'como'."},
+{t:"Metodologias",p:0,q:"A 'aprendizagem baseada em investigação' no ensino de História envolve:",o:["Transmissão direta de conteúdos prontos pelo professor","Cópia de textos históricos do quadro para fixação","O aluno formula hipóteses, pesquisa fontes e constrói respostas para questões históricas","Avaliação exclusiva por provas objetivas no final do bimestre"],c:2,w:"Aprendizagem por investigação = o aluno age como historiador: formula questões, analisa fontes diversas e constrói interpretações. Desenvolve autonomia e pensamento crítico."},
+{t:"Metodologias",p:0,q:"A 'gamificação' como metodologia no ensino de História contribui para:",o:["Substituir completamente o conteúdo histórico por entretenimento","Tornar o aprendizado mais engajante por meio de dinâmicas de jogo, mantendo o conteúdo","Eliminar a necessidade de avaliações formais","Padronizar o ritmo de aprendizado de todos os alunos"],c:1,w:"Gamificação usa elementos de jogos (desafios, missões, pontuação, narrativa) para engajar os alunos no conteúdo histórico de forma ativa e motivadora."},
+{t:"Metodologias",p:0,q:"A 'sala de aula invertida' propõe que:",o:["O aluno estuda em casa antes da aula e o tempo presencial é usado para aprofundamento e debate","O professor não precisa planejar porque o aluno traz o conteúdo","Os alunos ficam em casa e o professor vai até eles nas visitas domiciliares","A aula expositiva seja feita no período do intervalo escolar"],c:0,w:"Sala invertida: conteúdo básico em casa (vídeo, texto, podcast), tempo presencial usado para discussão, análise de fontes, resolução de problemas e debate — maximiza o uso do tempo coletivo."},
+{t:"Metodologias",p:0,q:"A 'aprendizagem colaborativa' valoriza:",o:["A competição individual entre alunos por melhores notas","A construção coletiva do conhecimento por meio de troca, debate e trabalho em grupo","O isolamento do aluno para garantir concentração","A avaliação apenas individual e em silêncio"],c:1,w:"Aprendizagem colaborativa = conhecimento construído coletivamente. Alunos trocam perspectivas, debatem interpretações históricas e produzem juntos."},
+{t:"Planejamento",p:0,q:"Segundo o resumo, o professor de História precisa planejar:",o:["Apenas os conteúdos factuais a serem transmitidos","Objetivos, conteúdos, metodologias, recursos e avaliação de forma integrada e coerente","Somente as datas das provas e trabalhos","O calendário de feriados e eventos da escola"],c:1,w:"Planejamento integrado: objetivos + conteúdos + metodologias + recursos + avaliação. Sem integração, o ensino perde intencionalidade pedagógica e eficácia."},
+{t:"Planejamento",p:0,q:"A avaliação no ensino de História, segundo o resumo, deve ser:",o:["Apenas somativa (prova final com nota numérica)","Contínua e formativa, usando observação, debates, projetos e portfólios","Realizada apenas no final de cada bimestre letivo","Baseada exclusivamente em provas objetivas de múltipla escolha"],c:1,w:"A avaliação formativa e contínua acompanha o processo de aprendizagem. Observação, debates e projetos mostram o desenvolvimento real do aluno muito além da memorização."},
+{t:"Planejamento",p:0,q:"'Observação, debates e projetos' são instrumentos de qual tipo de avaliação?",o:["Somativa e classificatória","Avaliação padronizada nacional","Formativa e contínua","Diagnóstica inicial"],c:2,w:"Observação, debates e projetos avaliam o processo ao longo do tempo — são instrumentos característicos da avaliação formativa, que orienta o ensino e acompanha o aluno."},
+{t:"Interdisciplinaridade",p:0,q:"A interdisciplinaridade no ensino de História significa:",o:["Que a História deve ser ensinada isoladamente de outras disciplinas","A História pode dialogar com outras áreas como Geografia, Artes, Língua Portuguesa e Matemática","Que o professor de História deve dar aulas de todas as disciplinas simultaneamente","Apenas a Literatura pode ser integrada à História"],c:1,w:"A interdisciplinaridade permite que a História dialogue com outras áreas do conhecimento, enriquecendo a compreensão dos fenômenos históricos por múltiplas perspectivas."},
+{t:"Interdisciplinaridade",p:0,q:"No exemplo do resumo, um projeto sobre imigração articula:",o:["Apenas Educação Física e Artes","História (contexto histórico) + Geografia (fluxos migratórios) + Português (produção textual)","Apenas Matemática e Ciências Naturais","Somente Língua Portuguesa e Artes"],c:1,w:"O projeto sobre imigração ilustra a interdisciplinaridade: cada área contribui com seu olhar específico para a compreensão mais ampla e rica do fenômeno histórico."},
+{t:"Interdisciplinaridade",p:0,q:"A principal vantagem pedagógica da interdisciplinaridade no ensino de História é:",o:["Reduzir a carga de trabalho de cada professor","Permitir que os alunos compreendam os fenômenos históricos de forma mais ampla e integrada","Eliminar a necessidade de planejamento disciplinar individual","Tornar as avaliações mais simples e padronizadas"],c:1,w:"A interdisciplinaridade mostra ao aluno que os fenômenos históricos têm múltiplas dimensões (econômica, cultural, geográfica, linguística) que se interconectam."},
+{t:"Síntese",p:0,q:"Qual afirmativa melhor resume o objetivo do ensino de História na educação básica?",o:["Memorizar datas, nomes e eventos em sequência cronológica","Desenvolver o pensamento crítico, a consciência histórica e a capacidade de compreender o presente a partir do passado, formando cidadãos ativos","Reproduzir o discurso oficial sobre os eventos nacionais e heróis da pátria","Estudar exclusivamente a história política dos governantes e suas decisões"],c:1,w:"O ensino de História visa formar cidadãos críticos que compreendam a historicidade do presente e possam agir para transformar o futuro — muito além da memorização."},
+{t:"Síntese",p:0,q:"Qual recurso didático está mais diretamente alinhado ao desenvolvimento da memória e identidade nos anos iniciais?",o:["Linha do tempo global da história mundial","Mapa-múndi com fronteiras dos países","Construção da árvore genealógica e uso de objetos e fotografias familiares","Estudo de documentos diplomáticos internacionais"],c:2,w:"Árvore genealógica, objetos e fotografias familiares conectam a criança à sua própria história — base da memória, identidade e pertencimento nos anos iniciais."},
+{t:"Síntese",p:0,q:"Um professor que planeja sua aula integrando objetivos, metodologias ativas, análise de fontes e avaliação formativa está alinhado a qual perspectiva?",o:["Ensino tradicional baseado em memorização","Ensino de História significativo, crítico e centrado no protagonismo do aluno","Ensino baseado exclusivamente no livro didático","Abordagem conteudista sem relação com a realidade do aluno"],c:1,w:"Integrar objetivos, metodologias ativas, análise de fontes e avaliação formativa é a perspectiva do ensino significativo e crítico proposto pela BNCC e pelos fundamentos pedagógicos modernos."},
+{t:"Síntese",p:0,q:"Assinale a alternativa que apresenta ERRO conceitual:",o:["Tempo cronológico é a medição objetiva do tempo por calendário e relógio","Tempo histórico analisa mudanças e permanências ao longo do tempo","A BNCC propõe que o ensino de História desenvolva apenas memorização","Memória e identidade são conceitos articulados no ensino de História nos anos iniciais"],c:2,w:"Afirmar que a BNCC propõe 'apenas memorização' é um erro conceitual grave. A BNCC propõe pensamento crítico, investigação, consciência histórica e protagonismo do aluno."},
+{t:"Síntese",p:0,q:"A diferença entre metodologias ativas e aulas expositivas no ensino de História é que:",o:["Metodologias ativas não exigem conteúdo histórico","Nas metodologias ativas o aluno é protagonista da construção do conhecimento; na expositiva o professor é o centro transmissor","Aulas expositivas desenvolvem mais o pensamento crítico","Não há diferença significativa entre as duas abordagens"],c:1,w:"Metodologias ativas = aluno protagonista, investigação, construção ativa. Aula expositiva = professor transmissor, aluno passivo. A diferença é fundamental para a aprendizagem significativa."},
+
+// ─── 35 DIFÍCEIS ───
+{t:"Epistemologia — difícil",p:1,q:"A afirmação 'a história é sempre escrita do presente para o passado' significa que:",o:["Os historiadores inventam os fatos históricos livremente","Os valores, interesses e perguntas do presente influenciam a seleção e interpretação dos fatos históricos","A história é absolutamente objetiva e neutra","O passado não tem importância para compreender o presente"],c:1,w:"Toda narrativa histórica é construída por sujeitos situados no presente, com suas perspectivas e questões. A história não é neutra — é interpretação condicionada pelo tempo do historiador."},
+{t:"Epistemologia — difícil",p:1,q:"(MODELO CONCURSO PEDAGÓGICO) A 'multiperspectividade' no ensino de História significa:",o:["Existe apenas uma versão correta e definitiva dos fatos históricos","Os mesmos eventos podem ser compreendidos de diferentes perspectivas (vencedores, vencidos, grupos marginalizados)","Os alunos podem inventar versões históricas ficcionais sem embasamento","A perspectiva do professor é a única válida em sala de aula"],c:1,w:"Multiperspectividade = a história é contada de diferentes ângulos. Ensinar múltiplas perspectivas desenvolve empatia histórica e pensamento crítico — fundamental na BNCC."},
+{t:"Epistemologia — difícil",p:1,q:"O método histórico diferencia-se da simples memorização porque:",o:["O método histórico também se baseia em memorização, mas de forma mais organizada","O método histórico envolve análise crítica de fontes, formulação de hipóteses e construção argumentada de interpretações","A memorização é suficiente para a formação do pensamento histórico","O método histórico é usado apenas por historiadores profissionais, não por alunos"],c:1,w:"Método histórico = análise de fontes, formulação de hipóteses, questionamento de versões e construção de interpretações fundamentadas. É o que o ensino de História deve desenvolver."},
+{t:"Epistemologia — difícil",p:1,q:"(ENEM-modelo) Quando um historiador analisa uma fotografia do século XIX, ele deve considerar principalmente:",o:["Apenas o que está visível na imagem, sem contexto externo","Quem produziu a imagem, com qual intenção, em qual contexto e o que ela silencia ou enfatiza","A beleza estética da composição fotográfica","A data exata em que a fotografia foi tirada"],c:1,w:"Análise crítica de fontes = questionar autoria, intenção, contexto de produção e o que é omitido. Uma fotografia não é a realidade — é uma representação construída."},
+{t:"BNCC — difícil",p:1,q:"(CONCURSO PEDAGÓGICO) As competências específicas de História na BNCC articulam saber histórico e:",o:["Apenas conteúdos factuais e cronológicos","Investigação, argumentação, análise de fontes e consciência histórica para a formação cidadã","Memorização de datas e personagens ilustres","Estudo exclusivo da história nacional"],c:1,w:"As competências de História na BNCC articulam: investigação, análise de fontes, construção de argumentos, consciência histórica e formação cidadã crítica e responsável."},
+{t:"BNCC — difícil",p:1,q:"A 'consciência histórica' proposta pela BNCC diferencia-se da 'consciência cronológica' porque:",o:["São conceitos idênticos na BNCC","Consciência histórica envolve compreender a historicidade do presente e a capacidade humana de transformação; cronológica é apenas situar eventos em datas","Consciência cronológica é mais importante para a formação cidadã","A BNCC não menciona o conceito de consciência histórica"],c:1,w:"Consciência histórica (Rüsen) = compreender que o presente é resultado de processos históricos e que a ação humana pode transformar o futuro. Va muito além de saber datas."},
+{t:"BNCC — difícil",p:1,q:"(MODELO CONCURSO) O conceito de 'literacia histórica' no ensino de História refere-se a:",o:["Saber ler e escrever sobre eventos históricos com boa ortografia","A capacidade de ler, interpretar e produzir narrativas históricas criticamente, usando o método do historiador","Memorizar os principais textos da historiografia brasileira","Conhecer a cronologia dos principais períodos históricos"],c:1,w:"Literacia histórica (Peter Lee/BNCC) = capacidade de trabalhar com fontes, construir narrativas fundamentadas e pensar historicamente — não é apenas saber ler textos históricos."},
+{t:"Tempo histórico — difícil",p:1,q:"(ENEM) A coexistência de elementos medievais e modernos em uma mesma sociedade é exemplo de:",o:["Ruptura histórica total","Simultaneidade temporal cronológica","Permanências e contradições no tempo histórico — diferentes tempos coexistindo no mesmo período","Anacronismo do historiador"],c:2,w:"O tempo histórico não é linear e uniforme — diferentes grupos e regiões podem viver em 'tempos históricos' distintos simultaneamente. É a complexidade das permanências e rupturas."},
+{t:"Tempo histórico — difícil",p:1,q:"'Anacronismo' no ensino de História é o erro de:",o:["Ignorar completamente o passado na análise histórica","Atribuir valores, conceitos ou tecnologias de uma época a outra onde eles não existiam","Usar fontes históricas primárias em sala de aula","Trabalhar com múltiplas perspectivas históricas"],c:1,w:"Anacronismo = julgar o passado com os valores do presente, ou atribuir ao passado características que pertencem a outro tempo. É erro fundamental que o ensino de História deve combater."},
+{t:"Tempo histórico — difícil",p:1,q:"A Escola dos Annales contribuiu para o ensino de História ao propor:",o:["O retorno ao estudo exclusivo de eventos políticos e guerras","A história centrada apenas nos grandes personagens e suas decisões","Uma história total que integra aspectos econômicos, sociais, culturais e mentais, privilegiando o tempo de longa duração","A separação entre história e ciências sociais"],c:2,w:"A Escola dos Annales (Bloch, Febvre, Braudel) revolucionou a historiografia ao propor uma história total, integradora, de longa duração e centrada nas estruturas sociais — não apenas em eventos políticos."},
+{t:"Memória — difícil",p:1,q:"(CONCURSO) A diferença entre 'memória individual' e 'memória coletiva' (Halbwachs) é que:",o:["São conceitos idênticos — toda memória é individual","A memória coletiva é a soma matemática de todas as memórias individuais","A memória coletiva é construída socialmente e compartilhada por grupos; a individual é pessoal mas sempre influenciada pela memória do grupo","A memória individual é mais confiável historicamente do que a coletiva"],c:2,w:"Halbwachs: a memória individual sempre se apoia em quadros sociais. A memória coletiva é construída e compartilhada por grupos sociais — identidade, pertencimento e visão de mundo."},
+{t:"Memória — difícil",p:1,q:"O 'lugar de memória' (Pierre Nora) aplicado ao ensino de História refere-se a:",o:["Qualquer espaço físico onde ocorreu um evento histórico","Arquivos, monumentos, museus e datas que cristalizam a memória coletiva de uma nação ou grupo","Apenas a memória afetiva individual de cada aluno","Os livros didáticos como únicos portadores da memória histórica"],c:1,w:"Pierre Nora: 'lugares de memória' são espaços (físicos, simbólicos ou funcionais) onde a memória coletiva se ancora — museus, datas comemorativas, monumentos, arquivos. São pontes entre passado e presente."},
+{t:"Fontes históricas — difícil",p:1,q:"No ensino de História nos anos iniciais, 'fontes históricas' podem ser:",o:["Apenas documentos escritos oficiais do governo","Documentos escritos, fotografias, objetos, relatos orais, músicas, pinturas, arquitetura — qualquer vestígio humano do passado","Somente textos acadêmicos de historiadores reconhecidos","Apenas livros didáticos aprovados pelo MEC"],c:1,w:"Fontes históricas = qualquer vestígio da atividade humana no passado (documentos, objetos, imagens, músicas, relatos). Ampliar o conceito de fonte é fundamental para um ensino crítico e diversificado."},
+{t:"Fontes históricas — difícil",p:1,q:"(ENEM-modelo) A diferença entre 'fonte primária' e 'fonte secundária' é:",o:["Fontes primárias são mais antigas e fontes secundárias são mais recentes","Fontes primárias são produzidas na época estudada; fontes secundárias são interpretações produzidas posteriormente sobre as primárias","Fontes primárias são melhores e mais confiáveis que as secundárias","Fontes primárias são apenas documentos escritos"],c:1,w:"Primária = produzida no período estudado (carta, fotografia, objeto, lei da época). Secundária = análise posterior feita por historiadores. Ambas são essenciais — não há hierarquia de qualidade."},
+{t:"Metodologias — difícil",p:1,q:"(CONCURSO PEDAGÓGICO) O 'estudo de caso' no ensino de História é pedagogicamente eficaz porque:",o:["Reduz o conteúdo a apenas um evento, empobrendo o aprendizado","Analisa um evento/período em profundidade, revelando processos e estruturas que iluminam fenômenos históricos mais amplos","Substitui a necessidade de análise de fontes primárias","É exclusivamente adequado para o Ensino Médio e Superior"],c:1,w:"Estudo de caso = análise aprofundada do particular para compreender o geral. Um caso específico serve como janela para processos históricos mais amplos — metodologia eficaz em todos os níveis."},
+{t:"Metodologias — difícil",p:1,q:"A 'história oral' como metodologia no ensino de História valoriza:",o:["Apenas fontes escritas e documentos oficiais","Testemunhos e narrativas de pessoas comuns, ampliando as perspectivas históricas além das fontes oficiais","Somente relatos de personagens históricos famosos","A substituição de todas as fontes escritas por relatos orais"],c:1,w:"História oral dá voz a pessoas comuns e grupos marginalizados — amplia as perspectivas históricas para além das fontes oficiais, democratizando a produção do conhecimento histórico."},
+{t:"Metodologias — difícil",p:1,q:"(MODELO ENEM) Um professor propõe que os alunos entrevistem moradores idosos do bairro sobre as transformações locais. Essa atividade desenvolve principalmente:",o:["Apenas habilidades de comunicação oral","Pesquisa histórica por meio de história oral, análise de fontes e compreensão do tempo histórico local","Avaliação somativa por nota de participação","Memorização da história oficial do município"],c:1,w:"Entrevista com moradores = história oral + análise de fontes + tempo histórico (mudanças e permanências locais) + protagonismo do aluno como pesquisador. Atividade rica e interdisciplinar."},
+{t:"Planejamento — difícil",p:1,q:"(CONCURSO) A 'sequência didática' no ensino de História difere de uma lista de aulas porque:",o:["É mais longa e exige mais recursos materiais","Articula coerentemente objetivos, conteúdos, metodologias, recursos e avaliação em torno de uma intencionalidade pedagógica clara","É elaborada exclusivamente pelo coordenador pedagógico da escola","Não inclui avaliação dos alunos em seu planejamento"],c:1,w:"Sequência didática = unidade pedagógica articulada com intencionalidade — não é soma de aulas isoladas. Cada etapa se conecta às demais em direção a um objetivo de aprendizagem específico."},
+{t:"Planejamento — difícil",p:1,q:"Um professor que define como objetivo 'os alunos serão capazes de comparar duas versões sobre um mesmo evento histórico' está trabalhando em qual nível cognitivo (Bloom)?",o:["Lembrar (nível básico de memorização)","Compreender (nível de descrição)","Analisar (comparar versões = decomposição e relação entre partes)","Criar (produção original)"],c:2,w:"Comparar versões = decompor, identificar diferenças e relações entre as partes. Isso corresponde ao nível 'Analisar' na Taxonomia de Bloom — nível intermediário-superior."},
+{t:"Planejamento — difícil",p:1,q:"(CONCURSO PEDAGÓGICO) A avaliação diagnóstica no início de uma unidade sobre 'memória e identidade' serve para:",o:["Atribuir notas antes do conteúdo ser ensinado","Identificar os conhecimentos prévios e experiências dos alunos para orientar o planejamento do professor","Selecionar quais alunos têm condições de aprender o conteúdo","Substituir a avaliação formativa ao longo da unidade"],c:1,w:"Avaliação diagnóstica inicial = mapa do que o aluno já sabe e traz de experiência. Orienta o planejamento para partir do conhecimento real dos alunos — princípio da aprendizagem significativa."},
+{t:"Decolonialidade — difícil",p:1,q:"A perspectiva decolonial no ensino de História propõe:",o:["Manter o eurocentrismo como única referência curricular legítima","Questionar a visão eurocêntrica da história e valorizar perspectivas de povos historicamente silenciados","Eliminar o estudo da história europeia do currículo","Substituir a história política por história apenas cultural"],c:1,w:"Decolonialidade = questionar hierarquias de saber eurocêntricas e valorizar perspectivas de povos colonizados, indígenas, africanos e outros historicamente silenciados nas narrativas históricas oficiais."},
+{t:"Decolonialidade — difícil",p:1,q:"(ENEM) A Lei 10.639/2003 (e sua ampliação pela 11.645/2008) tornou obrigatório o ensino de história e cultura afro-brasileira e indígena. Isso representa:",o:["Uma medida contrária à BNCC de ensino de História","A adoção de uma perspectiva decolonial que inclui vozes historicamente silenciadas no currículo","Uma imposição ideológica sem fundamento pedagógico","A substituição do currículo de história europeia"],c:1,w:"As leis 10.639/2003 e 11.645/2008 representam uma ruptura com o eurocentrismo curricular — reconhecem a contribuição de africanos e indígenas à formação do Brasil, numa perspectiva decolonial."},
+{t:"Cidadania histórica — difícil",p:1,q:"'Formação para a cidadania' no ensino de História (BNCC) implica desenvolver alunos capazes de:",o:["Aceitar passivamente as narrativas históricas oficiais","Votar conscientemente, mas sem questionar a história","Compreender criticamente o passado, reconhecer direitos e agir para transformar a sociedade","Memorizar a Constituição Federal sem análise crítica"],c:2,w:"Cidadania histórica = sujeitos que compreendem a historicidade dos direitos, reconhecem as lutas do passado e são capazes de agir criticamente no presente para transformar o futuro."},
+{t:"Patrimônio — difícil",p:1,q:"O uso do patrimônio histórico local (museus, monumentos, arquivos) no ensino contribui para:",o:["Substituir completamente o livro didático e o planejamento docente","Conectar o aluno à história de sua comunidade, desenvolvendo pertencimento e consciência histórica local","Ensinar apenas história política nacional e seus heróis","Tornar as avaliações mais fáceis e menos criteriosas"],c:1,w:"Patrimônio local = história concreta, próxima e tangível. Conecta teoria à realidade vivida, desenvolve pertencimento e consciência histórica — extensão natural da sala de aula."},
+{t:"Avaliação — difícil",p:1,q:"(CONCURSO PEDAGÓGICO) O portfólio como instrumento de avaliação em História permite, diferentemente da prova objetiva:",o:["Avaliar apenas a memorização de conteúdos históricos","Registrar e analisar a evolução do pensamento histórico do aluno ao longo do tempo por meio de produções diversificadas","Classificar os alunos em rankings de desempenho","Substituir todo o planejamento por produções espontâneas"],c:1,w:"Portfólio = trajetória de aprendizagem. Documenta como o pensamento histórico do aluno se desenvolve ao longo do tempo — revela processo, não apenas resultado pontual."},
+{t:"Interdisciplinaridade — difícil",p:1,q:"(ENEM-modelo) Um projeto sobre 'imigração no Brasil' articula história, geografia e português. Isso demonstra que os fenômenos históricos:",o:["Podem ser compreendidos por uma única disciplina","São complexos e demandam múltiplas perspectivas para sua compreensão plena","Devem ser ensinados sempre de forma fragmentada","São mais bem compreendidos apenas pelos historiadores profissionais"],c:1,w:"A imigração é fenômeno histórico-geográfico-linguístico. A interdisciplinaridade revela que os fenômenos reais não cabem nos limites de uma única disciplina — exigem múltiplas perspectivas."},
+{t:"Anos iniciais — difícil",p:1,q:"(CONCURSO PEDAGÓGICO) Por que a progressão EU→FAMÍLIA→ESCOLA→BAIRRO→CIDADE→SOCIEDADE é pedagogicamente coerente nos anos iniciais?",o:["Porque a história mundial é muito complexa para crianças pequenas","Porque respeita o princípio do próximo ao distante e do concreto ao abstrato, partindo da experiência real da criança","Porque a BNCC proíbe o ensino de história nacional nos anos iniciais","Porque facilita a memorização de datas em ordem crescente de importância"],c:1,w:"Princípio pedagógico fundamental: do concreto ao abstrato, do próximo ao distante. A criança compreende melhor a história a partir do que já conhece e vivencia — sua própria realidade."},
+{t:"Síntese — difícil",p:1,q:"(MODELO FUVEST) Leia: 'A história não está no passado — ela está em nós.' Essa afirmação pedagógica sugere que:",o:["O passado não tem relevância para o ensino atual","O aluno é sujeito histórico e sua identidade, memória e pertencimento são partes constitutivas do processo de aprender História","A história deve ser ensinada apenas por meio de livros e datas","O professor é o único detentor do saber histórico em sala de aula"],c:1,w:"A afirmação reconhece o aluno como sujeito histórico: sua memória, identidade e pertencimento são pontos de partida legítimos para o ensino de História — não apenas objetos de estudo externos."},
+{t:"Síntese — difícil",p:1,q:"Assinale a alternativa que articula CORRETAMENTE os conceitos estudados:",o:["Tempo cronológico analisa permanências; tempo histórico mede horas e dias","A BNCC propõe memorização e a Escola dos Annales propõe protagonismo do aluno","Consciência histórica é desenvolver no aluno a compreensão de que o presente resulta de processos históricos e que a ação humana pode transformá-lo","Memória individual e memória coletiva são conceitos opostos e excludentes"],c:2,w:"Consciência histórica (Rüsen + BNCC) = compreender a historicidade do presente + reconhecer a capacidade humana de transformação. Articula passado, presente e futuro de forma crítica."},
+{t:"Síntese — difícil",p:1,q:"(CONCURSO PEDAGÓGICO) Um professor dos anos iniciais que usa objetos familiares, fotografias antigas, entrevistas com avós e árvore genealógica está desenvolvendo:",o:["Apenas habilidades artísticas e estéticas","Apenas competências de língua portuguesa","Memória, identidade, pertencimento, tempo histórico e os fundamentos do pensamento histórico nos anos iniciais","Apenas conteúdos geográficos de localização espacial"],c:2,w:"Esses recursos ativam simultaneamente memória (afetiva e coletiva), identidade (quem sou e de onde venho), pertencimento (grupos sociais) e tempo histórico (mudanças e permanências na família e no bairro)."}
+]
+}
 ];
 
-var HARD=[
-{t:"Análise de atividade",q:"Uma professora pede que os alunos listem os materiais utilizados em uma técnica artística. Em seguida, pede que expliquem por que cada material é importante. Esses dois momentos correspondem, respectivamente, aos níveis:",o:["Lembrar e Compreender","Compreender e Aplicar","Aplicar e Analisar","Analisar e Avaliar"],c:0,w:"Listar = Lembrar (recupera dados). Explicar a importância = Compreender (dá significado ao conteúdo)."},
-{t:"Análise de atividade",q:"Um professor propõe: 'Use a técnica de perspectiva aprendida para desenhar uma cena do seu bairro'. Logo depois pede: 'Compare seu desenho com o de um colega, identificando diferenças na aplicação da técnica'. Os níveis mobilizados são:",o:["Lembrar e Compreender","Compreender e Avaliar","Aplicar e Analisar","Analisar e Criar"],c:2,w:"Usar em novo contexto = Aplicar. Comparar e identificar diferenças = Analisar."},
-{t:"Análise de atividade",q:"Um aluno escreve uma crítica fundamentada sobre uma exposição de arte, e em seguida projeta sua própria obra baseada nos conceitos criticados. Ele operou nos níveis:",o:["Lembrar e Compreender","Aplicar e Analisar","Avaliar e Criar","Compreender e Aplicar"],c:2,w:"Crítica fundamentada = Avaliar. Projetar obra original = Criar."},
-{t:"Planejamento",q:"Um professor que usa Bloom para planejar uma unidade sobre impressionismo deve começar por atividades que exijam:",o:["Criação imediata de obras no estilo impressionista","Avaliação crítica de obras antes de conhecê-las","Recuperação e reconhecimento das características do movimento","Análise comparativa entre impressionismo e cubismo"],c:2,w:"A hierarquia exige começar pela base: Lembrar (reconhecer, identificar) antes de avançar."},
-{t:"Planejamento",q:"Se o objetivo final de uma sequência didática é que o aluno 'elabore uma composição artística original', o professor deve garantir que antes o aluno tenha dominado:",o:["Apenas o nível Lembrar, pois é suficiente para criar","Todos os cinco níveis anteriores: lembrar, compreender, aplicar, analisar e avaliar","Apenas os níveis Lembrar e Aplicar","Somente o nível Avaliar"],c:1,w:"Criar é o topo — exige domínio de todos os anteriores. Sem base, a criação é superficial."},
-{t:"Avaliação",q:"Uma prova que pede apenas que o aluno 'cite 5 artistas do Renascimento' avalia exclusivamente o nível:",o:["Compreender","Aplicar","Lembrar","Analisar"],c:2,w:"Citar de memória é recuperação de informação — o nível mais básico: Lembrar."},
-{t:"Avaliação",q:"Se o professor ensinou até o nível 'Analisar' mas a prova exige apenas memorização, segundo Bloom há um problema de:",o:["Excesso de dificuldade na avaliação","Desalinhamento entre o nível cognitivo ensinado e o avaliado","Falta de conteúdo no planejamento","Excesso de criatividade nas questões"],c:1,w:"A etapa 'Criação de avaliações' em Bloom garante que a prova corresponda ao que foi efetivamente ensinado."},
-{t:"Avaliação",q:"Para avaliar o nível 'Avaliar' em uma prova de artes, a questão mais adequada seria:",o:["Cite três técnicas de pintura estudadas","Defina o que é arte abstrata","Defenda, com argumentos, qual das duas obras apresentadas é mais expressiva e por quê","Desenhe uma cópia da obra apresentada"],c:2,w:"Defender com argumentos fundamentados exige julgamento crítico — essência do nível Avaliar."},
-{t:"Avaliação",q:"Uma avaliação que pede ao aluno para 'elaborar um manifesto artístico com proposta estética original' avalia o nível:",o:["Lembrar","Compreender","Analisar","Criar"],c:3,w:"Elaborar algo original (manifesto com proposta estética própria) é o nível mais alto: Criar."},
-{t:"Hierarquia",q:"Um aluno consegue comparar obras de arte mas não consegue emitir julgamentos fundamentados sobre elas. Segundo Bloom, ele domina até o nível:",o:["Compreender","Aplicar","Analisar","Avaliar"],c:2,w:"Comparar é Analisar. Julgar com fundamentação é Avaliar. Ele domina até Analisar."},
-{t:"Hierarquia",q:"Um aluno consegue explicar um conceito mas não consegue usá-lo em situação nova. Qual nível ele ainda não atingiu?",o:["Lembrar","Compreender","Aplicar","Analisar"],c:2,w:"Explicar = Compreender (domina). Usar em contexto novo = Aplicar (não atingiu)."},
-{t:"Hierarquia",q:"A principal consequência de pular níveis na hierarquia de Bloom é:",o:["Maior velocidade no aprendizado","Lacunas no aprendizado que impedem o domínio dos níveis superiores","Desenvolvimento acelerado do pensamento crítico","Resultados melhores nas avaliações"],c:1,w:"Pular níveis gera lacunas — sem base sólida, os níveis superiores ficam comprometidos."},
-{t:"Classificação avançada",q:"A atividade 'esquematizar as relações entre os movimentos artísticos do século XX' mobiliza o nível:",o:["Lembrar","Compreender","Aplicar","Analisar"],c:3,w:"Esquematizar relações exige decomposição e organização das partes — operação do nível Analisar."},
-{t:"Classificação avançada",q:"'Narrar os acontecimentos que levaram ao surgimento do Barroco' corresponde ao nível:",o:["Lembrar","Compreender","Analisar","Avaliar"],c:1,w:"Narrar com suas palavras exige atribuir significado ao conteúdo — vai além de listar: é Compreender."},
-{t:"Classificação avançada",q:"'Experimentar diferentes técnicas de gravura para resolver um problema visual proposto pelo professor' mobiliza o nível:",o:["Lembrar","Compreender","Aplicar","Criar"],c:2,w:"Experimentar e usar técnicas em contexto proposto = transferir conhecimento = Aplicar."},
-{t:"Classificação avançada",q:"'Selecionar e justificar qual de três técnicas é mais adequada para um determinado efeito visual' mobiliza o nível:",o:["Lembrar","Aplicar","Analisar","Avaliar"],c:3,w:"Selecionar com justificativa exige julgamento com critérios — essência do nível Avaliar."},
-{t:"Classificação avançada",q:"'Formular uma proposta curatorial para uma exposição de arte contemporânea' mobiliza o nível:",o:["Lembrar","Compreender","Analisar","Criar"],c:3,w:"Formular uma proposta original integrando múltiplos conhecimentos é o nível mais alto: Criar."},
-{t:"Verbos",q:"Os verbos 'esquematizar' e 'associar' pertencem ao nível:",o:["Lembrar","Compreender","Aplicar","Analisar"],c:1,w:"Esquematizar e associar exigem organizar e relacionar significados — operações do nível Compreender."},
-{t:"Verbos",q:"Os verbos 'contrastar' e 'investigar' pertencem ao nível:",o:["Compreender","Aplicar","Analisar","Avaliar"],c:2,w:"Contrastar e investigar exigem decomposição e busca de relações — nível Analisar."},
-{t:"Verbos",q:"Os verbos 'taxar' e 'valorizar' pertencem ao nível:",o:["Compreender","Aplicar","Analisar","Avaliar"],c:3,w:"Taxar e valorizar implicam emitir juízo de valor — operações do nível Avaliar."},
-{t:"Verbos",q:"Os verbos 'constituir' e 'coordenar' pertencem ao nível:",o:["Analisar","Avaliar","Criar","Aplicar"],c:2,w:"Constituir e coordenar implicam produção e organização criativa — verbos do nível Criar."},
-{t:"Verbos",q:"Os verbos 'dramatizar' e 'manipular' pertencem ao nível:",o:["Lembrar","Compreender","Aplicar","Analisar"],c:2,w:"Dramatizar e manipular envolvem uso prático do conhecimento em ação — nível Aplicar."},
-{t:"Aplicação pedagógica",q:"Um professor que elabora atividades apenas no nível 'Lembrar' durante todo o ano está:",o:["Seguindo corretamente a Taxonomia de Bloom","Desenvolvendo todas as capacidades cognitivas dos alunos","Limitando o desenvolvimento cognitivo ao nível mais básico","Promovendo o pensamento crítico adequadamente"],c:2,w:"Ficar só em Lembrar impede o avanço cognitivo — Bloom exige progressão até os níveis superiores."},
-{t:"Aplicação pedagógica",q:"Para promover aprendizagem significativa segundo a perspectiva de Bloom, o professor deve:",o:["Focar apenas na transmissão de informações","Planejar atividades que percorram progressivamente todos os níveis cognitivos","Exigir criação desde a primeira aula, sem base prévia","Avaliar apenas por provas de múltipla escolha"],c:1,w:"Aprendizagem significativa exige percorrer a hierarquia — do reconhecimento à criação."},
-{t:"Aplicação pedagógica",q:"Ao usar Bloom para planejar uma aula de artes sobre escultura, a sequência mais coerente seria:",o:["Criar → Lembrar → Avaliar → Aplicar","Analisar → Criar → Lembrar → Compreender","Lembrar → Compreender → Aplicar → Analisar → Avaliar → Criar","Avaliar → Analisar → Aplicar → Compreender → Lembrar → Criar"],c:2,w:"A sequência pedagógica segue a hierarquia: do mais simples (Lembrar) ao mais complexo (Criar)."},
-{t:"Versão revisada",q:"Na versão original de Bloom (1956), o nível mais alto era 'Avaliação'. Na versão revisada (2001), o nível mais alto passou a ser:",o:["Analisar","Compreender","Avaliar","Criar"],c:3,w:"A revisão de 2001 colocou Criar acima de Avaliar — reconhecendo a produção original como o nível mais complexo."},
-{t:"Versão revisada",q:"A mudança de substantivos para verbos na versão revisada reflete a concepção de que os objetivos educacionais devem ser expressos como:",o:["Estados mentais estáticos e observáveis","Características inatas e imutáveis do aluno","Processos cognitivos ativos e dinâmicos","Conteúdos a serem memorizados"],c:2,w:"Verbos indicam ação — os objetivos educacionais são processos ativos, não estados estáticos."},
-{t:"Domínio cognitivo",q:"A Taxonomia de Bloom revisada organiza especificamente o:",o:["Domínio psicomotor da aprendizagem","Domínio afetivo e emocional","Domínio cognitivo em 6 níveis hierárquicos","Domínio social e interpessoal"],c:2,w:"A taxonomia revisada trata especificamente do domínio cognitivo — os processos mentais de aprendizagem."},
-{t:"Pensamento crítico",q:"O pensamento crítico, na perspectiva de Bloom, situa-se predominantemente nos níveis:",o:["Lembrar e Compreender","Lembrar e Aplicar","Analisar, Avaliar e Criar","Apenas no nível Aplicar"],c:2,w:"Pensamento crítico exige analisar, julgar e criar — os três níveis superiores da taxonomia."},
-{t:"Pensamento crítico",q:"A aprendizagem significativa, relacionada à Taxonomia de Bloom, diferencia-se da aprendizagem mecânica porque:",o:["Ambas focam na memorização de informações","A significativa promove conexão entre níveis, a mecânica fica restrita ao nível Lembrar","A mecânica é mais eficaz para o pensamento crítico","A significativa dispensa a memorização prévia"],c:1,w:"Aprendizagem significativa percorre os níveis, conectando saberes. Mecânica fica na repetição sem sentido."},
-{t:"Cenário",q:"Uma escola adota Bloom para padronizar suas avaliações. O diretor determina que toda prova deve ter questões nos 6 níveis. Qual é o problema potencial dessa decisão?",o:["Nenhum problema, é a aplicação ideal","Os alunos podem ser avaliados em níveis que ainda não foram trabalhados em aula","As provas ficarão muito curtas","Os professores terão menos trabalho"],c:1,w:"Se o professor ensinou até Aplicar, cobrar Avaliar e Criar na prova gera desalinhamento — Bloom exige coerência."},
-{t:"Cenário",q:"Um professor pede que alunos 'memorizem 20 datas da história da arte' e depois 'criem uma obra original inspirada em um movimento artístico'. Segundo Bloom, essa sequência tem um problema porque:",o:["Memorizar datas é inútil em artes","A sequência está perfeitamente alinhada","Pula os níveis intermediários (Compreender, Aplicar, Analisar, Avaliar) entre Lembrar e Criar","Criar deveria vir antes de Lembrar"],c:2,w:"Saltar de Lembrar direto para Criar ignora todos os níveis intermediários — gera lacunas."},
-{t:"Cenário",q:"Dois professores ensinam o mesmo conteúdo sobre arte abstrata. O Professor A pede apenas que os alunos listem artistas. O Professor B pede que comparem estilos e justifiquem preferências. Segundo Bloom:",o:["Ambos trabalham o mesmo nível cognitivo","O Professor A trabalha Analisar e o B trabalha Lembrar","O Professor A trabalha Lembrar; o Professor B trabalha Analisar e Avaliar","O Professor B é menos eficaz que o A"],c:2,w:"A: listar = Lembrar. B: comparar = Analisar + justificar = Avaliar. B atinge níveis superiores."},
-{t:"Cenário",q:"Uma prova de artes contém: Q1: Cite técnicas do Impressionismo. Q2: Explique a diferença entre Impressionismo e Expressionismo. Q3: Crie uma composição que combine elementos dos dois movimentos. Os níveis avaliados são, respectivamente:",o:["Lembrar, Lembrar, Lembrar","Compreender, Analisar, Criar","Lembrar, Analisar/Compreender, Criar","Aplicar, Avaliar, Criar"],c:2,w:"Q1: citar = Lembrar. Q2: diferenciar = Analisar (com elemento de Compreender). Q3: criar composição original = Criar."},
-{t:"Ensino de artes",q:"No ensino de artes, a Taxonomia de Bloom é particularmente útil porque:",o:["Artes não exigem raciocínio complexo","Permite estruturar progressivamente o desenvolvimento da apreciação, análise e criação artística","Substitui a necessidade de prática artística","Foca apenas na memorização de estilos e artistas"],c:1,w:"Em artes, Bloom organiza a progressão: de conhecer estilos (Lembrar) até criar obras originais (Criar)."},
-{t:"Ensino de artes",q:"'Apreciar uma obra de arte' envolve predominantemente os níveis:",o:["Apenas Lembrar","Apenas Aplicar","Compreender, Analisar e Avaliar","Apenas Criar"],c:2,w:"Apreciar = compreender o contexto, analisar elementos e julgar com critérios — níveis intermediários a superiores."},
-{t:"Ensino de artes",q:"A criação artística, no topo da Taxonomia de Bloom, exige que o aluno previamente:",o:["Tenha talento inato e dom natural","Conheça (Lembrar), compreenda, aplique, analise e avalie os conceitos relevantes","Apenas memorize técnicas isoladas","Copie obras de artistas consagrados"],c:1,w:"Criar não é dom — é resultado do domínio progressivo de todos os níveis cognitivos anteriores."},
-{t:"Ensino de artes",q:"No contexto do ensino de artes, a diferença entre 'reproduzir uma técnica' e 'inventar uma técnica nova' corresponde à diferença entre os níveis:",o:["Lembrar e Compreender","Compreender e Analisar","Aplicar e Criar","Avaliar e Analisar"],c:2,w:"Reproduzir técnica em contexto = Aplicar. Inventar técnica nova = Criar."},
-{t:"Integração",q:"A Taxonomia de Bloom, ao ser aplicada ao ensino de artes, contribui para superar a visão de que artes é apenas:",o:["Uma disciplina que exige raciocínio complexo","Uma prática que desenvolve múltiplas competências","Uma atividade de lazer ou dom natural sem progressão pedagógica estruturada","Uma área do conhecimento com objetivos claros"],c:2,w:"Bloom estrutura artes como disciplina com progressão cognitiva — não apenas lazer, dom ou atividade livre."},
-{t:"Integração",q:"Relacionar a Taxonomia de Bloom à BNCC no ensino de artes é coerente porque ambas:",o:["Focam apenas na memorização de conteúdos artísticos","Ignoram o desenvolvimento de habilidades","Propõem o desenvolvimento progressivo de competências e habilidades","Eliminam a necessidade de avaliação"],c:2,w:"Tanto Bloom quanto a BNCC defendem progressão de competências — do simples ao complexo."},
-{t:"Crítica",q:"Uma limitação apontada por críticos à Taxonomia de Bloom é que:",o:["Não tem utilidade prática para professores","A hierarquia rígida pode não refletir a complexidade real dos processos cognitivos, que muitas vezes são simultâneos","É excessivamente flexível e sem estrutura","Foi desenvolvida recentemente e não tem base teórica"],c:1,w:"Críticos apontam que os processos cognitivos nem sempre seguem uma escada linear — podem ser simultâneos e recursivos."},
-{t:"Crítica",q:"Apesar das críticas, a Taxonomia de Bloom continua sendo amplamente utilizada porque:",o:["Não existem alternativas disponíveis","Oferece uma estrutura prática e acessível para organizar objetivos, atividades e avaliações","Os críticos foram refutados completamente","É obrigatória por lei em todos os países"],c:1,w:"Bloom é prático: dá ao professor uma ferramenta clara para planejar, ensinar e avaliar com intencionalidade."},
-{t:"Metacognição",q:"A versão revisada de Bloom (2001) acrescentou uma dimensão que a original não tinha: a dimensão do conhecimento. Ela inclui:",o:["Apenas conhecimento factual","Conhecimento factual, conceitual, procedimental e metacognitivo","Apenas conhecimento procedimental e metacognitivo","Conhecimento emocional e social"],c:1,w:"A revisão de 2001 cruzou os processos cognitivos com 4 tipos de conhecimento: factual, conceitual, procedimental e metacognitivo."},
-{t:"Metacognição",q:"O 'conhecimento metacognitivo' na versão revisada de Bloom refere-se a:",o:["Memorização de dados sobre cognição","O conhecimento do aluno sobre seus próprios processos de pensamento e aprendizagem","Conhecimento factual sobre o cérebro","Habilidades motoras refinadas"],c:1,w:"Metacognição = pensar sobre o próprio pensamento — o aluno conhece e regula seus processos de aprendizagem."},
-{t:"Cenário avançado",q:"Uma professora de artes planeja: Aula 1 - alunos identificam elementos visuais em obras. Aula 2 - explicam o significado desses elementos. Aula 3 - aplicam os elementos em composição própria. Aula 4 - comparam suas composições com as dos colegas. Aula 5 - defendem as escolhas feitas. Aula 6 - projetam uma exposição coletiva. A progressão corresponde exatamente a:",o:["Uma sequência aleatória sem critério pedagógico","Apenas os 3 primeiros níveis de Bloom repetidos","Os 6 níveis de Bloom em ordem: Lembrar → Compreender → Aplicar → Analisar → Avaliar → Criar","Uma inversão da hierarquia de Bloom"],c:2,w:"Cada aula corresponde a um nível: identificar=Lembrar, explicar=Compreender, aplicar=Aplicar, comparar=Analisar, defender=Avaliar, projetar=Criar."},
-{t:"Cenário avançado",q:"Se um aluno consegue criar obras originais mas não consegue explicar ou defender suas escolhas artisticamente, segundo Bloom:",o:["O aluno domina plenamente todos os níveis","Há uma lacuna nos níveis Compreender e Avaliar, indicando aprendizagem incompleta","A criação dispensa a compreensão e a avaliação","O aluno é mais inteligente que seus colegas"],c:1,w:"Bloom é hierárquico: criar sem compreender ou avaliar sugere lacunas — a produção pode ser intuitiva mas sem fundamentação."},
-{t:"Interdisciplinaridade",q:"A Taxonomia de Bloom é específica para o ensino de artes ou pode ser aplicada a qualquer disciplina?",o:["É exclusiva do ensino de artes e não se aplica a outras áreas","Foi criada para matemática e adaptada para artes","É uma ferramenta universal aplicável a qualquer área do conhecimento","Só funciona em disciplinas exatas"],c:2,w:"Bloom é universal — foi criada como ferramenta para classificar objetivos educacionais de qualquer disciplina."}
-];
+// ─── SYNTHESIS DATA ───
+var STUDY_TIPS = {
+  "Crase obrigatória":    "Revise quando a crase é OBRIGATÓRIA: substantivo feminino + artigo 'a' diante de preposição 'a'. Estude as locuções adverbiais (à tarde, às vezes) e os pronomes demonstrativos (àquele/àquela).",
+  "Crase proibida":       "Revise os casos em que a crase é PROIBIDA: antes de verbo, antes de palavra masculina, antes de pronomes pessoais, antes de artigo indefinido ('uma') e antes de cidades sem artigo.",
+  "Crase facultativa":    "Revise os casos FACULTATIVOS: antes de pronome possessivo feminino (minha/sua/nossa) e antes de nomes próprios femininos. Ambas as formas são aceitas pela norma culta.",
+  "Concordância verbal":  "Revise a regra básica (verbo concorda com o sujeito) e os casos especiais: sujeito composto, sujeito coletivo e atração pelo adjunto adnominal.",
+  "Verbo haver/fazer":    "Revise os verbos impessoais: HAVER (existir) e FAZER (tempo decorrido) são SEMPRE invariáveis — nunca no plural. 'Haviam'/'fazem' = erro gravíssimo em concursos.",
+  "Partícula se":         "Revise a diferença entre 'se' APASSIVADOR (VTD + se → concordância com sujeito paciente) e 'se' INDETERMINADOR (VTI/intransitivo → verbo no singular).",
+  "Identificação":        "Pratique identificar e classificar os diferentes usos em frases completas e contextos reais. Monte frases próprias usando os três tipos de crase e os dois usos do 'se'.",
+  "Síntese":              "Foque em exercícios que combinam crase + concordância na mesma frase. São as questões mais cobradas em provas de nível superior.",
+  "Crase — nível difícil":"Aprofunde o estudo de crase com verbos que exigem preposição 'a' (assistir, referir-se, equivaler, comunicar) e casos especiais como topônimos e locuções prepositivas.",
+  "Concordância — nível difícil":"Estude os casos especiais: 'mais de um' (singular), 'a maioria' (concordância atrativa), sujeitos ligados por 'nem...nem', e auxiliar do verbo 'haver' impessoal.",
+  "Partícula se — nível difícil":"Aprofunde a análise de contextos ambíguos: verbos que mudam de transitidade conforme o uso alteram o tipo do 'se' e a concordância do verbo.",
+  "Regência e crase — nível difícil":"Estude a tabela de verbos com sua regência e os impactos na crase. Verbos que exigem preposição 'a' antes de objeto feminino formam crase obrigatória.",
+  "Norma culta — nível difícil":"Pratique com questões de vestibular e concurso. Foque nos erros mais cobrados: 'haviam'/'houveram', 'fazem' (impessoal), crase antes de artigo indefinido.",
+  "Crase avançada — nível difícil":"Estude crase com locuções prepositivas compostas (em face de, a partir de) e topônimos que aceitam artigo. São detalhes que diferenciam nota boa de nota excelente.",
+  "Concordância avançada — nível difícil":"Aprofunde casos de concordância com expressões quantitativas ('um e outro', 'qualquer que', 'mais de um') e conjunções correlativas ('nem...nem', 'ou...ou').",
+  "Aplicação — nível difícil":"Pratique questões mistas de concurso e vestibular que combinam crase, concordância e regência na mesma frase. Foque em identificar o tipo de erro.",
+  "Síntese avançada — nível difícil":"Revise todo o conteúdo integrando crase + concordância + regência. Faça simulados cronometrados com questões de FUVEST, UNICAMP, CESPE e concursos pedagógicos.",
 
-var idx=0,sel=null,answered=false,score=0,results=[],fase=1,banner=false;
-function isHard(){return fase===2;}
-function QQ(){return fase===1?EASY:HARD;}
-function idxFase(){return idx-(fase===1?0:EASY.length);}
+  "O que é História":     "Revise a definição de História como área do conhecimento (não decoreba de datas) e seu papel no desenvolvimento do pensamento crítico e da identidade.",
+  "Anos iniciais":        "Estude a progressão EU→FAMÍLIA→ESCOLA→BAIRRO→CIDADE→SOCIEDADE e o princípio do concreto ao abstrato. Revise exemplos de atividades dos anos iniciais.",
+  "Tempo histórico":      "Domine a distinção entre tempo HISTÓRICO (mudanças e permanências) e tempo CRONOLÓGICO (medição objetiva). Saiba dar exemplos de cada um.",
+  "Memória e identidade": "Revise como memória, identidade e pertencimento se articulam no ensino de História nos anos iniciais. Conheça recursos como objetos, fotografias e relatos.",
+  "BNCC e História":      "Estude os objetivos da BNCC para o ensino de História: pensamento crítico, consciência histórica, cidadania, diversidade e protagonismo do aluno.",
+  "Metodologias":         "Revise todas as metodologias citadas: investigação, gamificação, sala invertida, estudo de caso, história oral, projetos e colaborativa. Saiba o que cada uma propõe.",
+  "Planejamento":         "Estude os elementos do planejamento integrado (objetivos + conteúdos + metodologias + recursos + avaliação) e os tipos de avaliação (diagnóstica, formativa, somativa).",
+  "Interdisciplinaridade":"Revise o conceito de interdisciplinaridade e pratique identificar conexões entre História e outras disciplinas em projetos e situações pedagógicas.",
+  "Síntese":              "Pratique articular todos os conceitos em análise de situações pedagógicas. Questões de concurso geralmente apresentam situações-problema que exigem visão integrada.",
+  "Epistemologia — difícil":"Estude os conceitos avançados: multiperspectividade, método histórico, história como interpretação, anacronismo e a contribuição da Escola dos Annales.",
+  "BNCC — difícil":       "Aprofunde: consciência histórica (Rüsen), literacia histórica, competências específicas de História na BNCC e como elas se articulam com o planejamento docente.",
+  "Tempo histórico — difícil":"Estude conceitos avançados: anacronismo, simultaneidade de diferentes tempos históricos, longa/média/curta duração (Braudel) e a Escola dos Annales.",
+  "Memória — difícil":    "Aprofunde: memória coletiva (Halbwachs), lugares de memória (Nora) e como esses conceitos se aplicam ao ensino. São conceitos muito cobrados em concursos pedagógicos.",
+  "Fontes históricas — difícil":"Revise: tipos de fontes (primária x secundária), análise crítica de fontes (autoria, intenção, contexto, silêncios) e história oral. São temas centrais em concursos.",
+  "Metodologias — difícil":"Aprofunde: estudo de caso, história oral, ABP, sala invertida. Saiba justificar pedagogicamente cada metodologia e identificar qual é mais adequada para cada objetivo.",
+  "Planejamento — difícil":"Estude sequência didática, avaliação diagnóstica x formativa x somativa e a aplicação da Taxonomia de Bloom no planejamento do ensino de História.",
+  "Decolonialidade — difícil":"Estude as Leis 10.639/2003 e 11.645/2008, o conceito de decolonialidade aplicado ao currículo e como incluir perspectivas silenciadas no ensino de História.",
+  "Cidadania histórica — difícil":"Aprofunde a articulação entre ensino de História e formação para a cidadania crítica — conceito central nos concursos pedagógicos e na BNCC.",
+  "Patrimônio — difícil": "Revise como usar patrimônio histórico local (museus, monumentos, arquivos) como recurso didático. É tema recorrente em provas de didática de História.",
+  "Avaliação — difícil":  "Aprofunde o uso do portfólio, rubrica e outros instrumentos de avaliação formativa no ensino de História. Compare com a avaliação somativa tradicional.",
+  "Interdisciplinaridade — difícil":"Pratique com situações que exigem identificar e planejar projetos interdisciplinares. Concursos cobram exemplos concretos de articulação entre disciplinas.",
+  "Anos iniciais — difícil":"Aprofunde o princípio pedagógico do próximo ao distante. Estude exemplos de sequências didáticas para os anos iniciais alinhadas à BNCC.",
+  "Síntese — difícil":    "Revise todos os conceitos de forma integrada. Pratique com questões de concursos pedagógicos que exigem análise de situações e articulação de múltiplos conceitos."
+};
+
+// ─── ESTADO ───
+var ST={subj:0,idx:0,ans:[],sel:null};
+function getQ(){return SUBJECTS[ST.subj].questions[ST.idx];}
+function total(){return SUBJECTS[ST.subj].questions.length;}
+function cls(){return SUBJECTS[ST.subj].cls;}
 function L(i){return String.fromCharCode(65+i);}
-function setModo(){document.getElementById("body").className=isHard()?"hard":"normal";}
 
-function render(){
-  setModo();
-  var app=document.getElementById("app");
-  var totalG=EASY.length+HARD.length;
-
-  if(banner){
-    app.innerHTML="<div class='banner'><div class='banner-emoji'>🔥💀🔥</div><div class='banner-titulo'>MODO DIFÍCIL ATIVADO</div><div class='banner-desc'>Fase 1 concluída com <strong style='color:#FF4444'>"+score+"</strong> acertos.<br><br>Agora são cenários, pegadinhas e classificações avançadas.<br>Leia com muita atenção.</div><button class='btn' style='margin-top:20px' onclick='iniciarF2()'>Aceitar o desafio</button></div>";
-    return;
-  }
-
-  if(idx>=totalG){
-    var pct=Math.round((score/totalG)*100);
-    var msg=pct>=85?"Impressionante. Domínio completo da Taxonomia.":pct>=70?"Bom desempenho. Revise os tópicos mais fracos.":pct>=50?"No caminho. Revise antes da prova.":"Revise o resumo com calma e tente de novo.";
-    var byT={};
-    results.forEach(function(r){if(!byT[r.t])byT[r.t]={ok:0,n:0};byT[r.t].n++;if(r.ok)byT[r.t].ok++;});
-    var rows="";
-    Object.keys(byT).forEach(function(t){
-      var p=Math.round((byT[t].ok/byT[t].n)*100);
-      var c=p>=70?"#2E8B6B":p>=50?"#D9831A":"#CC4636";
-      rows+="<div class='trow'><div class='tnome'>"+t+"</div><div class='tbar'><div class='tfill' style='width:"+p+"%;background:"+c+"'></div></div><div class='tsc'>"+byT[t].ok+"/"+byT[t].n+"</div></div>";
-    });
-    app.innerHTML="<div class='resultado'><div class='big'>"+score+"<small>/"+totalG+"</small></div><div style='font-size:13px;font-weight:700;margin-top:4px'>"+pct+"% de acerto</div><p class='rmsg'>"+msg+"</p></div><div class='card'><div class='sub'>Por tópico</div>"+rows+"<button class='btn' style='margin-top:16px' onclick='reiniciar()'>Recomeçar</button></div><div class='foot'>Estude com a Mimi! 🐕</div>";
-    return;
-  }
-
-  var q=QQ()[idxFase()];
-  var prog=Math.round(((idx+(answered?1:0))/totalG)*100);
-  var opts="";
-  q.o.forEach(function(o,i){
-    var cls="opt";
-    if(answered){if(i===q.c)cls+=" certo";else if(i===sel)cls+=" errado";else cls+=" dim";}
-    opts+="<button class='"+cls+"' "+(answered?"disabled":"")+" onclick='escolher("+i+")'><span class='letra'>"+L(i)+"</span><span>"+o+"</span></button>";
-  });
-  var fb="";
-  if(answered){
-    var ok=sel===q.c;
-    fb="<div class='feedback "+(ok?"ok":"no")+"'><img src='"+(ok?"dog-acertou.png":"dog-errou.png")+"' alt='feedback'><div class='fhead'>"+(ok?"🎉 Você Acertou!":"❌ Você Errou")+"</div><div class='fcorreto'>Correta: "+L(q.c)+"</div><div class='fwhy'>"+q.w+"</div></div><button class='btn' onclick='prox()'>"+(idx+1>=totalG?"Ver resultado":"Próxima →")+"</button>";
-  }
-  var badge=isHard()?"<div class='modo-badge'>💀 MODO DIFÍCIL 💀</div>":"";
-  var fl=isHard()?"FASE 2 · MODO DIFÍCIL":"FASE 1 · TAXONOMIA DE BLOOM";
-  app.innerHTML=badge+"<div class='sub'>"+fl+"</div><h1>Fundamentos do Ensino de Artes</h1><div style='display:flex;justify-content:space-between;align-items:center;margin:12px 0 8px'><div class='progress-row' style='flex:1;margin:0'><div class='bar'><div class='fill' style='width:"+prog+"%'></div></div><span class='lbl'>"+(idx+1)+"/"+totalG+"</span></div><span class='score'>✓ "+score+"/"+totalG+"</span></div><div class='card'><div class='topic'><span class='qnum'>Q"+(idx+1)+"</span> · "+q.t+"</div><div class='question'>"+q.q+"</div>"+opts+fb+"</div><div class='foot'>"+(answered?"Leia a explicação.":"Leia todas as alternativas antes de responder.")+"</div>";
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
 }
 
-function escolher(i){if(answered)return;sel=i;answered=true;var ok=i===QQ()[idxFase()].c;if(ok)score++;results.push({t:QQ()[idxFase()].t,ok:ok});render();}
-function prox(){idx++;sel=null;answered=false;if(idx===EASY.length){fase=2;banner=true;setModo();}render();}
-function iniciarF2(){banner=false;render();}
-function reiniciar(){idx=0;sel=null;answered=false;score=0;results=[];fase=1;banner=false;render();}
-render();
+function startQuiz(sj){
+  ST.subj=sj;ST.idx=0;ST.sel=null;
+  ST.ans=new Array(SUBJECTS[sj].questions.length).fill(null);
+  showScreen('sc-quiz');
+  renderQuiz();
+}
+
+function renderQuiz(){
+  var s=SUBJECTS[ST.subj];
+  var q=getQ();
+  var answered=ST.ans[ST.idx]!==null;
+  var scoreOk=ST.ans.filter(function(a){return a===true;}).length;
+  var prog=Math.round(((ST.idx+(answered?1:0))/total())*100);
+  var phase=q.p;
+  var phaseLabel=phase===0?'🟡 Média':'🔴 Difícil';
+  var phaseClass=phase===0?'med':'hard';
+
+  // Dots
+  var dots='';
+  for(var i=0;i<total();i++){
+    var dc='dot ';
+    if(ST.ans[i]===true) dc+='ok';
+    else if(ST.ans[i]===false) dc+='wrong';
+    else dc+=(cls()+' pend');
+    if(i===ST.idx) dc+=' cur '+cls();
+    dots+='<div class="'+dc+'" onclick="goToQ('+i+')" title="Q'+(i+1)+'"></div>';
+  }
+
+  // Options
+  var opts='';
+  for(var j=0;j<q.o.length;j++){
+    var oc='';
+    if(answered){
+      if(j===q.c) oc='ok';
+      else if(j===ST.sel) oc='err';
+      else oc='dim';
+    }
+    opts+='<button class="opt '+oc+'" '+(answered?'disabled':'')+' onclick="choose('+j+')">'
+      +'<span class="opt-l">'+L(j)+'</span><span>'+q.o[j]+'</span></button>';
+  }
+
+  // Feedback
+  var fb='';
+  if(answered){
+    var ok=ST.ans[ST.idx]===true;
+    fb='<div class="feedback '+(ok?'ok':'err')+'">'
+      +'<div class="fb-top">'
+      +'<img class="fb-dog" src="'+(ok?'dog-acertou.png':'dog-errou.png')+'" alt="dog">'
+      +'<div class="fb-right">'
+      +'<div class="fb-verdict">'+(ok?'🎉 Você Acertou!':'❌ Você Errou')+'</div>'
+      +'<div class="fb-cor">Resposta correta: '+L(q.c)+'</div>'
+      +'</div></div>'
+      +'<div class="fb-why">'+q.w+'</div>'
+      +'</div>';
+  }
+
+  var prevDis=ST.idx===0?'disabled':'';
+  var nextLbl=ST.idx>=total()-1?'Ver resultado':(answered?'Próxima →':'Pular →');
+
+  var html='<div class="'+cls()+'">'
+    +'<div class="qhdr">'
+    +'<button class="back-btn" onclick="goHome()">←</button>'
+    +'<div class="qhdr-info">'
+    +'<div class="qhdr-sname">'+s.icon+' '+s.name+'</div>'
+    +'<div class="qhdr-meta">Questão '+(ST.idx+1)+' de '+total()+'</div>'
+    +'</div>'
+    +'<span class="phase-pill '+phaseClass+'">'+phaseLabel+'</span>'
+    +'<div class="score-pill">✓ '+scoreOk+'/'+total()+'</div>'
+    +'</div>'
+    +'<div class="prog-row"><div class="prog-bar"><div class="prog-fill" style="width:'+prog+'%"></div></div><span class="prog-lbl">'+prog+'%</span></div>'
+    +'<div class="dots-wrap">'+dots+'</div>'
+    +'<div class="qcard">'
+    +'<div class="qtopic"><span class="qnum">Q'+(ST.idx+1)+'</span> · '+q.t+'</div>'
+    +'<div class="qtext">'+q.q+'</div>'
+    +opts+fb
+    +'</div>'
+    +'<button class="list-btn" onclick="openModal()">📋 Lista de questões</button>'
+    +'<div class="nav-btns">'
+    +'<button class="nbtn prev" onclick="prevQ()" '+prevDis+'>← Anterior</button>'
+    +'<button class="nbtn nxt-'+cls()+'" onclick="nextQ()">'+nextLbl+'</button>'
+    +'</div>'
+    +'<div class="foot">'+(answered?'Leia a explicação antes de continuar.':'Leia todas as alternativas antes de responder.')+'</div>'
+    +'</div>';
+
+  document.getElementById('quiz-inner').innerHTML=html;
+}
+
+function choose(i){
+  if(ST.ans[ST.idx]!==null) return;
+  ST.sel=i;
+  ST.ans[ST.idx]=(i===getQ().c);
+  renderQuiz();
+}
+function prevQ(){if(ST.idx>0){ST.idx--;ST.sel=null;renderQuiz();}}
+function nextQ(){
+  if(ST.idx>=total()-1){showResult();return;}
+  ST.idx++;ST.sel=null;renderQuiz();
+}
+function goHome(){showScreen('sc-home');}
+function goToQ(i){ST.idx=i;ST.sel=null;closeModal();renderQuiz();}
+
+// ─── MODAL ───
+function openModal(){
+  var s=SUBJECTS[ST.subj];
+  var med='',hard='';
+  for(var i=0;i<total();i++){
+    var q=s.questions[i];
+    var dc=ST.ans[i]===true?'ok':ST.ans[i]===false?'wrong':'pend';
+    var cur=i===ST.idx?' cur':'';
+    var item='<div class="qi '+dc+cur+'" onclick="goToQ('+i+')">'+(i+1)+'</div>';
+    if(q.p===0) med+=item; else hard+=item;
+  }
+  document.getElementById('modal-body').innerHTML=
+    '<div class="phase-section"><div class="phase-section-title">🟡 Médias (Q1–35)</div><div class="qgrid">'+med+'</div></div>'
+    +'<div class="phase-section"><div class="phase-section-title">🔴 Difíceis (Q36–70)</div><div class="qgrid">'+hard+'</div></div>';
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function maybeCloseModal(e){if(e.target===document.getElementById('modal'))closeModal();}
+
+// ─── RESULTADO COM SÍNTESE ───
+function showResult(){
+  var s=SUBJECTS[ST.subj];
+  var scoreOk=ST.ans.filter(function(a){return a===true;}).length;
+  var pct=Math.round((scoreOk/total())*100);
+  var medOk=0,medTotal=0,hardOk=0,hardTotal=0;
+  for(var i=0;i<total();i++){
+    if(s.questions[i].p===0){medTotal++;if(ST.ans[i]===true)medOk++;}
+    else{hardTotal++;if(ST.ans[i]===true)hardOk++;}
+  }
+
+  // Por tópico
+  var byT={};
+  for(var i=0;i<total();i++){
+    var t=s.questions[i].t;
+    if(!byT[t])byT[t]={ok:0,n:0,errs:[]};
+    byT[t].n++;
+    if(ST.ans[i]===true) byT[t].ok++;
+    else if(ST.ans[i]===false) byT[t].errs.push(i+1);
+  }
+
+  // Mensagem geral
+  var dog=pct>=70?'dog-acertou.png':'dog-errou.png';
+  var msg=pct>=85?'Excelente! Domínio sólido do conteúdo. Vai arrasar na prova! 🚀'
+    :pct>=70?'Bom desempenho! Revise os tópicos marcados abaixo antes da prova. 💪'
+    :pct>=50?'No caminho. Dedique atenção especial aos tópicos críticos abaixo. 📖'
+    :'Hora de revisar o resumo com foco. Veja o plano de estudos abaixo. 🌟';
+
+  // Tópicos ordenados por pior desempenho
+  var topics=Object.keys(byT).sort(function(a,b){
+    var pa=byT[a].ok/byT[a].n;
+    var pb=byT[b].ok/byT[b].n;
+    return pa-pb;
+  });
+
+  // Síntese de tópicos
+  var topicRows='';
+  var criticalTopics=[];
+  var mediumTopics=[];
+  topics.forEach(function(t){
+    var p=Math.round((byT[t].ok/byT[t].n)*100);
+    var fill=p>=70?'var(--ok)':p>=50?'#e07b00':'var(--err)';
+    var ico=p>=80?'✅':p>=60?'⚠️':'🔴';
+    var badge=p>=70?'<span class="priority-badge pri-ok">OK</span>'
+      :p>=50?'<span class="priority-badge pri-mid">Reforçar</span>'
+      :'<span class="priority-badge pri-high">Prioridade!</span>';
+    var tip=STUDY_TIPS[t]||'Revise este tópico no seu resumo.';
+    topicRows+='<div class="topic-row">'
+      +'<div class="topic-ico">'+ico+'</div>'
+      +'<div class="topic-info">'
+      +'<div class="topic-name">'+t+'</div>'
+      +'<div class="topic-rec">'+tip+'</div>'
+      +'</div>'
+      +'<div class="topic-right">'
+      +'<div class="topic-pct" style="color:'+fill+'">'+p+'%</div>'
+      +'<div class="topic-bar"><div class="topic-fill" style="width:'+p+'%;background:'+fill+'"></div></div>'
+      +badge
+      +'</div></div>';
+    if(p<50) criticalTopics.push(t);
+    else if(p<70) mediumTopics.push(t);
+  });
+
+  // Plano de ação
+  var actionItems='';
+  if(criticalTopics.length>0){
+    criticalTopics.forEach(function(t){
+      actionItems+='<div class="action-item"><span>🔴</span><span><strong>'+t+'</strong> — Releia o resumo sobre este tópico e resolva mais exercícios antes da prova.</span></div>';
+    });
+  }
+  if(mediumTopics.length>0){
+    mediumTopics.forEach(function(t){
+      actionItems+='<div class="action-item"><span>⚠️</span><span><strong>'+t+'</strong> — Revise os exemplos do resumo e refaça as questões que errou neste tópico.</span></div>';
+    });
+  }
+  if(actionItems===''){
+    actionItems='<div class="action-item"><span>✅</span><span>Ótimo domínio geral! Faça uma leitura rápida do resumo para consolidar e durma bem antes da prova.</span></div>';
+  }
+
+  var html='<div class="'+cls()+'">'
+    +'<div class="result-hero">'
+    +'<img class="result-dog" src="'+dog+'" alt="dog">'
+    +'<div class="result-big">'+scoreOk+'<span class="result-total">/'+total()+'</span></div>'
+    +'<div class="result-pct">'+pct+'% de acerto</div>'
+    +'<div class="result-msg">'+msg+'</div>'
+    +'</div>'
+
+    +'<div class="by-phase">'
+    +'<div class="by-phase-title">Resultado por fase</div>'
+    +'<div class="phase-compare">'
+    +'<div class="pc-box med">'
+    +'<div class="pc-num" style="color:var(--p1)">'+medOk+'/'+medTotal+'</div>'
+    +'<div class="pc-lbl">🟡 Médias ('+Math.round((medOk/medTotal)*100)+'%)</div>'
+    +'</div>'
+    +'<div class="pc-box hard">'
+    +'<div class="pc-num" style="color:var(--err)">'+hardOk+'/'+hardTotal+'</div>'
+    +'<div class="pc-lbl">🔴 Difíceis ('+Math.round((hardOk/hardTotal)*100)+'%)</div>'
+    +'</div>'
+    +'</div></div>'
+
+    +'<div class="action-box">'
+    +'<div class="action-title">📌 Plano de revisão para a prova</div>'
+    +actionItems
+    +'</div>'
+
+    +'<div class="synthesis-card">'
+    +'<div class="synth-title">📊 Desempenho por tópico</div>'
+    +'<div class="synth-sub">Ordenado do mais fraco ao mais forte. Foque nos 🔴 primeiro.</div>'
+    +topicRows
+    +'</div>'
+
+    +'<button class="rbtn" onclick="startQuiz('+ST.subj+')">Refazer este quiz</button>'
+    +'<div class="home-lnk" onclick="goHome()">← Escolher outra matéria</div>'
+    +'<div style="text-align:center;font-size:12px;color:var(--muted);margin-top:20px">com ❤️ do seu amor</div>'
+    +'</div>';
+
+  document.getElementById('result-inner').innerHTML=html;
+  showScreen('sc-result');
+}
 </script>
 </body>
 </html>
