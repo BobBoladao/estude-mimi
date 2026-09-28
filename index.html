@@ -497,8 +497,8 @@ $("#exitBtn").addEventListener("click", ()=>{
 document.addEventListener("keydown", e=>{
   if(!$("#scQuiz").classList.contains("on")) return;
   const k = e.key.toUpperCase();
-  if(k>="A" && k<="E" && S.resp[S.i]===null){ escolher(k.charCodeAt(0)-65); e.preventDefault(); }
-  else if(k>="1" && k<="5" && S.resp[S.i]===null){ escolher(+k-1); e.preventDefault(); }
+  if(k.length===1 && k>="A" && k<="E" && S.resp[S.i]===null){ escolher(k.charCodeAt(0)-65); e.preventDefault(); }
+  else if(k.length===1 && k>="1" && k<="5" && S.resp[S.i]===null){ escolher(+k-1); e.preventDefault(); }
   else if(e.key==="Enter"){ principalAcao(); e.preventDefault(); }
   else if(e.key==="ArrowLeft"){ irPara(S.i-1); }
   else if(e.key==="ArrowRight"){ if(S.i<S.lista.length-1) irPara(S.i+1); }
