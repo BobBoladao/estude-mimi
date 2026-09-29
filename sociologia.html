@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101828">
+<title>Sociologia · Questões dissertativas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#6B4BC4; --brand-600:#5A3DAB; --brand-soft:#F2EEFC; --brand-ring:rgba(107,75,196,.22);
+  --ok:#127A54; --ok-soft:#E8F5EF; --ok-line:#9FD8C0;
+  --warn:#A85C09; --warn-soft:#FFF4E5; --warn-line:#F0D5A8;
+  --err:#C4362B; --err-soft:#FCEDEB;
+  --bg:#F7F7F9; --surface:#FFFFFF; --surface-2:#FBFBFC;
+  --ink:#101828; --ink-2:#344054; --muted:#667085; --subtle:#98A2B3;
+  --line:#E4E7EC; --line-2:#D0D5DD;
+  --r-xs:6px; --r-sm:8px; --r:12px; --r-lg:16px;
+  --sh-1:0 1px 2px rgba(16,24,40,.05); --sh-2:0 4px 16px rgba(16,24,40,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+textarea{font:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:4px}
+.wrap{max-width:780px;margin:0 auto;padding:0 20px}
+.screen{display:none}.screen.on{display:block}
+
+.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:780px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;letter-spacing:-.01em}
+.brand-mark{width:26px;height:26px;border-radius:7px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700}
+.top-sep{width:1px;height:20px;background:var(--line);flex:none}
+.top-ctx{font-size:13px;color:var(--muted);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-act{font-size:13px;font-weight:500;color:var(--muted);padding:6px 10px;border-radius:var(--r-sm);flex:none}
+.top-act:hover{background:var(--bg);color:var(--ink-2)}
+.pbar{height:3px;background:var(--line)}.pbar span{display:block;height:100%;background:var(--brand);width:0;transition:width .35s}
+
+.hero{padding:44px 0 26px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);margin-bottom:10px}
+h1{font-size:32px;line-height:1.2;letter-spacing:-.025em;font-weight:700}
+.hero p{color:var(--muted);margin-top:10px;max-width:56ch}
+.note{background:var(--warn-soft);border:1px solid var(--warn-line);border-radius:var(--r);padding:13px 15px;margin-top:18px;font-size:13.5px;color:#6B3F06;line-height:1.55}
+.note b{font-weight:600}
+.filters{display:grid;gap:14px;padding:22px 0 0}
+.fgroup{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh-1)}
+.fhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.flabel{font-size:13px;font-weight:600;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13.5px;font-weight:500;color:var(--ink-2);border:1px solid var(--line-2);background:var(--surface);padding:7px 13px;border-radius:999px;transition:background .12s,border-color .12s,color .12s}
+.chip:hover{border-color:var(--brand);color:var(--brand)}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.startbar{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(247,247,249,0),var(--bg) 32%);padding:16px 0 24px;margin-top:14px}
+.startcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-2);padding:14px 16px;display:flex;align-items:center;gap:14px}
+.startinfo{flex:1;min-width:0}.startinfo b{font-size:15px}
+.startinfo span{display:block;font-size:12.5px;color:var(--muted)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;padding:12px 20px;border-radius:var(--r-sm);transition:background .13s,border-color .13s,transform .06s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-600)}
+.btn-primary:disabled{background:var(--line-2);cursor:not-allowed}
+.btn-ghost{color:var(--ink-2);border:1px solid var(--line-2);background:var(--surface)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-sm{font-size:13.5px;padding:9px 14px}
+
+.metrics{display:flex;align-items:center;gap:16px;padding:16px 2px 12px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.metrics b{color:var(--ink-2);font-weight:600}
+.mdot{width:4px;height:4px;border-radius:50%;background:var(--line-2)}
+.mspace{flex:1}
+
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:26px}
+.qtop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.qnum{font-size:14px;font-weight:700}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tag{font-size:11.5px;font-weight:500;color:var(--ink-2);background:var(--bg);border:1px solid var(--line);padding:3px 9px;border-radius:var(--r-xs)}
+.tag.arg{background:var(--brand-soft);border-color:#DCD2F5;color:var(--brand-600)}
+.tag.con{background:#EAF2FB;border-color:#CADEF3;color:#1B4E87}
+.tag.of{background:var(--warn-soft);border-color:var(--warn-line);color:var(--warn);font-weight:600}
+.qtext{font-size:17px;line-height:1.68}
+.editor{margin-top:18px}
+textarea.ans{width:100%;min-height:200px;resize:vertical;border:1px solid var(--line-2);border-radius:var(--r);padding:14px 15px;font-size:15.5px;line-height:1.65;color:var(--ink);background:var(--surface-2)}
+textarea.ans:focus{background:var(--surface);border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-ring);outline:none}
+textarea.ans:disabled{color:var(--ink-2);cursor:default}
+.ed-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;font-size:12.5px;color:var(--subtle)}
+.wc b{color:var(--ink-2);font-weight:600}
+
+.panel{margin-top:16px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.panel-h{background:var(--surface-2);border-bottom:1px solid var(--line);padding:11px 15px;font-size:13px;font-weight:600;color:var(--ink-2);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.panel-b{padding:15px}
+.cov{font-size:12.5px;font-weight:700;color:var(--brand)}
+.cchips{display:flex;flex-wrap:wrap;gap:7px}
+.cchip{font-size:12.5px;padding:5px 11px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted);background:var(--surface)}
+.cchip.hit{background:var(--ok-soft);border-color:var(--ok-line);color:var(--ok);font-weight:500}
+.sig{display:flex;gap:9px;align-items:flex-start;font-size:14px;color:var(--ink-2);padding:6px 0}
+.sig i{flex:none;width:18px;height:18px;border-radius:5px;display:grid;place-items:center;font-size:11px;font-style:normal;background:var(--bg);border:1px solid var(--line-2);color:var(--subtle);margin-top:2px}
+.sig.on i{background:var(--ok);border-color:var(--ok);color:#fff}
+.sig small{display:block;color:var(--subtle);font-size:12.5px}
+.ref{font-size:14.5px;line-height:1.7;color:var(--ink-2)}
+.crit{display:block;padding:8px 0;font-size:14px;color:var(--ink-2);cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.crit input{margin-top:4px;accent-color:var(--brand);width:16px;height:16px;flex:none}
+.disc{font-size:12.5px;color:var(--subtle);line-height:1.5;margin-top:10px}
+
+.nav{display:flex;align-items:center;gap:10px;margin:16px 0 8px}
+.navspace{flex:1}
+.khint{text-align:center;font-size:12px;color:var(--subtle);padding-bottom:30px}
+
+.rhead{text-align:center;padding:36px 0 6px}
+.rhead h2{font-size:26px;letter-spacing:-.02em}
+.rhead p{color:var(--muted);font-size:14.5px;margin-top:6px}
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:26px;margin-top:20px}
+.rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.rstat{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px}
+.rstat b{display:block;font-size:22px;font-weight:700;letter-spacing:-.02em}
+.rstat span{font-size:12.5px;color:var(--muted)}
+.sect-t{font-size:13px;font-weight:600;color:var(--ink-2);margin:26px 0 12px}
+.brow{display:grid;grid-template-columns:1fr 46px;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.brow:first-of-type{border-top:none}
+.bname{font-size:13.5px;color:var(--ink-2);margin-bottom:6px}
+.btrack{height:6px;background:var(--bg);border-radius:99px;overflow:hidden}
+.bfill{height:100%;border-radius:99px;background:var(--brand)}
+.bfill.low{background:var(--err)}.bfill.mid{background:#D9910D}.bfill.high{background:var(--ok)}
+.bpct{font-size:13px;font-weight:600;text-align:right;color:var(--ink-2)}
+.ractions{display:flex;gap:10px;margin:22px 0 40px;flex-wrap:wrap}
+.ractions .btn{flex:1;min-width:150px}
+
+@media(max-width:640px){
+  .wrap{padding:0 16px}.top-in{padding:11px 16px}
+  h1{font-size:26px}.hero{padding:30px 0 20px}
+  .qcard{padding:20px 18px;border-radius:var(--r)}
+  .qtext{font-size:16.5px}
+  .nav{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(247,247,249,0),var(--bg) 30%);padding:12px 0 14px;margin:8px 0 0}
+  .nav .btn{flex:1}
+  .khint{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><span class="brand-mark">S</span>Sociologia</div>
+    <div class="top-sep"></div>
+    <div class="top-ctx" id="ctx">Questões dissertativas</div>
+    <button class="top-act" id="exitBtn" hidden>Sair</button>
+  </div>
+  <div class="pbar"><span id="pfill"></span></div>
+</header>
+
+<section class="screen on" id="scSetup">
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Trabalho bimestral · 4º termo · noturno</div>
+    <h1>Sociologia em questões dissertativas</h1>
+    <p>27 questões sobre Comte, Durkheim, Marx e Weber, incluindo as sete do trabalho oficial. Você escreve a resposta, a página confere a cobertura dos conceitos e você compara com uma resposta de referência.</p>
+    <div class="note"><b>Como a correção funciona.</b> Esta página não julga se o seu argumento é bom — isso nenhuma página estática consegue fazer. Ela verifica o que dá para verificar: quais conceitos da matéria você citou, se o texto apresenta sinais de estrutura argumentativa e qual a extensão. O julgamento da qualidade fica com você, pela rubrica, e com o seu professor. Nas questões de opinião, a resposta de referência não defende um lado: mostra como sustentar cada um deles.</div>
+  </div>
+
+  <div class="filters">
+    <div class="fgroup"><div class="fhead"><span class="flabel">Tipo de questão</span></div><div class="chips" id="fTipo"></div></div>
+    <div class="fgroup"><div class="fhead"><span class="flabel">Quantidade</span></div><div class="chips" id="fQtd"></div></div>
+    <div class="fgroup"><div class="fhead"><span class="flabel">Tema</span><button class="chip" id="fAll" style="border:none;background:none;color:var(--brand);padding:0;font-size:12.5px">Selecionar todos</button></div><div class="chips" id="fTema"></div></div>
+    <div class="fgroup"><div class="fhead"><span class="flabel">Ordem</span></div><div class="chips" id="fOrd"></div></div>
+  </div>
+
+  <div class="startbar"><div class="startcard">
+    <div class="startinfo"><b id="poolTxt">27 questões</b><span id="poolSub">disponíveis com os filtros atuais</span></div>
+    <button class="btn btn-primary" id="startBtn">Começar</button>
+  </div></div>
+</div>
+</section>
+
+<section class="screen" id="scQuiz"><div class="wrap">
+  <div class="metrics" id="metrics"></div>
+  <article class="qcard" id="qcard"></article>
+  <div class="nav" id="nav"></div>
+  <div class="khint">As respostas ficam salvas neste navegador enquanto você não limpar os dados.</div>
+</div></section>
+
+<section class="screen" id="scResult"><div class="wrap" id="resultBody"></div></section>
+
+<script>
+const BANK = [{"tema": "Marx e o Estado", "tipo": "argumentativa", "oficial": true, "q": "A teoria marxista faz uma crítica ferrenha ao Estado burguês: segundo ela, o Estado é corrupto e promove a desigualdade, porque aqueles que detêm o poder econômico criam leis em benefício próprio. Diante dos fatos vividos no Brasil contemporâneo, onde políticos são presos por se beneficiarem das leis que eles mesmos criaram e favorecem empresas, é possível dizer que Marx tinha razão? Justifique.", "conceitos": [{"l": "Estado como instrumento de classe", "re": "estado burgues|instrumento de classe|estado a servico|classe dominante"}, {"l": "Poder econômico e poder político", "re": "poder economic|poder politic|influenc|financia|campanha|lobby|legisla"}, {"l": "Desigualdade", "re": "desigual|concentracao|distribui|renda"}, {"l": "Exemplo concreto do Brasil", "re": "brasil|lava.?jato|corrupcao|caso.{0,3} concret|exempl"}, {"l": "Ressalva ou limite da tese", "re": "por outro lado|no entanto|entretanto|porem|contudo|nem sempre|apesar"}], "ref": "Não existe resposta única: a nota vem da qualidade da justificativa. Quem defende que Marx tinha razão costuma argumentar que o Estado não é neutro, porque quem financia campanhas e ocupa cargos influencia diretamente a legislação (tributária, trabalhista, ambiental), e que a captura do Estado por interesses econômicos aparece em casos concretos de corrupção. Quem discorda costuma argumentar que a corrupção não é exclusiva do capitalismo nem do Estado burguês, tendo ocorrido também em Estados socialistas, e que instituições democráticas (imprensa livre, Ministério Público, Judiciário independente, eleições) permitiram justamente que esses políticos fossem investigados e presos, o que sugere que o Estado tem autonomia relativa e não é mero instrumento de uma classe. Uma resposta forte faz três coisas: define o que Marx afirma sobre o Estado, apresenta evidência concreta a favor da sua posição e reconhece o argumento do outro lado antes de rebatê-lo.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Marx e o Estado", "tipo": "argumentativa", "oficial": true, "q": "Ainda sobre a crítica marxista ao Estado burguês: qual seria, na sua avaliação, a solução para o problema demonstrado? O socialismo seria essa solução? Explique.", "conceitos": [{"l": "Definição do que seria a solução proposta", "re": "solucao|proposta|alternativa|caminho"}, {"l": "Socialismo e propriedade dos meios de produção", "re": "socialismo|meios de producao|propriedade coletiva|estatizacao"}, {"l": "Reformas dentro do sistema", "re": "reforma|regulacao|fiscalizacao|transparencia|tributaria|educacao|institui"}, {"l": "Risco ou dificuldade da alternativa escolhida", "re": "risco|dificuldade|problema|limite|concentracao de poder|burocracia"}, {"l": "Comparação com experiências históricas", "re": "uniao sovietica|cuba|china|venezuela|social.?democracia|nordic|historia"}], "ref": "Aqui o enunciado pede um posicionamento explícito, e qualquer um deles pode render nota máxima se for justificado. Quem responde que sim costuma sustentar que, se o problema está na propriedade privada dos meios de produção, apenas mudar a titularidade dessa propriedade atacaria a raiz da desigualdade, e não apenas seus efeitos. Quem responde que não costuma sustentar que o problema é a concentração de poder em si, e que transferir os meios de produção ao Estado concentra poder econômico e político nas mesmas mãos, ampliando a oportunidade de abuso em vez de eliminá-la; a alternativa apontada costuma ser reforma tributária progressiva, fiscalização, transparência, educação e fortalecimento institucional. Uma terceira via defensável é a social-democracia, que mantém o mercado mas redistribui via tributação e serviços públicos. O que separa uma resposta boa de uma fraca não é a escolha, e sim explicitar o critério usado, enfrentar a objeção mais óbvia e evitar afirmar que uma experiência histórica prova o ponto sem discutir seu contexto.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Socialismo e mercado", "tipo": "argumentativa", "oficial": true, "q": "No Estado socialista, os meios de produção ficam todos nas mãos do Estado, que controla a criação de postos de trabalho e a distribuição de renda. Atualmente o Brasil é uma economia de mercado, em que as empresas são, em sua grande maioria, privadas. Com base nessa afirmação, responda: você acredita que num Estado socialista a vida das pessoas seria melhor? Explique sua resposta.", "conceitos": [{"l": "Critério do que é vida melhor", "re": "criterio|qualidade de vida|renda|liberdade|seguranca|saude|educacao|igualdade"}, {"l": "Papel do Estado na economia", "re": "estado|planejamento|controle estatal|distribuicao de renda|posto de trabalho"}, {"l": "Economia de mercado e iniciativa privada", "re": "mercado|empresa privada|concorrencia|iniciativa privada|lucro"}, {"l": "Evidência ou exemplo histórico", "re": "exemplo|historia|pais|comparacao|indicador|dado"}, {"l": "Reconhecimento da complexidade", "re": "depende|nem sempre|por outro lado|no entanto|varia|contexto"}], "ref": "A pergunta é deliberadamente aberta e a resposta é pessoal, mas a avaliação recai sobre o raciocínio. O primeiro passo forte é definir o critério de melhor: renda média, igualdade, acesso a saúde e educação, liberdade individual ou segurança no emprego. A resposta muda conforme o critério escolhido, e explicitar isso já demonstra domínio. Quem defende o socialismo costuma apontar garantia de emprego, redução da desigualdade e provisão pública universal. Quem discorda costuma apontar que o planejamento central historicamente enfrentou escassez e perda de eficiência, e que a ausência de propriedade privada reduziu liberdades civis em várias experiências. Também é defensável responder que depende do arranjo concreto, já que socialismo abrange modelos muito diferentes entre si. Evite duas armadilhas: tratar um país isolado como prova definitiva e confundir socialismo com social-democracia, que mantém mercado e propriedade privada.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Socialismo e mercado", "tipo": "argumentativa", "oficial": true, "q": "Considerando que a corrupção é um problema endêmico no Brasil, com a implantação de um Estado socialista a corrupção acabaria? Explique sua resposta.", "conceitos": [{"l": "Definição de corrupção", "re": "corrupcao e|uso do cargo|interesse privado|desvio|propina|apropriacao"}, {"l": "Relação entre poder e controle", "re": "poder|controle|fiscalizacao|transparencia|prestacao de contas|monitoramento"}, {"l": "Concentração estatal como risco", "re": "concentracao|monopolio|estado controla|burocracia|privilegio"}, {"l": "Evidência histórica", "re": "exemplo|historia|uniao sovietica|cuba|pais socialista|escandalo"}, {"l": "Condições que reduzem corrupção", "re": "imprensa|judiciario|institui|controle social|educacao|puni"}], "ref": "O caminho mais consistente é separar duas coisas: a corrupção depende do sistema econômico ou das condições de controle sobre quem exerce poder? Quem responde que não acabaria costuma argumentar que corrupção é abuso de poder para benefício privado e que isso pode ocorrer em qualquer sistema onde haja poder concentrado e baixa fiscalização, citando escândalos em Estados socialistas; nesse raciocínio, concentrar toda a economia no Estado aumentaria o poder disponível para ser capturado. Quem responde que diminuiria costuma argumentar que parte da corrupção brasileira nasce da relação entre empresas privadas e governo, e que eliminar o interesse privado eliminaria esse canal específico. Uma resposta madura reconhece que os fatores mais associados à redução da corrupção nas pesquisas são transparência, imprensa livre, independência do Judiciário e controle social, e que esses fatores são relativamente independentes do sistema econômico adotado.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Classes sociais", "tipo": "argumentativa", "oficial": true, "q": "Marx, por meio de seus estudos, chegou à conclusão de que os burgueses, donos dos meios de produção, controlavam a vida política e econômica, e que o proletariado vendia sua mão de obra; desta forma, a desigualdade aumentaria cada vez mais. Considerando que estatísticas recentes indicam que apenas cerca de 2% da população brasileira tem renda superior a dez salários mínimos, é possível concluir que Marx tinha razão? Justifique.", "conceitos": [{"l": "Burguesia e proletariado", "re": "burguesia|burgues|proletariado|proletario|classe"}, {"l": "Meios de produção", "re": "meios de producao|propriedade dos meios|capital"}, {"l": "Leitura do dado estatístico", "re": "2%|dois por cento|estatistica|dado|renda|salarios minimos|concentracao"}, {"l": "Polarização prevista por Marx", "re": "polarizacao|pauperizacao|empobrecimento|aumento da desigualdade|classe media"}, {"l": "Limite da conclusão", "re": "no entanto|porem|por outro lado|nao prova|correlacao|outros fatores"}], "ref": "A questão exige cuidado com o uso do dado. Quem sustenta que Marx tinha razão argumenta que a concentração de renda observada confirma a tendência que ele descreveu, e que a propriedade dos meios de produção segue determinando quem apropria o excedente. Quem discorda costuma levantar dois pontos: primeiro, que o dado mostra concentração de renda, mas não demonstra por si só a causa apontada por Marx, já que fatores como escolaridade, informalidade, herança e política tributária também explicam o quadro; segundo, que a previsão de polarização absoluta entre duas classes não se confirmou plenamente, porque surgiram uma ampla classe média assalariada, direitos trabalhistas e Estado de bem-estar que Marx não previu nesse formato. Uma resposta forte reconhece o que na análise marxista continua explicativo, como o peso da propriedade e do trabalho na distribuição, e o que precisa ser relativizado, e deixa claro que um número isolado é evidência, não prova.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Classes sociais", "tipo": "argumentativa", "oficial": true, "q": "Independentemente de Marx ter razão ou não, como é possível mudar o quadro de desigualdade de renda descrito? Apresente e justifique suas propostas.", "conceitos": [{"l": "Proposta concreta", "re": "proposta|politica|medida|programa|reforma"}, {"l": "Educação e qualificação", "re": "educacao|escola|qualifica|formacao|ensino"}, {"l": "Tributação e transferência de renda", "re": "tribut|imposto|progressiv|transferencia|renda basica|bolsa"}, {"l": "Trabalho, emprego e renda", "re": "emprego|trabalho|salario|informalidade|sindicat|produtividade"}, {"l": "Viabilidade e possíveis efeitos colaterais", "re": "viabilidade|custo|efeito|risco|prazo|financiar|contrapartida"}], "ref": "Aqui a avaliação premia propostas concretas e a consciência de que toda política tem custo e efeito colateral. As linhas mais citadas na literatura são: educação básica de qualidade e qualificação profissional, que atuam no longo prazo sobre a produtividade e a renda do trabalho; tributação mais progressiva, deslocando a carga do consumo para renda e patrimônio; transferência de renda focalizada, que age rápido sobre a pobreza extrema mas pouco sobre a desigualdade estrutural; ampliação do acesso a crédito, terra e propriedade; e políticas de emprego formal. Respostas fracas listam boas intenções sem dizer como financiar ou quem perde com a medida. Respostas fortes escolhem duas ou três propostas, explicam o mecanismo pelo qual cada uma reduziria a desigualdade, indicam o horizonte de tempo e reconhecem ao menos uma objeção séria, como o risco de desestimular investimento ou a dificuldade de execução.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Classes sociais", "tipo": "conceitual", "oficial": true, "q": "Mais-valia é um conceito muito importante dentro do marxismo. Explique o conceito de mais-valia.", "conceitos": [{"l": "Valor produzido além do salário", "re": "alem do|excede|excedente|a mais|nao recebe|diferenca"}, {"l": "Força de trabalho vendida", "re": "forca de trabalho|mao de obra|vende|salario"}, {"l": "Apropriação pelo capitalista", "re": "apropria|fica com|lucro|capitalista|burgues|dono"}, {"l": "Relação com exploração", "re": "exploracao|explora|injusti|desigual"}, {"l": "Exemplo numérico ou concreto", "re": "exemplo|por exemplo|suponha|imagine|r\\$|reais|hora"}], "ref": "Mais-valia é o valor produzido pelo trabalhador que excede o valor pago a ele como salário, e que é apropriado pelo dono dos meios de produção. A lógica é esta: o trabalhador vende sua força de trabalho por um período; durante parte desse período ele produz o equivalente ao próprio salário, e no tempo restante segue produzindo valor que não lhe é pago. Esse excedente é a mais-valia, e para Marx é a fonte do lucro no capitalismo, o que o leva a caracterizar a relação como exploração. Um exemplo torna a resposta muito mais forte: se um trabalhador produz, em oito horas, mercadorias que valem o equivalente a duzentos reais e recebe oitenta reais por esse dia, os cento e vinte reais restantes, descontados os custos, correspondem à mais-valia apropriada pelo empregador. Vale ainda distinguir mais-valia absoluta, obtida pelo aumento da jornada, de mais-valia relativa, obtida pelo aumento da produtividade.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Surgimento e Positivismo", "tipo": "conceitual", "oficial": false, "q": "Explique em que contexto histórico a Sociologia surgiu como ciência e por que esse contexto tornou necessário um novo campo de conhecimento.", "conceitos": [{"l": "Século XIX", "re": "seculo xix|1800|oitocentos"}, {"l": "Revolução Industrial", "re": "revolucao industrial|industrializacao|fabrica|industria"}, {"l": "Mudanças no trabalho e na sociedade", "re": "trabalho|urbaniz|cidade|migracao|mudanca social|transforma"}, {"l": "Necessidade de explicação científica", "re": "cientific|sistematic|metodo|ciencia|explicar"}, {"l": "Problemas sociais da época", "re": "pobreza|miseria|desigualdade|conflito|desordem|problema social"}], "ref": "A Sociologia nasce no século XIX, em meio às transformações provocadas pela Revolução Industrial. A produção se desloca do campo para a fábrica, multiplica-se a população urbana, surgem novas formas de trabalho assalariado e, com elas, problemas inéditos em escala: aglomeração, pobreza urbana, jornadas extenuantes, conflito entre patrões e operários, ruptura dos laços comunitários tradicionais. As explicações disponíveis, de base religiosa ou filosófica, não davam conta desses fenômenos. Surge então a proposta de estudar a sociedade de maneira sistemática e científica, observando regularidades como se fazia nas ciências naturais. Uma boa resposta conecta contexto e necessidade: não basta dizer que a Sociologia surgiu no século XIX, é preciso mostrar que foi a profundidade das mudanças sociais que criou a demanda por um conhecimento novo sobre a vida coletiva.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Surgimento e Positivismo", "tipo": "conceitual", "oficial": false, "q": "Explique a relação entre Auguste Comte, o Positivismo e a expressão 'Ordem e Progresso' presente na bandeira do Brasil.", "conceitos": [{"l": "Comte como fundador", "re": "comte|fundador|criou o termo|associado ao surgimento"}, {"l": "Positivismo e conhecimento científico", "re": "positivism|conhecimento cientifico|ciencia|observacao|metodo"}, {"l": "Ordem e Progresso", "re": "ordem e progresso|lema|bandeira"}, {"l": "Influência no Brasil", "re": "brasil|republica|militar|1889|influenc"}, {"l": "Ideia de evolução social", "re": "evolucao|progresso|etapa|desenvolvimento"}], "ref": "Auguste Comte é associado ao surgimento da Sociologia e ao Positivismo, corrente que defende que a sociedade pode e deve ser estudada com os mesmos critérios de rigor das ciências naturais: observação, método e busca de regularidades. Para Comte, o conhecimento científico seria a base para organizar a vida social de forma racional, conduzindo a humanidade a estágios mais avançados. O lema Ordem e Progresso deriva dessa formulação e foi inscrito na bandeira brasileira por influência do pensamento positivista sobre os militares e intelectuais que participaram da proclamação da República. Uma resposta completa explica os dois termos: ordem como estabilidade necessária ao funcionamento social e progresso como avanço conduzido pela ciência. Vale registrar também a crítica posterior ao positivismo, acusado de tratar fenômenos sociais como se fossem fatos naturais e de subestimar o papel do conflito e da interpretação.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Durkheim", "tipo": "conceitual", "oficial": false, "q": "Durkheim afirma que a sociedade não é apenas a soma dos indivíduos. Explique o que ele quis dizer e por que essa ideia é central para a Sociologia.", "conceitos": [{"l": "Sociedade como realidade própria", "re": "realidade propria|nao e a soma|anterior|exterior|todo"}, {"l": "Regras, valores e normas", "re": "regra|valor|norma|costume"}, {"l": "Influência sobre o comportamento", "re": "influenc|molda|condiciona|orienta|pressiona"}, {"l": "Objeto de estudo científico", "re": "objeto|cientific|observa|analisa|metodo"}, {"l": "Exemplo próprio", "re": "exemplo|por exemplo|imagine|suponha"}], "ref": "Durkheim sustenta que a sociedade possui uma realidade própria, que não se explica pela simples adição das vontades individuais. Ela apresenta regras, valores, normas e formas de organização que existem antes de cada indivíduo, que continuam existindo depois dele e que moldam seu comportamento. Um exemplo simples: a língua que você fala, o calendário que organiza sua semana e as regras de trânsito não foram criados por você, mas estruturam sua vida cotidiana. A consequência dessa ideia é decisiva para a Sociologia: se a vida social tem regularidades que independem das intenções individuais, então ela pode ser tratada como objeto de estudo científico, observada e analisada de fora, e não apenas explicada pela psicologia de cada pessoa. É esse passo que fundamenta a Sociologia como disciplina autônoma.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Fato social", "tipo": "conceitual", "oficial": false, "q": "Defina fato social e explique suas três características, dando um exemplo para cada uma.", "conceitos": [{"l": "Definição de fato social", "re": "maneira de agir|modo de agir|pensar ou sentir|forma de agir"}, {"l": "Exterioridade", "re": "exterior|existe antes|independe do individuo|fora do individuo"}, {"l": "Coercitividade", "re": "coerc|pressao|obriga|constrange|puni|sancao"}, {"l": "Generalidade", "re": "general|amplo|coletivo|maioria|toda a sociedade"}, {"l": "Exemplos concretos", "re": "exemplo|por exemplo|lei|costume|lingua|transito|religiao"}], "ref": "Fato social é toda maneira de agir, pensar ou sentir que existe na sociedade e exerce influência sobre o indivíduo, com caráter coercitivo. Suas três características são: exterioridade, porque o fato social existe antes do indivíduo e independe da sua vontade, como a língua que ele aprende ao nascer; coercitividade, porque exerce pressão sobre o comportamento e sua violação gera sanção, formal como a multa de trânsito ou informal como a reprovação social de quem fura uma fila; e generalidade, porque está presente de forma ampla no grupo, não se restringindo a casos isolados, como o uso do calendário ou a obrigatoriedade escolar. Uma boa resposta não apenas nomeia as três características, mas mostra como elas aparecem juntas em um mesmo exemplo, o que evidencia compreensão real e não memorização da lista.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Fato social", "tipo": "conceitual", "oficial": false, "q": "Explique a diferença entre fato social normal e fato social patológico, e por que essa distinção não significa julgamento moral.", "conceitos": [{"l": "Fato social normal", "re": "normal|regular|esperado|comum|frequente"}, {"l": "Fato social patológico", "re": "patologic|foge|anormal|excessiv|desvia do funcionamento"}, {"l": "Critério de referência é a sociedade", "re": "determinada sociedade|contexto|cada sociedade|em relacao a"}, {"l": "Não é juízo moral", "re": "nao e moral|nao significa|julgamento|bom ou ruim|certo ou errado"}, {"l": "Exemplo", "re": "exemplo|por exemplo|crime|suicidio|taxa"}], "ref": "Para Durkheim, é normal o fato social que ocorre de forma regular e esperada em determinada sociedade, e patológico aquele que foge do funcionamento regular ou adequado daquela mesma sociedade. O ponto que mais confunde é o critério: normal não quer dizer bom, e patológico não quer dizer imoral. A referência é estatística e funcional, sempre relativa a um tipo de sociedade e a um momento histórico. Por isso Durkheim chega a afirmar que certo nível de criminalidade é normal, no sentido de estar presente em todas as sociedades conhecidas e de cumprir funções sociais, como reafirmar as normas quando alguém as viola. Torna-se patológico quando seus índices se afastam bruscamente do padrão esperado para aquela sociedade. Uma resposta forte deixa claro esse deslocamento do julgamento moral para a análise do funcionamento social.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Moral e solidariedade", "tipo": "conceitual", "oficial": false, "q": "Explique os conceitos de moral e de consciência coletiva e mostre como eles se relacionam.", "conceitos": [{"l": "Moral como normas e valores", "re": "moral|norma|valor|crenca|orienta o comportamento"}, {"l": "Consciência coletiva", "re": "consciencia coletiva|compartilhad|comum ao grupo|conjunto de crencas"}, {"l": "Criação de valores comuns", "re": "valores comuns|unidade|coesao|comum a todos"}, {"l": "Relação entre os dois", "re": "relaciona|deriva|sustenta|base|conecta|articula"}, {"l": "Exemplo", "re": "exemplo|por exemplo|religi|familia|escola"}], "ref": "Moral é o conjunto de normas, valores e crenças que orientam o comportamento em determinada sociedade, indicando o que é aceitável e o que é condenável. Consciência coletiva é o conjunto de crenças e sentimentos compartilhados pelos membros dessa sociedade, que existe acima das consciências individuais e cria valores comuns. A relação entre os dois é de sustentação: a consciência coletiva é o solo compartilhado do qual as normas morais extraem sua força, e por isso a violação de uma norma moral costuma provocar reação coletiva, e não apenas desaprovação individual. Uma resposta bem construída acrescenta que a consciência individual permite escolhas próprias e pode entrar em conflito com a consciência coletiva, e que é justamente nesse conflito que se observam mudanças morais ao longo do tempo, quando comportamentos antes condenados passam a ser tolerados ou o contrário.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Moral e solidariedade", "tipo": "conceitual", "oficial": false, "q": "Explique o conceito de solidariedade em Durkheim e sua importância para a integração da sociedade.", "conceitos": [{"l": "Vínculos que conectam as pessoas", "re": "vinculo|laco|conecta|une|liga"}, {"l": "Integração e coesão social", "re": "integra|coesao|mantem unida|funcionamento"}, {"l": "Dependência mútua", "re": "depende|interdepend|uns dos outros|mutua"}, {"l": "Divisão do trabalho", "re": "divisao do trabalho|especializa|funcao|papel"}, {"l": "Exemplo", "re": "exemplo|por exemplo|profiss|cidade|comunidade"}], "ref": "Solidariedade, em Durkheim, designa os vínculos que conectam as pessoas e mantêm a sociedade integrada. Não se trata do sentido cotidiano de caridade, mas do que faz com que indivíduos diferentes permaneçam ligados em um mesmo conjunto social. A intuição central é a dependência mútua: numa sociedade complexa, ninguém produz tudo o que consome, e é justamente a especialização de funções que nos torna necessários uns aos outros. Durkheim distingue a solidariedade mecânica, típica de sociedades simples, em que a união vem da semelhança de crenças e modos de vida, da solidariedade orgânica, típica de sociedades industriais, em que a união vem da complementaridade das funções produzida pela divisão do trabalho. A importância do conceito está em explicar a coesão sem recorrer à vontade individual: a sociedade se mantém integrada por vínculos estruturais, e sua fragilização produz o que Durkheim chama de anomia.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Moral e solidariedade", "tipo": "argumentativa", "oficial": false, "q": "A consciência individual permite escolhas próprias e pode entrar em conflito com a consciência coletiva. Apresente uma situação concreta em que esse conflito aparece e discuta como uma sociedade deveria lidar com ele.", "conceitos": [{"l": "Situação concreta", "re": "exemplo|situacao|caso|quando|imagine"}, {"l": "Consciência individual", "re": "consciencia individual|escolha propria|autonomia|individuo decide"}, {"l": "Consciência coletiva", "re": "consciencia coletiva|norma|valor compartilhado|pressao social"}, {"l": "Posicionamento próprio", "re": "acredito|entendo|defendo|penso|considero|na minha"}, {"l": "Tensão entre liberdade e coesão", "re": "liberdade|coesao|equilibrio|limite|tolerancia|convivencia"}], "ref": "A questão pede exemplo e posicionamento. Exemplos que funcionam bem: alguém que rompe com a religião da família; o desrespeito a uma norma social amplamente aceita em nome de uma convicção pessoal; movimentos que defendiam direitos hoje reconhecidos e que eram condenados pela moral de sua época. O ponto sociológico a explorar é que o conflito não é apenas psicológico, e sim entre um indivíduo e um conjunto de crenças compartilhadas que exerce pressão real, com sanções formais ou informais. Sobre como a sociedade deveria lidar, há posições defensáveis em direções diferentes: quem enfatiza a coesão argumenta que normas compartilhadas são condição do convívio e que sua erosão produz desorganização; quem enfatiza a autonomia argumenta que o dissenso individual é o mecanismo pelo qual as normas evoluem, e que sociedades que o sufocam se tornam rígidas e injustas. Uma resposta forte reconhece que ambos os riscos existem e propõe um critério para distinguir o dissenso legítimo do dano a terceiros.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Marx", "tipo": "conceitual", "oficial": false, "q": "Explique o que é o materialismo histórico e como ele orienta a análise que Marx faz da sociedade.", "conceitos": [{"l": "História ligada às condições materiais", "re": "condicoes materiais|material|economia|base material"}, {"l": "Formas de produção", "re": "forma de producao|modo de producao|producao|como produz"}, {"l": "Relações entre classes sociais", "re": "classe|relacoes sociais|relacao entre classes"}, {"l": "Ponto de partida da análise", "re": "ponto de partida|para compreender|analisa a partir|observar como"}, {"l": "Transformação histórica", "re": "transforma|muda|historia|evolu|processo"}], "ref": "Materialismo histórico é a perspectiva segundo a qual a história das sociedades está ligada às suas condições materiais de existência, às formas de produção e às relações estabelecidas entre as classes sociais. A inversão proposta por Marx é metodológica: em vez de explicar a sociedade pelas ideias, pela religião ou pela política, parte-se de como aquela sociedade produz sua existência material, quem é dono dos meios de produção e como o trabalho está organizado. A partir daí se explicam as instituições, o direito e as próprias ideias dominantes. Isso orienta a análise em duas direções: primeiro, olhar para o conflito estrutural entre quem possui os meios de produção e quem vende sua força de trabalho; segundo, tratar cada arranjo social como histórico e transitório, e não natural ou eterno. Uma boa resposta explicita essa relação entre base material e demais dimensões da vida social.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Classes sociais", "tipo": "conceitual", "oficial": false, "q": "Explique a diferença entre burguesia e proletariado e o que Marx entende por luta de classes.", "conceitos": [{"l": "Burguesia como proprietária dos meios de produção", "re": "burguesia|proprietari|dona dos meios|possui os meios"}, {"l": "Proletariado vende força de trabalho", "re": "proletariado|vende|forca de trabalho|mao de obra|salario"}, {"l": "Posições diferentes na economia", "re": "posicao|lugar na producao|estrutura economica|relacao de producao"}, {"l": "Conflito de interesses", "re": "conflito|interesse|antagonismo|disputa|luta"}, {"l": "Exemplo atual", "re": "exemplo|hoje|atual|empresa|trabalhador|aplicativo"}], "ref": "Burguesia é a classe proprietária dos meios de produção, isto é, das fábricas, máquinas, instalações e recursos usados para produzir. Proletariado é a classe formada por trabalhadores que, não possuindo esses meios, vendem sua força de trabalho em troca de salário. A distinção, portanto, não é de renda nem de estilo de vida, mas da posição ocupada na estrutura produtiva, o que é frequentemente confundido em respostas fracas. Luta de classes é o conflito entre classes que ocupam posições diferentes e interesses opostos na organização econômica: o interesse do proprietário é ampliar o excedente apropriado, e o do trabalhador é ampliar o valor recebido por seu trabalho e melhorar suas condições. Para Marx, esse antagonismo é estrutural, e não acidental, e constitui o motor das transformações históricas. Um exemplo contemporâneo bem escolhido, como as disputas sobre jornada e remuneração em plataformas digitais, fortalece muito a resposta.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Classes sociais", "tipo": "conceitual", "oficial": false, "q": "Explique o que são meios de produção e por que a propriedade desses meios é fundamental para compreender a divisão entre as classes.", "conceitos": [{"l": "Definição de meios de produção", "re": "ferramenta|maquina|instalacao|recurso produtivo|equipamento|terra"}, {"l": "Propriedade dos meios", "re": "propriedade|dono|posse|quem controla"}, {"l": "Divisão entre classes", "re": "classe|divisao|separa|define quem"}, {"l": "Apropriação do produto", "re": "apropria|fica com|lucro|excedente|resultado"}, {"l": "Exemplo", "re": "exemplo|por exemplo|fabrica|terra|maquina|empresa"}], "ref": "Meios de produção são o conjunto de recursos utilizados para produzir bens e serviços: ferramentas, máquinas, instalações, terra, matérias-primas e demais recursos produtivos. A propriedade desses meios é o critério que, na análise marxista, define a posição de cada grupo na estrutura social, porque determina duas coisas decisivas. Primeiro, quem precisa vender sua força de trabalho para sobreviver e quem não precisa: quem não possui meios de produção só dispõe da própria capacidade de trabalho. Segundo, quem se apropria do resultado do trabalho: o produto pertence ao proprietário dos meios, e não a quem o produziu. É por isso que, para Marx, a divisão de classes não é uma questão de mérito, renda ou ocupação, mas da relação com a propriedade produtiva, e é dessa relação que decorrem tanto a mais-valia quanto o conflito estrutural entre as classes.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Marx", "tipo": "conceitual", "oficial": false, "q": "Explique por que o trabalho ocupa posição central na análise marxista da sociedade.", "conceitos": [{"l": "Trabalho produz a existência humana", "re": "produz|existencia|sobreviv|necessidade|vida material"}, {"l": "Transformação da natureza", "re": "transforma a natureza|natureza|modifica o mundo"}, {"l": "Trabalho como atividade humana fundamental", "re": "atividade humana|propriamente humano|define o ser humano|essencia"}, {"l": "Relação com classes e produção", "re": "classe|producao|relacao de producao|organizacao do trabalho"}, {"l": "Alienação como consequência", "re": "alienacao|estranho|perde o controle|separa"}], "ref": "Na análise marxista, o trabalho é central porque é por meio dele que os seres humanos produzem sua própria existência e transformam a natureza. Não se trata apenas de uma atividade econômica entre outras: é a atividade pela qual a humanidade constrói o mundo em que vive e, ao fazê-lo, transforma a si mesma. Daí decorre o encadeamento de toda a análise: como o trabalho está organizado, quem controla os meios necessários para realizá-lo e quem se apropria do que ele produz são as perguntas que explicam a estrutura de classes, a distribuição da riqueza e as próprias instituições políticas. É também dessa centralidade que nasce a crítica: quando o trabalhador perde o controle sobre o que produz e sobre o processo de produção, o trabalho, que deveria ser realização humana, converte-se em atividade estranha a ele, o que Marx chama de alienação.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Ideologia e alienação", "tipo": "conceitual", "oficial": false, "q": "Explique o conceito de ideologia na análise marxista e por que ele ajuda a entender a manutenção das desigualdades.", "conceitos": [{"l": "Conjunto de ideias e representações", "re": "conjunto de ideias|representac|visao de mundo|crenca"}, {"l": "Legitimação de relações sociais", "re": "legitim|justific|naturaliz|faz parecer|sustenta"}, {"l": "Ligação com as condições materiais", "re": "condicoes materiais|material|economia|base"}, {"l": "Relação com as classes", "re": "classe|dominante|interesse|grupo"}, {"l": "Exemplo", "re": "exemplo|por exemplo|merito|meritocracia|midia|escola|religi"}], "ref": "Ideologia, na análise marxista, é o conjunto de ideias e representações que contribui para explicar e legitimar determinadas relações sociais, estando ligada às condições materiais e às relações de classe. O ponto decisivo é a função: a ideologia faz com que arranjos historicamente construídos pareçam naturais, evidentes ou inevitáveis, o que reduz a percepção de que poderiam ser diferentes. É por isso que ela ajuda a explicar a manutenção das desigualdades sem recorrer apenas à coerção: se os que estão em desvantagem compreendem sua posição como resultado exclusivo de mérito ou destino, a ordem se reproduz com menos conflito. Um exemplo frequentemente usado é a ideia de que a posição social de cada um depende apenas do esforço individual, formulação que desconsidera o peso da origem familiar, do acesso à educação e da propriedade. Vale observar que o conceito é objeto de disputa e que outras correntes o definem de modo mais neutro, como qualquer sistema organizado de ideias políticas.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Ideologia e alienação", "tipo": "conceitual", "oficial": false, "q": "Explique o conceito de alienação e descreva, com um exemplo, como ela se manifesta no trabalho contemporâneo.", "conceitos": [{"l": "Separação do trabalhador e do produto", "re": "separa|estranho|afastado|nao pertence|perde"}, {"l": "Perda de controle sobre o processo", "re": "controle|processo|decide|ritmo|como produzir"}, {"l": "Trabalho como atividade estranha", "re": "estranh|alheio|nao se reconhece|sem sentido"}, {"l": "Relação com a própria atividade", "re": "propria atividade|si mesmo|realizacao|humanidade"}, {"l": "Exemplo contemporâneo", "re": "exemplo|hoje|atual|linha de montagem|call center|aplicativo|metas"}], "ref": "Alienação ocorre quando o trabalhador se torna estranho ao produto do seu trabalho, ao processo em que ele acontece e à sua própria atividade. Ele produz algo que não lhe pertence, não decide como nem em que ritmo produzir, e por isso não se reconhece naquilo que faz. O trabalho, que na concepção marxista deveria ser a atividade em que o ser humano se realiza e transforma o mundo, converte-se em mero meio de obter salário. Exemplos contemporâneos tornam a resposta muito mais consistente: o operário de uma linha de montagem que executa uma única operação repetida e jamais vê o produto final; o atendente de call center cujo roteiro, tempo de fala e pausas são integralmente determinados por um sistema; o entregador cuja jornada é organizada por um algoritmo que ele não conhece nem controla. Em todos, o que caracteriza a alienação não é a dificuldade do trabalho, e sim a perda de controle e de sentido sobre ele.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Weber", "tipo": "conceitual", "oficial": false, "q": "Explique o conceito de ação social em Max Weber e o que distingue uma ação social de uma ação qualquer.", "conceitos": [{"l": "Sentido atribuído pelo indivíduo", "re": "sentido|significado|intencao|subjetiv"}, {"l": "Orientação pela conduta de outros", "re": "orientad|em relacao a outro|leva em conta|considera a acao de outr|influencia de outra pessoa"}, {"l": "Distinção de ação sem sentido social", "re": "nem toda|diferenca|distingue|nao e acao social|apenas"}, {"l": "Compreensão das motivações", "re": "compreender|motivacao|valor|por que|razao"}, {"l": "Exemplo", "re": "exemplo|por exemplo|aluno|estudar|imagine|suponha"}], "ref": "Para Weber, ação social é toda ação humana à qual o indivíduo atribui um sentido e que leva em consideração a ação, a presença ou a influência de outras pessoas. Os dois elementos são igualmente necessários: o sentido subjetivo e a orientação pelo outro. Por isso nem toda ação é ação social. Um reflexo involuntário, ou uma ação puramente individual que não considera ninguém, não se enquadra. O exemplo clássico ajuda: estudar pode ser ação social quando a decisão leva em conta a expectativa da família, a comparação com colegas ou a avaliação de um professor; e pode não ser, se realizada sem qualquer referência a outros. A consequência metodológica é grande: se a ação tem sentido, a tarefa do sociólogo não é apenas registrar o comportamento observável, mas compreender as motivações e os valores que levam a pessoa a agir daquele modo.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Weber", "tipo": "conceitual", "oficial": false, "q": "Explique o que é a Sociologia interpretativa e em que ela se diferencia da abordagem positivista.", "conceitos": [{"l": "Compreensão do sentido", "re": "sentido|significado|compreender|interpretar"}, {"l": "Ponto de vista do indivíduo", "re": "ponto de vista|perspectiva do individuo|subjetiv|do agente"}, {"l": "Contraste com o positivismo", "re": "positivis|durkheim|comte|ciencia natural|fato social|externo"}, {"l": "Método interpretativo", "re": "metodo|interpretat|compreensiv|verstehen"}, {"l": "Consequência para a análise", "re": "consequencia|permite|evita|ajuda a|implica"}], "ref": "A Sociologia interpretativa, associada a Weber, propõe que o objeto da análise social é o sentido que os indivíduos atribuem às suas ações, e que compreender esse sentido é condição para explicar a vida social. A diferença em relação ao positivismo é de método e de objeto. A tradição positivista, de Comte e Durkheim, busca observar fatos sociais de fora, como coisas dotadas de existência própria, identificando regularidades e causas externas ao indivíduo. A perspectiva weberiana desloca o foco para dentro da ação: interessa reconstruir as razões, os valores e as expectativas que a orientam. Isso não significa abandonar o rigor, mas reconhecer que a conduta humana não se explica como um fenômeno natural, já que é mediada por significados. Uma resposta forte evita apresentar as duas abordagens como simples opostos e mostra que elas iluminam dimensões diferentes do mesmo fenômeno.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Weber", "tipo": "argumentativa", "oficial": false, "q": "Nas anotações da aula aparece a ideia de que, para entender um crime como um assassinato, é preciso compreender o sentido e as causas da ação, e não apenas observar o acontecimento. Discuta: compreender uma ação significa justificá-la moralmente? Posicione-se e argumente.", "conceitos": [{"l": "Distinção entre compreender e justificar", "re": "compreender|justificar|nao significa|diferenca|explicar nao e"}, {"l": "Sentido da ação e contexto", "re": "sentido|contexto|motivacao|circunstancia|razao"}, {"l": "Papel do sociólogo", "re": "sociolog|analise|cientific|pesquisador|objetivo"}, {"l": "Posicionamento próprio", "re": "acredito|entendo|defendo|penso|considero|na minha"}, {"l": "Risco do relativismo ou do julgamento apressado", "re": "risco|relativis|julgamento|condena|superficial|preconceito"}], "ref": "A resposta mais sólida sustenta que compreender não é justificar, e explica por quê. Compreender é reconstruir o sentido que a ação teve para quem a praticou e o contexto social que a tornou possível; julgar é emitir juízo moral ou jurídico sobre ela. São operações distintas, e a primeira não implica a segunda: um pesquisador pode reconstruir as motivações de um ato que considera abominável, e é exatamente essa reconstrução que permite prevenir sua repetição. O oposto também merece atenção: recusar-se a compreender em nome da condenação moral costuma produzir explicações rasas, do tipo é só maldade, que nada esclarecem. Há, porém, uma objeção legítima a enfrentar: levada ao extremo, a ênfase no contexto pode escorregar para o relativismo, tratando toda conduta como equivalente. Uma boa resposta assume posição, sustenta com o conceito weberiano de sentido da ação e reconhece esse limite.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Weber", "tipo": "conceitual", "oficial": false, "q": "Explique a relação que Weber estabelece entre a ética protestante e o espírito do capitalismo.", "conceitos": [{"l": "Ética protestante e calvinismo", "re": "protestant|calvin|religi|puritan"}, {"l": "Valores de trabalho, disciplina e poupança", "re": "trabalho|disciplina|poupanca|austeridade|vocacao|esforco"}, {"l": "Espírito do capitalismo", "re": "espirito do capitalismo|acumulacao|reinvest|racionaliza|lucro como fim"}, {"l": "Ideias influenciam a economia", "re": "influenc|contribu|favoreceu|ideias|cultura|mentalidade"}, {"l": "Ressalva sobre causalidade", "re": "nao e a unica|nao determina|afinidade|nao significa que|ressalva|contribuiu"}], "ref": "Weber observa que certos valores difundidos pelo protestantismo ascético, especialmente na vertente calvinista, favoreceram a formação de uma mentalidade compatível com o desenvolvimento do capitalismo. Entre eles: a valorização do trabalho como vocação e dever religioso, a disciplina, a austeridade no consumo e a poupança. A combinação é decisiva: trabalhar intensamente e consumir pouco produz acumulação, e a acumulação reinvestida é exatamente o que caracteriza o espírito do capitalismo, entendido como busca sistemática e racional do lucro, e não como mera ganância, que sempre existiu. O argumento de Weber contém uma inversão importante em relação à leitura materialista: aqui são ideias e valores religiosos que contribuem para transformar a economia. Uma resposta cuidadosa registra a ressalva do próprio Weber: ele não afirma que a religião causou o capitalismo, mas identifica uma afinidade eletiva entre os dois, reconhecendo que múltiplos fatores atuaram.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}, {"tema": "Educação", "tipo": "argumentativa", "oficial": false, "q": "O conceito de ação social pode ser aplicado à educação para interpretar comportamentos de alunos e professores. Escolha uma situação concreta de sala de aula e analise-a usando esse conceito, explicando o que essa análise permite enxergar que uma explicação simplista não enxergaria.", "conceitos": [{"l": "Situação concreta de sala de aula", "re": "exemplo|situacao|aluno|professor|sala de aula|caso"}, {"l": "Sentido atribuído pelo aluno ou professor", "re": "sentido|significado|motivacao|intencao|por que"}, {"l": "Relação entre os envolvidos", "re": "relacao|interacao|contexto|expectativa|familia|colega|turma"}, {"l": "Crítica à explicação simplista", "re": "simplista|preguica|desinteresse|rotulo|superficial|nao basta"}, {"l": "Consequência pedagógica", "re": "consequencia|intervencao|pratica|estrategia|professor pode|ajuda a"}], "ref": "A análise ganha força quando parte de um caso concreto e recusa o rótulo fácil. Tome o aluno que não entrega trabalhos: a explicação simplista é que ele é preguiçoso ou desinteressado. A leitura weberiana pergunta qual sentido a ação tem para ele e que relações a orientam: pode haver trabalho fora da escola, responsabilidade com irmãos menores, ausência de internet em casa, medo de expor dificuldade diante dos colegas ou descrença de que o esforço mude sua situação. O mesmo vale para o professor, cuja ação também é orientada por sentidos e expectativas, como a pressão por cumprir o currículo ou a experiência acumulada com turmas anteriores. O ganho analítico é duplo: evita explicações que apenas culpabilizam o indivíduo e transforma a interpretação em ação pedagógica, porque cada sentido identificado sugere uma intervenção diferente. Uma resposta forte fecha mostrando essa consequência prática.", "criterios": ["Deixei claro o meu posicionamento logo no início", "Sustentei a posição com pelo menos dois argumentos", "Usei ao menos um conceito sociológico da matéria", "Considerei um contra-argumento ou uma objeção", "Fechei o texto retomando a minha posição"]}, {"tema": "Comparação", "tipo": "conceitual", "oficial": false, "q": "Compare as abordagens de Durkheim, Marx e Weber, indicando o foco principal e os conceitos-chave de cada um.", "conceitos": [{"l": "Durkheim: coesão e fato social", "re": "durkheim|fato social|coesao|consciencia coletiva|solidariedade|integra"}, {"l": "Marx: classes e economia", "re": "marx|classe|economia|materialismo|mais.?valia|producao"}, {"l": "Weber: sentido e ação social", "re": "weber|sentido|acao social|interpretat|compreens"}, {"l": "Diferença de método", "re": "metodo|positivis|historico|dialetic|interpretat|abordagem"}, {"l": "Complementaridade ou contraste", "re": "complement|contraste|diferente|enquanto|ja|por outro lado"}], "ref": "Uma boa comparação organiza os três por foco, método e conceitos-chave. Durkheim foca na coesão: pergunta o que mantém a sociedade integrada, adota método de inspiração positivista tratando fatos sociais como coisas e trabalha com fato social, consciência coletiva, moral e solidariedade. Marx foca no conflito: pergunta como a produção material e a propriedade dos meios de produção estruturam as classes, adota o método histórico-dialético e trabalha com materialismo histórico, burguesia e proletariado, mais-valia, ideologia e alienação. Weber foca no sentido: pergunta qual significado os indivíduos atribuem às suas ações, adota método interpretativo e trabalha com ação social, sociologia compreensiva e ética protestante. A síntese mais interessante evita hierarquizá-los e mostra que respondem a perguntas distintas sobre o mesmo objeto, de modo que analisar uma greve, por exemplo, pode exigir os três: a norma que a sustenta, o conflito de classe que a origina e o sentido que os grevistas atribuem à sua ação.", "criterios": ["Defini o conceito com precisão, sem rodeios", "Atribuí o conceito ao autor ou à corrente correta", "Dei um exemplo meu, que não estava no resumo", "Relacionei o conceito a outro conceito da matéria", "Escrevi um texto organizado, com abertura e fechamento"]}];
+const S={f:{tipo:"all",qtd:0,temas:new Set(),ordem:"seq"},lista:[],i:0,resp:{},crit:{},analisada:{}};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+const TEMAS=[...new Set(BANK.map(q=>q.tema))];
+TEMAS.forEach(t=>S.f.temas.add(t));
+
+const LS="soc_respostas_v1";
+function salvar(){ try{ localStorage.setItem(LS, JSON.stringify({resp:S.resp,crit:S.crit})); }catch(e){} }
+function carregar(){ try{ const d=JSON.parse(localStorage.getItem(LS)||"{}"); S.resp=d.resp||{}; S.crit=d.crit||{}; }catch(e){} }
+carregar();
+
+/* ---------- análise textual ---------- */
+const SINAIS=[
+ {k:"posic",l:"Posicionamento explícito",d:"expressões como acredito, defendo, entendo que, discordo",
+  re:/\b(acredito|acho que|entendo que|defendo|considero|penso que|na minha opiniao|discordo|concordo|sou favoravel|sou contrario|minha posicao)\b/},
+ {k:"conect",l:"Conectivos de argumentação",d:"porque, portanto, uma vez que, além disso",
+  re:/\b(porque|pois|portanto|logo|assim|alem disso|ademais|por isso|dado que|uma vez que|visto que|ja que|consequentemente|desse modo|dessa forma)\b/},
+ {k:"exemplo",l:"Exemplo ou caso concreto",d:"por exemplo, imagine, suponha, tome o caso",
+  re:/\b(por exemplo|como no caso|a exemplo|imagine|suponha|tome o caso|por ex\b|no caso d)\b/},
+ {k:"contra",l:"Contraponto considerado",d:"por outro lado, no entanto, apesar de",
+  re:/\b(por outro lado|no entanto|entretanto|porem|contudo|apesar|embora|ainda que|em contrapartida|nem sempre|ha quem)\b/},
+ {k:"fecho",l:"Fechamento ou conclusão",d:"conclui-se, portanto, em suma",
+  re:/\b(conclui-se|em suma|portanto|assim sendo|por fim|em resumo|dessa maneira|logo,)\b/}
+];
+function analisar(q, texto){
+  const t=norm(texto), palavras=texto.trim()?texto.trim().split(/\s+/).length:0;
+  const conceitos=q.conceitos.map(c=>({l:c.l, hit:new RegExp(c.re).test(t)}));
+  const sinais=SINAIS.map(s=>({...s, hit:s.re.test(t)}));
+  const cobertura=Math.round(conceitos.filter(c=>c.hit).length/conceitos.length*100);
+  return {conceitos,sinais,cobertura,palavras};
+}
+function faixaTexto(p){
+  if(p<40) return {t:"muito curta",c:"low"};
+  if(p<90) return {t:"curta para uma dissertativa",c:"mid"};
+  if(p<260) return {t:"extensão adequada",c:"high"};
+  return {t:"bem desenvolvida",c:"high"};
+}
+
+/* ---------- setup ---------- */
+function chips(host,itens,get,set){
+  host.innerHTML=itens.map(i=>`<button class="chip" aria-pressed="false" data-v="${esc(i.v)}">${esc(i.t)}</button>`).join("");
+  const sync=()=>host.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(get(c.dataset.v))));
+  host.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{set(c.dataset.v);sync();pool();}));
+  sync();
+}
+function montar(){
+  chips($("#fTipo"),[{v:"all",t:"Todas"},{v:"oficial",t:"Só as do trabalho"},{v:"conceitual",t:"Conceituais"},{v:"argumentativa",t:"Argumentativas"}],
+    v=>S.f.tipo===v, v=>S.f.tipo=v);
+  chips($("#fQtd"),[{v:"5",t:"5"},{v:"10",t:"10"},{v:"15",t:"15"},{v:"0",t:"Todas"}],
+    v=>String(S.f.qtd)===v, v=>S.f.qtd=+v);
+  chips($("#fTema"),TEMAS.map(t=>({v:t,t})), v=>S.f.temas.has(v),
+    v=>{ S.f.temas.has(v)?S.f.temas.delete(v):S.f.temas.add(v); if(!S.f.temas.size)S.f.temas.add(v); });
+  chips($("#fOrd"),[{v:"seq",t:"Sequencial"},{v:"rand",t:"Aleatória"}], v=>S.f.ordem===v, v=>S.f.ordem=v);
+  $("#fAll").addEventListener("click",()=>{
+    const todos=S.f.temas.size===TEMAS.length;
+    S.f.temas=new Set(todos?[TEMAS[0]]:TEMAS);
+    $("#fAll").textContent=todos?"Selecionar todos":"Limpar seleção";
+    $("#fTema").querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(S.f.temas.has(c.dataset.v))));
+    pool();
+  });
+  pool();
+}
+function filtradas(){
+  return BANK.filter(q=>{
+    if(S.f.tipo==="oficial" && !q.oficial) return false;
+    if(S.f.tipo==="conceitual"||S.f.tipo==="argumentativa"){ if(q.tipo!==S.f.tipo) return false; }
+    return S.f.temas.has(q.tema);
+  });
+}
+function pool(){
+  const n=filtradas().length, q=S.f.qtd===0?n:Math.min(S.f.qtd,n);
+  $("#poolTxt").textContent = q===1?"1 questão":q+" questões";
+  $("#poolSub").textContent = n===0?"ajuste os filtros para continuar":"selecionadas de "+n+" disponíveis";
+  $("#startBtn").disabled = q===0;
+}
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+/* ---------- fluxo ---------- */
+function iniciar(){
+  let l=filtradas().slice();
+  if(S.f.ordem==="rand") shuffle(l);
+  if(S.f.qtd>0) l=l.slice(0,S.f.qtd);
+  S.lista=l; S.i=0; S.analisada={};
+  tela("scQuiz"); $("#exitBtn").hidden=false; render();
+}
+function tela(id){ $$(".screen").forEach(s=>s.classList.toggle("on",s.id===id)); window.scrollTo({top:0,behavior:"instant"}); }
+const idOf=q=>BANK.indexOf(q);
+function render(){
+  const q=S.lista[S.i], id=idOf(q), texto=S.resp[id]||"", feita=!!S.analisada[id];
+  $("#ctx").textContent=q.tema;
+  const escritas=S.lista.filter(x=>(S.resp[idOf(x)]||"").trim().length>0).length;
+  $("#metrics").innerHTML=`<span>Questão <b>${S.i+1}</b> de <b>${S.lista.length}</b></span><i class="mdot"></i>`+
+    `<span>Respondidas <b>${escritas}</b></span><span class="mspace"></span><span>${esc(q.tipo==="argumentativa"?"Argumentativa":"Conceitual")}</span>`;
+  $("#pfill").style.width=((S.i+1)/S.lista.length*100)+"%";
+
+  let painel="";
+  if(feita){
+    const a=analisar(q,texto), fx=faixaTexto(a.palavras);
+    painel=`
+    <div class="panel"><div class="panel-h">Conceitos da matéria identificados no seu texto<span class="cov">${a.cobertura}%</span></div>
+      <div class="panel-b"><div class="cchips">${a.conceitos.map(c=>`<span class="cchip ${c.hit?"hit":""}">${c.hit?"&#10003; ":""}${esc(c.l)}</span>`).join("")}</div>
+      <div class="disc">Chips apagados são conceitos que o corretor costuma procurar e que não apareceram no seu texto. Não significa que a resposta esteja errada — significa que vale checar se faltou.</div></div></div>
+    <div class="panel"><div class="panel-h">Sinais de estrutura argumentativa</div><div class="panel-b">
+      ${a.sinais.map(s=>`<div class="sig ${s.hit?"on":""}"><i>${s.hit?"&#10003;":"&ndash;"}</i><div>${esc(s.l)}<small>${esc(s.d)}</small></div></div>`).join("")}
+      <div class="sig ${fx.c==="high"?"on":""}"><i>${fx.c==="high"?"&#10003;":"&ndash;"}</i><div>Extensão: ${a.palavras} palavras<small>${fx.t}</small></div></div>
+      <div class="disc">Estes são indícios detectados por busca de expressões no texto, não um juízo sobre o conteúdo do seu argumento.</div></div></div>
+    <div class="panel"><div class="panel-h">Resposta de referência</div><div class="panel-b"><div class="ref">${esc(q.ref)}</div></div></div>
+    <div class="panel"><div class="panel-h">Autoavaliação — marque o que você de fato fez</div><div class="panel-b" id="critBox">
+      ${q.criterios.map((c,j)=>`<label class="crit"><input type="checkbox" data-j="${j}" ${(S.crit[id]||[])[j]?"checked":""}><span>${esc(c)}</span></label>`).join("")}
+    </div></div>`;
+  }
+
+  $("#qcard").innerHTML=`
+    <div class="qtop"><div class="qnum">Questão ${S.i+1}</div></div>
+    <div class="tags">
+      <span class="tag">${esc(q.tema)}</span>
+      <span class="tag ${q.tipo==="argumentativa"?"arg":"con"}">${q.tipo==="argumentativa"?"Argumentativa":"Conceitual"}</span>
+      ${q.oficial?'<span class="tag of">Trabalho oficial</span>':""}
+    </div>
+    <div class="qtext">${esc(q.q)}</div>
+    <div class="editor">
+      <textarea class="ans" id="ans" placeholder="Escreva sua resposta aqui. Justifique seu posicionamento: não basta concordar ou discordar." ${feita?"disabled":""}>${esc(texto)}</textarea>
+      <div class="ed-foot"><span class="wc" id="wc"></span><span>${feita?"Resposta analisada":"Escreva e clique em Analisar"}</span></div>
+    </div>
+    ${painel}`;
+
+  const ta=$("#ans");
+  const upd=()=>{ const p=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;
+    $("#wc").innerHTML=`<b>${p}</b> palavra${p===1?"":"s"}`; };
+  upd();
+  ta.addEventListener("input",()=>{ S.resp[id]=ta.value; upd(); salvar();
+    $("#bMain").disabled = ta.value.trim().length<10 && !S.analisada[id]; });
+  if(feita) $("#critBox").querySelectorAll("input").forEach(cb=>cb.addEventListener("change",()=>{
+    S.crit[id]=S.crit[id]||[]; S.crit[id][+cb.dataset.j]=cb.checked; salvar(); }));
+
+  const ultima=S.i===S.lista.length-1;
+  const principal = feita
+    ? `<button class="btn btn-primary" id="bMain">${ultima?"Ver resumo":"Próxima questão"}</button>`
+    : `<button class="btn btn-primary" id="bMain" ${texto.trim().length<10?"disabled":""}>Analisar resposta</button>`;
+  $("#nav").innerHTML=`<button class="btn btn-ghost" id="bPrev" ${S.i===0?"disabled":""}>Anterior</button>
+    <span class="navspace"></span>
+    ${!feita&&!ultima?'<button class="btn btn-ghost btn-sm" id="bSkip">Pular</button>':""}
+    ${principal}`;
+  $("#bPrev").addEventListener("click",()=>{ if(S.i>0){S.i--;render();} });
+  if($("#bSkip")) $("#bSkip").addEventListener("click",()=>{ S.i++; render(); });
+  $("#bMain").addEventListener("click",()=>{
+    if(!S.analisada[id]){ S.analisada[id]=true; render(); window.scrollTo({top:document.body.scrollHeight*0.35,behavior:"smooth"}); return; }
+    if(ultima){ resumo(); return; }
+    S.i++; render();
+  });
+}
+
+/* ---------- resumo ---------- */
+function resumo(){
+  const feitas=S.lista.filter(q=>S.analisada[idOf(q)]);
+  const cobs=feitas.map(q=>analisar(q,S.resp[idOf(q)]||"").cobertura);
+  const media=cobs.length?Math.round(cobs.reduce((a,b)=>a+b,0)/cobs.length):0;
+  let cm=0,ct=0; feitas.forEach(q=>{ const c=S.crit[idOf(q)]||[]; ct+=q.criterios.length; cm+=q.criterios.filter((_,j)=>c[j]).length; });
+  const auto=ct?Math.round(cm/ct*100):0;
+  const pal=feitas.reduce((s,q)=>s+((S.resp[idOf(q)]||"").trim().split(/\s+/).filter(Boolean).length),0);
+
+  const porTema={};
+  feitas.forEach(q=>{ const a=analisar(q,S.resp[idOf(q)]||""); (porTema[q.tema]=porTema[q.tema]||[]).push(a.cobertura); });
+  const linhas=Object.entries(porTema).map(([t,v])=>({t,p:Math.round(v.reduce((a,b)=>a+b,0)/v.length),n:v.length}))
+    .sort((a,b)=>a.p-b.p).map(r=>{
+      const cls=r.p<50?"low":(r.p<75?"mid":"high");
+      return `<div class="brow"><div><div class="bname">${esc(r.t)} <span style="color:var(--subtle)">· ${r.n} questão${r.n>1?"es":""}</span></div>
+        <div class="btrack"><div class="bfill ${cls}" style="width:${r.p}%"></div></div></div><div class="bpct">${r.p}%</div></div>`;
+    }).join("");
+
+  const faltas={};
+  feitas.forEach(q=>{ analisar(q,S.resp[idOf(q)]||"").conceitos.forEach(c=>{ if(!c.hit) faltas[c.l]=(faltas[c.l]||0)+1; }); });
+  const top=Object.entries(faltas).sort((a,b)=>b[1]-a[1]).slice(0,8);
+
+  $("#resultBody").innerHTML=`
+    <div class="rhead"><h2>Resumo da sessão</h2><p>${feitas.length} de ${S.lista.length} questões analisadas · ${pal} palavras escritas</p></div>
+    <div class="rcard">
+      <div class="rstats">
+        <div class="rstat"><b>${media}%</b><span>cobertura média de conceitos</span></div>
+        <div class="rstat"><b>${auto}%</b><span>sua autoavaliação</span></div>
+        <div class="rstat"><b>${feitas.length}</b><span>questões analisadas</span></div>
+        <div class="rstat"><b>${pal}</b><span>palavras no total</span></div>
+      </div>
+      ${linhas?`<div class="sect-t">Cobertura por tema</div>${linhas}`:""}
+      ${top.length?`<div class="sect-t">Conceitos que mais faltaram</div>
+        <div class="cchips">${top.map(([l,n])=>`<span class="cchip">${esc(l)} · ${n}x</span>`).join("")}</div>
+        <div class="disc">Revise estes pontos antes de entregar o trabalho.</div>`:""}
+    </div>
+    <div class="ractions">
+      <button class="btn btn-ghost" id="bBaixar">Baixar minhas respostas</button>
+      <button class="btn btn-ghost" id="bRev">Revisar questões</button>
+      <button class="btn btn-primary" id="bNovo">Nova sessão</button>
+    </div>`;
+  $("#bBaixar").addEventListener("click",baixar);
+  $("#bRev").addEventListener("click",()=>{ S.i=0; tela("scQuiz"); render(); });
+  $("#bNovo").addEventListener("click",voltar);
+  $("#ctx").textContent="Resumo"; $("#pfill").style.width="100%";
+  tela("scResult");
+}
+function baixar(){
+  const linhas=[];
+  S.lista.forEach((q,n)=>{ const t=(S.resp[idOf(q)]||"").trim(); if(!t) return;
+    linhas.push(`QUESTÃO ${n+1} — ${q.tema}${q.oficial?" (trabalho oficial)":""}`,"",q.q,"","RESPOSTA:",t,"","-".repeat(60),""); });
+  if(!linhas.length){ alert("Nenhuma resposta escrita ainda."); return; }
+  const blob=new Blob(["SOCIOLOGIA — RESPOSTAS\n\n"+linhas.join("\n")],{type:"text/plain;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download="respostas-sociologia.txt"; document.body.appendChild(a); a.click(); a.remove();
+}
+function voltar(){ $("#exitBtn").hidden=true; $("#pfill").style.width="0"; $("#ctx").textContent="Questões dissertativas"; tela("scSetup"); pool(); }
+
+$("#startBtn").addEventListener("click",iniciar);
+$("#exitBtn").addEventListener("click",()=>{ if(confirm("Voltar ao início? Suas respostas continuam salvas.")) voltar(); });
+montar();
+</script>
+</body>
+</html>
