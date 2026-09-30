@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Algoritmos · Treino rápido para a prova</title>
+<style>
+:root{
+ --brand:#2F6FED;--brand-2:#1D52C4;--brand-soft:#EAF1FE;--ring:rgba(47,111,237,.25);
+ --ok:#0F7A52;--ok-soft:#E6F5EE;--ok-line:#9BD6BD;
+ --err:#C0392B;--err-soft:#FCECEA;--err-line:#EEB4AC;
+ --warn:#9A5B00;--warn-soft:#FFF4E2;--warn-line:#EFD3A3;
+ --bg:#F6F7F9;--surf:#FFF;--surf2:#FAFBFC;--ink:#0F172A;--ink2:#334155;--mut:#64748B;--sub:#94A3B8;
+ --line:#E2E8F0;--line2:#CBD5E1;--code-bg:#0F172A;--code-ink:#E2E8F0;
+ --r:12px;--r-sm:8px;--r-lg:16px;--sh:0 1px 2px rgba(15,23,42,.06);--sh2:0 6px 20px rgba(15,23,42,.10);
+ --mono:ui-monospace,"Cascadia Code","Consolas","Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+ background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:4px}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+.screen{display:none}.screen.on{display:block}
+
+/* topo */
+.top{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:860px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:13px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px}
+.bm{width:26px;height:26px;border-radius:7px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:14px;font-family:var(--mono)}
+.sep{width:1px;height:20px;background:var(--line)}
+.ctx{font-size:13px;color:var(--mut);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tact{font-size:13px;color:var(--mut);padding:6px 10px;border-radius:var(--r-sm)}
+.tact:hover{background:var(--bg);color:var(--ink2)}
+.pbar{height:3px;background:var(--line)}.pbar i{display:block;height:100%;background:var(--brand);width:0;transition:width .35s}
+
+/* home */
+.hero{padding:40px 0 20px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);margin-bottom:9px}
+h1{font-size:31px;line-height:1.18;letter-spacing:-.02em}
+.hero p{color:var(--mut);margin-top:9px;max-width:62ch}
+.cards{display:grid;gap:12px;margin:22px 0}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh);
+ display:flex;gap:14px;align-items:center;text-align:left;width:100%;transition:transform .12s,box-shadow .12s,border-color .12s}
+.card:hover{transform:translateY(-1px);box-shadow:var(--sh2);border-color:var(--brand)}
+.card .ico{width:38px;height:38px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-size:18px;flex:none}
+.card .t{font-weight:650;font-size:15.5px}
+.card .d{font-size:13px;color:var(--mut);margin-top:2px}
+.card .meta{margin-left:auto;font-size:12px;color:var(--sub);white-space:nowrap;flex:none}
+.card.done{border-color:var(--ok-line);background:var(--ok-soft)}
+.card.done .ico{background:var(--ok);color:#fff}
+.tipbox{background:var(--warn-soft);border:1px solid var(--warn-line);border-radius:var(--r);padding:13px 15px;font-size:13.5px;color:#5C3A03;line-height:1.55;margin-top:6px}
+
+/* atividade */
+.head{padding:22px 0 4px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.head h2{font-size:21px;letter-spacing:-.01em}
+.step{font-size:12.5px;color:var(--sub);margin-left:auto}
+.lead{color:var(--ink2);font-size:15px;margin:8px 0 16px;max-width:70ch}
+.panel{background:var(--surf);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);padding:22px;margin-bottom:12px}
+.q{font-size:16.5px;font-weight:600;line-height:1.6}
+.sub{font-size:13.5px;color:var(--mut);margin-top:4px}
+
+pre.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:15px 16px;overflow-x:auto;
+ font-family:var(--mono);font-size:13.5px;line-height:1.75;margin:14px 0}
+pre.code b{color:#7DD3FC;font-weight:600}
+pre.code em{color:#FCA5A5;font-style:normal}
+pre.code .cm{color:#64748B}
+.ln{display:block;padding:1px 8px;border-radius:5px;margin:0 -8px}
+.ln.sel{background:#1E3A8A}
+.ln.hit{background:#14532D}
+.ln.miss{background:#7F1D1D}
+.ln.cur{background:#1E293B;box-shadow:inset 3px 0 0 #7DD3FC}
+.ln.click{cursor:pointer}
+.ln.click:hover{background:#1E293B}
+
+/* opcoes genericas */
+.opts{display:grid;gap:9px;margin-top:16px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--surf);
+ border:1px solid var(--line2);border-radius:var(--r);padding:12px 14px;font-size:15px;line-height:1.5;color:var(--ink2);
+ transition:border-color .12s,background .12s,box-shadow .12s}
+.opt:hover:not(:disabled){border-color:var(--brand);background:#FAFCFF}
+.opt:disabled{cursor:default}
+.ol{flex:none;width:24px;height:24px;border-radius:6px;display:grid;place-items:center;font-size:12px;font-weight:700;
+ background:var(--bg);border:1px solid var(--line2);color:var(--mut);margin-top:1px}
+.opt[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 3px var(--ring)}
+.opt[aria-pressed="true"] .ol{background:var(--brand);border-color:var(--brand);color:#fff}
+.opt.ok{border-color:var(--ok-line);background:var(--ok-soft);box-shadow:none;color:var(--ink)}
+.opt.ok .ol{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.err{border-color:var(--err-line);background:var(--err-soft);box-shadow:none}
+.opt.err .ol{background:var(--err);border-color:var(--err);color:#fff}
+.opt.off{opacity:.5}
+.opt code{font-family:var(--mono);font-size:14px;background:#EEF2F7;padding:1px 6px;border-radius:5px}
+
+/* pares */
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.pcol{display:grid;gap:8px;align-content:start}
+.pitem{border:1px solid var(--line2);border-radius:var(--r);padding:11px 13px;font-size:14.5px;text-align:left;background:var(--surf);transition:all .12s}
+.pitem:hover:not(:disabled){border-color:var(--brand)}
+.pitem[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 3px var(--ring)}
+.pitem.paired{border-color:var(--ok-line);background:var(--ok-soft);color:var(--ok);cursor:default}
+.pitem.shake{animation:sk .3s}
+@keyframes sk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.pcol h4{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin-bottom:2px}
+
+/* classificar */
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 16px;min-height:44px;padding:10px;border:1px dashed var(--line2);border-radius:var(--r);background:var(--surf2)}
+.tokn{border:1px solid var(--line2);background:var(--surf);border-radius:999px;padding:7px 14px;font-size:14px;font-family:var(--mono)}
+.tokn:hover{border-color:var(--brand);color:var(--brand)}
+.tokn[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 3px var(--ring)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.bin{border:1px solid var(--line2);border-radius:var(--r);padding:12px;background:var(--surf2);min-height:92px;text-align:left}
+.bin:hover{border-color:var(--brand)}
+.bin h5{font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:2px}
+.bin small{font-size:11.5px;color:var(--sub);display:block;margin-bottom:8px}
+.bin .drop{display:flex;flex-wrap:wrap;gap:6px}
+.chipin{font-family:var(--mono);font-size:12.5px;border-radius:999px;padding:4px 10px;border:1px solid var(--ok-line);background:var(--ok-soft);color:var(--ok)}
+.chipin.bad{border-color:var(--err-line);background:var(--err-soft);color:var(--err)}
+
+/* ordenar */
+.sortlist{display:grid;gap:7px;margin-top:14px}
+.srow{display:flex;align-items:center;gap:10px;border:1px solid var(--line2);border-radius:var(--r);padding:9px 11px;background:var(--surf);font-family:var(--mono);font-size:13.5px}
+.srow .num{width:22px;height:22px;border-radius:6px;background:var(--bg);display:grid;place-items:center;font-size:11px;color:var(--mut);flex:none;font-family:inherit}
+.srow .txt{flex:1;min-width:0}
+.srow .mv{display:flex;gap:3px;flex:none}
+.srow .mv button{width:26px;height:26px;border-radius:6px;border:1px solid var(--line2);font-size:12px;color:var(--mut)}
+.srow .mv button:hover{border-color:var(--brand);color:var(--brand)}
+.srow.ok{border-color:var(--ok-line);background:var(--ok-soft)}
+.srow.bad{border-color:var(--err-line);background:var(--err-soft)}
+
+/* teste de mesa */
+.mesa{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}
+.vars table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13.5px}
+.vars th{font-family:inherit;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--sub);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+.vars td{padding:7px 8px;border-bottom:1px solid var(--line)}
+.vars td.v{font-weight:700;color:var(--brand)}
+.vars tr.chg td.v{animation:pop .4s}
+@keyframes pop{0%{background:#FEF3C7}100%{background:transparent}}
+.out{margin-top:10px;background:var(--code-bg);color:#86EFAC;border-radius:var(--r);padding:11px 13px;font-family:var(--mono);font-size:13px;min-height:44px;white-space:pre-wrap}
+.out .lbl{color:#64748B;font-size:11px;display:block;margin-bottom:4px}
+
+/* inputs */
+.ansrow{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+input.txt{border:1px solid var(--line2);border-radius:var(--r-sm);padding:11px 13px;font-size:15px;font-family:var(--mono);min-width:130px;flex:1;max-width:260px;background:var(--surf)}
+input.txt:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--ring);outline:none}
+
+/* botoes */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14.5px;font-weight:650;padding:11px 18px;border-radius:var(--r-sm);transition:background .12s,transform .06s,border-color .12s}
+.btn:active{transform:translateY(1px)}
+.btn-pri{background:var(--brand);color:#fff}
+.btn-pri:hover{background:var(--brand-2)}
+.btn-pri:disabled{background:var(--line2);cursor:not-allowed}
+.btn-gh{border:1px solid var(--line2);color:var(--ink2);background:var(--surf)}
+.btn-gh:hover{background:var(--surf2);border-color:var(--line2)}
+.btn-sm{font-size:13px;padding:8px 13px}
+.nav{display:flex;gap:9px;align-items:center;margin:14px 0 30px;flex-wrap:wrap}
+.grow{flex:1}
+
+/* feedback e dica */
+.fb{margin-top:14px;border-radius:var(--r);padding:14px 16px;border:1px solid var(--line);border-left:3px solid var(--line2);background:var(--surf2);font-size:14.5px;line-height:1.6;color:var(--ink2)}
+.fb.ok{background:var(--ok-soft);border-color:var(--ok-line);border-left-color:var(--ok)}
+.fb.err{background:var(--err-soft);border-color:var(--err-line);border-left-color:var(--err)}
+.fb b{display:block;margin-bottom:3px;font-size:13.5px}
+.fb.ok b{color:var(--ok)}.fb.err b{color:var(--err)}
+.fb code,.fb2 code{font-family:var(--mono);font-size:13.5px;background:rgba(15,23,42,.06);padding:1px 5px;border-radius:4px}
+.hintbox{margin-top:12px;border:1px solid var(--warn-line);background:var(--warn-soft);border-radius:var(--r);padding:12px 14px;font-size:14px;color:#5C3A03;line-height:1.6}
+.hintbox b{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;color:var(--warn)}
+
+/* resultado */
+.rhead{text-align:center;padding:34px 0 4px}
+.rhead h2{font-size:25px;letter-spacing:-.02em}
+.rhead p{color:var(--mut);margin-top:6px}
+.rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:18px}
+.rstat{background:var(--surf2);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px}
+.rstat b{display:block;font-size:22px;font-weight:700}
+.rstat span{font-size:12.5px;color:var(--mut)}
+.rstat.ok b{color:var(--ok)}.rstat.err b{color:var(--err)}
+.revrow{display:grid;grid-template-columns:1fr 40px;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--ok-soft);color:var(--ok)}
+.badge.err{background:var(--err-soft);color:var(--err)}
+.sect{font-size:13px;font-weight:650;color:var(--ink2);margin:24px 0 10px}
+
+@media(max-width:700px){
+ .wrap{padding:0 15px}.mesa{grid-template-columns:1fr}.pairs{grid-template-columns:1fr}
+ h1{font-size:25px}.panel{padding:17px 15px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="top-in">
+  <div class="brand"><span class="bm">&lt;/&gt;</span>Algoritmos</div>
+  <div class="sep"></div>
+  <div class="ctx" id="ctx">Treino rápido para a prova</div>
+  <button class="tact" id="exitBtn" hidden>Menu</button>
+ </div>
+ <div class="pbar"><i id="pfill"></i></div>
+</header>
+
+<section class="screen on" id="scHome"><div class="wrap" id="homeBody"></div></section>
+<section class="screen" id="scAct"><div class="wrap" id="actBody"></div></section>
+<section class="screen" id="scRes"><div class="wrap" id="resBody"></div></section>
+<script>
+/* ====================== CONTEÚDO ====================== */
+const MODS=[
+{id:"m1",ico:"🧭",t:"Fundamentos e conceitos",d:"Algoritmo, lógica, Portugol, alto e baixo nível",itens:[
+ {t:"pares",q:"Ligue cada termo à sua definição.",
+  sub:"Clique num termo da esquerda e depois na definição correspondente.",
+  pares:[
+   {a:"Algoritmo",b:"Sequência finita e ordenada de passos que resolve um problema"},
+   {a:"Programa",b:"Algoritmo já escrito em uma linguagem de programação"},
+   {a:"Lógica de programação",b:"Organização do raciocínio para chegar à solução"},
+   {a:"Portugol",b:"Pseudolinguagem em português usada para escrever algoritmos"},
+   {a:"Instrução",b:"Cada comando isolado que o computador executa"}],
+  hint:["Comece pelo par mais óbvio: qual deles é escrito em uma linguagem como C ou Python?",
+        "Algoritmo é a receita; programa é a receita já traduzida para a linguagem da máquina."],
+  w:"O algoritmo é a solução pensada, independente de linguagem. Quando você escreve esse algoritmo em C, Python ou Java, ele vira um programa. Portugol é o meio do caminho: tem a estrutura de um programa mas é escrito em português, para você raciocinar sem travar na sintaxe."},
+
+ {t:"mc",q:"Qual alternativa distingue corretamente linguagem de alto nível e de baixo nível?",
+  o:["Alto nível é mais próxima da linguagem humana e mais abstrata; baixo nível é mais próxima da máquina",
+     "Alto nível é mais próxima da máquina; baixo nível é mais próxima da linguagem humana",
+     "Alto nível executa mais rápido porque dispensa qualquer tradução para a máquina",
+     "Baixo nível é usada apenas em algoritmos escritos em pseudocódigo como o Portugol",
+     "A diferença está no tamanho do programa, não no grau de abstração da linguagem"],
+  c:0,
+  hint:["Pense em quem a linguagem tenta agradar: o ser humano que lê ou o processador que executa.",
+        "Assembly conversa diretamente com o hardware. Python parece quase inglês."],
+  w:"Alto nível = mais abstrata, mais perto de como nós falamos (Python, Java, C). Baixo nível = mais perto do hardware, pouca abstração (Assembly, linguagem de máquina). Quanto mais alto o nível, mais o compilador trabalha para traduzir."},
+
+ {t:"mc",q:"São formas de representar um algoritmo, segundo a apostila:",
+  o:["linguagem natural, fluxogramas, diagramas de Chapin e pseudolinguagens",
+     "apenas fluxogramas e linguagem de máquina, por serem formas precisas",
+     "somente pseudolinguagens, já que as demais não têm rigor suficiente",
+     "tabelas-verdade, gráficos estatísticos e diagramas de classe",
+     "exclusivamente as linguagens de programação compiladas"],
+  c:0,
+  hint:["A apostila lista quatro formas, da mais informal para a mais estruturada.",
+        "Uma delas é simplesmente descrever os passos em português corrido."],
+  w:"As quatro formas são: linguagem natural (texto corrido), fluxograma (símbolos gráficos), diagrama de Chapin (blocos encaixados) e pseudolinguagem (Portugol). Todas descrevem o mesmo algoritmo com graus diferentes de formalidade."},
+
+ {t:"mc",q:"O princípio básico de funcionamento de um computador é:",
+  o:["Entrada → Processamento → Saída",
+     "Saída → Entrada → Processamento",
+     "Processamento → Entrada → Armazenamento",
+     "Entrada → Armazenamento → Compilação",
+     "Compilação → Execução → Depuração"],
+  c:0,
+  hint:["Pense no algoritmo da média: primeiro você recebe as notas, depois calcula, por último mostra.",
+        "LEIA vem antes da conta, que vem antes do EXIBA."],
+  w:"Todo algoritmo segue esse fluxo: recebe dados (LEIA), transforma esses dados (atribuições e cálculos) e devolve um resultado (EXIBA). Guardar isso ajuda a organizar qualquer algoritmo na hora da prova."},
+
+ {t:"classificar",q:"Classifique cada linguagem quanto ao nível de abstração.",
+  sub:"Clique no item e depois na caixa em que ele se encaixa.",
+  bins:[{k:"ALTO",n:"Alto nível",d:"perto do humano"},{k:"BAIXO",n:"Baixo nível",d:"perto da máquina"}],
+  toks:[{x:"Python",k:"ALTO"},{x:"Assembly",k:"BAIXO"},{x:"Java",k:"ALTO"},
+        {x:"Linguagem de máquina",k:"BAIXO"},{x:"C",k:"ALTO"}],
+  hint:["Se você consegue ler e quase entender sem estudar a linguagem, ela é de alto nível.",
+        "Linguagem de máquina é a única que o processador entende sem tradução: só 0 e 1."],
+  w:"C é considerada de alto nível (embora seja a mais próxima do hardware entre as de alto nível). Assembly e linguagem de máquina são de baixo nível: trabalham com registradores e instruções do processador."}
+]},
+
+{id:"m2",ico:"📦",t:"Variáveis, tipos e identificadores",d:"O que cai em quase toda prova inicial",itens:[
+ {t:"classificar",q:"Classifique cada valor pelo tipo de dado.",
+  sub:"Clique no valor e depois no tipo correspondente.",
+  bins:[{k:"INTEIRO",n:"INTEIRO",d:"sem casas decimais"},{k:"REAL",n:"REAL",d:"com casas decimais"},
+        {k:"CARACTER",n:"CARACTER",d:"texto, entre aspas"},{k:"LOGICO",n:"LOGICO",d:"verdadeiro ou falso"}],
+  toks:[{x:"42",k:"INTEIRO"},{x:"3.14",k:"REAL"},{x:'"João"',k:"CARACTER"},{x:"VERDADEIRO",k:"LOGICO"},
+        {x:"-7",k:"INTEIRO"},{x:"0.5",k:"REAL"},{x:'"S"',k:"CARACTER"},{x:"FALSO",k:"LOGICO"}],
+  hint:["Tem vírgula ou ponto decimal? Então não é inteiro.",
+        "Aspas sempre indicam CARACTER, mesmo quando o conteúdo é um número: \"7\" é texto."],
+  w:"Os quatro tipos básicos: INTEIRO (números sem decimais), REAL (com decimais), CARACTER (texto entre aspas) e LOGICO (só verdadeiro ou falso). Atenção: \"7\" entre aspas é CARACTER, não INTEIRO."},
+
+ {t:"mc",q:"Um algoritmo converte a distância da Terra à Lua de metros para quilômetros. Quantas variáveis são necessárias, no mínimo, e qual o tipo adequado?",
+  o:["Uma variável, do tipo real",
+     "Duas variáveis, ambas do tipo inteiro",
+     "Uma variável, do tipo inteiro",
+     "Três variáveis, dos tipos real, inteiro e caracter",
+     "Duas variáveis, sendo uma real e uma lógica"],
+  c:0,
+  hint:["Pense: o valor em metros pode ser guardado e depois sobrescrito pelo resultado em km na mesma variável.",
+        "384400000 metros dividido por 1000 dá 384400 — mas divisão em Portugol devolve resultado real."],
+  w:"Basta uma variável: você guarda a distância e depois atribui a ela mesma o valor dividido por 1000. O tipo é real porque a divisão pode gerar casas decimais — em Portugol o operador / sempre produz resultado real. Essa questão apareceu no comentário do pessoal sobre a prova, então guarde o raciocínio."},
+
+ {t:"classificar",q:"Cada identificador abaixo é válido ou inválido?",
+  sub:"Regras: começa por letra, sem espaços, sem acentos ou símbolos (exceto _), e não pode ser palavra reservada.",
+  bins:[{k:"OK",n:"Válido",d:"segue as regras"},{k:"NO",n:"Inválido",d:"quebra alguma regra"}],
+  toks:[{x:"nome_aluno",k:"OK"},{x:"2nota",k:"NO"},{x:"media final",k:"NO"},{x:"P1",k:"OK"},
+        {x:"preço",k:"NO"},{x:"INICIO",k:"NO"},{x:"valorTotal",k:"OK"}],
+  hint:["Três coisas derrubam um identificador: começar com número, ter espaço e ter acento ou símbolo.",
+        "INICIO é uma palavra que o Portugol já usa para outra coisa — por isso não pode virar nome de variável."],
+  w:"nome_aluno, P1 e valorTotal seguem as regras. 2nota começa com número; media final tem espaço; preço tem cedilha e acento; INICIO é palavra reservada do Portugol. Na prova, procure exatamente esses quatro defeitos."},
+
+ {t:"mc",q:"Qual a diferença entre variável e constante?",
+  o:["A variável pode ter seu valor alterado durante a execução; a constante mantém o mesmo valor do início ao fim",
+     "A constante ocupa espaço na memória e a variável não ocupa nenhum espaço",
+     "A variável só armazena números e a constante só armazena textos",
+     "A constante é declarada dentro do INICIO e a variável antes do VAR",
+     "Não há diferença prática: os dois termos indicam a mesma coisa"],
+  c:0,
+  hint:["O nome de cada uma já entrega o comportamento esperado.",
+        "Pense no valor de PI num cálculo de área: ele muda durante o algoritmo?"],
+  w:"Ambas ocupam espaço na memória. A diferença é o comportamento: a variável muda de valor ao longo do algoritmo, a constante é fixada uma vez (como PI = 3.14) e não muda."}
+]},
+
+{id:"m3",ico:"➗",t:"Operadores",d:"Aritméticos, relacionais, lógicos, RESTO e QUOCIENTE",itens:[
+ {t:"classificar",q:"Classifique cada operador pelo seu tipo.",
+  sub:"Os três tipos caem juntos em uma questão só, muito provavelmente.",
+  bins:[{k:"ARIT",n:"Aritméticos",d:"fazem contas"},{k:"REL",n:"Relacionais",d:"comparam valores"},
+        {k:"LOG",n:"Lógicos",d:"combinam condições"}],
+  toks:[{x:"+",k:"ARIT"},{x:">=",k:"REL"},{x:"E",k:"LOG"},{x:"*",k:"ARIT"},
+        {x:"<>",k:"REL"},{x:"OU",k:"LOG"},{x:"RESTO",k:"ARIT"},{x:"NAO",k:"LOG"},{x:"=",k:"REL"}],
+  hint:["Pergunte-se o que cada um devolve: um número, ou verdadeiro/falso?",
+        "RESTO e QUOCIENTE devolvem número, então entram junto com + - * /."],
+  w:"Aritméticos (+ - * / RESTO QUOCIENTE) devolvem número. Relacionais (> < >= <= = <>) comparam e devolvem verdadeiro ou falso. Lógicos (E, OU, NAO) combinam condições que já são verdadeiro ou falso. Em Portugol, <> significa diferente."},
+
+ {t:"input",q:"Quanto vale 17 RESTO 5 ?",
+  sub:"Digite apenas o número.",
+  resp:["2"],
+  hint:["RESTO devolve o que sobra da divisão inteira, não o resultado dela.",
+        "5 cabe 3 vezes em 17 (15). O que sobrou para chegar em 17?"],
+  w:"17 RESTO 5 = 2. O RESTO é o operador usado para testar se um número é par: se (X RESTO 2) = 0, então X é par. Essa é a aplicação que mais aparece em prova."},
+
+ {t:"input",q:"Quanto vale 17 QUOCIENTE 5 ?",
+  sub:"Digite apenas o número.",
+  resp:["3"],
+  hint:["QUOCIENTE devolve quantas vezes o divisor cabe inteiro dentro do dividendo.",
+        "É a divisão inteira: descarta o que sobra, não arredonda para cima."],
+  w:"17 QUOCIENTE 5 = 3, porque 5 cabe 3 vezes inteiras em 17. Compare: 17 / 5 = 3.4 (real), 17 QUOCIENTE 5 = 3 (inteiro), 17 RESTO 5 = 2 (o que sobrou)."},
+
+ {t:"input",q:"Sem usar calculadora: quanto vale  2 + 3 * 4 ?",
+  sub:"Cuidado com a ordem de precedência.",
+  resp:["14"],
+  hint:["Multiplicação e divisão são resolvidas antes de soma e subtração.",
+        "Resolva primeiro 3 * 4 e só depois some o 2."],
+  w:"14. A ordem usual é: parênteses primeiro, depois * / RESTO QUOCIENTE, depois + -, depois os relacionais e por fim os lógicos (NAO, E, OU). Se estiver em dúvida na prova, use parênteses: (2 + 3) * 4 daria 20."},
+
+ {t:"mc",q:"Considere idade = 20 e treino = 12. Qual o resultado de (idade >= 18) OU (treino >= 30) ?",
+  o:["Verdadeiro, porque o OU exige que pelo menos uma das condições seja verdadeira",
+     "Falso, porque a segunda condição é falsa e o OU exige as duas verdadeiras",
+     "Verdadeiro, porque o OU sempre devolve verdadeiro independentemente dos valores",
+     "Falso, porque 20 não é maior que 30 na comparação feita",
+     "Indefinido, porque não é possível comparar duas condições diferentes"],
+  c:0,
+  hint:["No OU basta uma porta aberta para você passar. No E, todas precisam estar abertas.",
+        "idade >= 18 é verdadeiro (20 >= 18). Isso já basta para o OU."],
+  w:"Verdadeiro. No OU, basta uma condição verdadeira. No E, todas precisam ser verdadeiras — se a condição fosse (idade >= 18) E (treino >= 30), o resultado seria falso, pois 12 não é >= 30."},
+
+ {t:"mc",q:"O trecho <code>SE (X RESTO 2) = 0 ENTAO exiba(\"Par\") SENAO exiba(\"Ímpar\")</code> exibirá o quê para X = 9 ?",
+  o:["Ímpar, porque 9 RESTO 2 resulta em 1, que é diferente de zero",
+     "Par, porque 9 dividido por 2 resulta em 4,5 e o resto é desprezado",
+     "Par, porque o operador RESTO sempre devolve zero para números ímpares",
+     "Ímpar, porque o RESTO de 9 por 2 é igual a 4 e portanto diferente de zero",
+     "Nada, porque a condição está escrita com erro de sintaxe"],
+  c:0,
+  hint:["Calcule 9 RESTO 2 antes de olhar a condição.",
+        "2 cabe 4 vezes em 9 (8). Sobra 1, e 1 não é igual a zero."],
+  w:"Ímpar. 9 RESTO 2 = 1, então a condição (1 = 0) é falsa e o SENAO é executado. Esse é o teste clássico de paridade e costuma aparecer em prova."}
+]},
+
+{id:"m4",ico:"🔍",t:"Atribuição e teste de mesa",d:"O que mais cai: simular o código na mão",itens:[
+ {t:"mesa",q:"Teste de mesa: acompanhe os valores passo a passo.",
+  sub:"Este é o formato que o pessoal disse que cai na prova. Avance um passo por vez e preveja o valor antes de revelar.",
+  linhas:["A ← 2;","B ← 3;","C ← 5;","A ← B * 2;","B ← C + A;","EXIBA (B);"],
+  passos:[{i:0,set:{A:2}},{i:1,set:{B:3}},{i:2,set:{C:5}},
+          {i:3,set:{A:6},pergunta:{v:"A",r:"6",dica:"A recebe o valor de B multiplicado por 2. B vale 3 neste momento."}},
+          {i:4,set:{B:11},pergunta:{v:"B",r:"11",dica:"B recebe C + A. Atenção: A já foi alterado na linha anterior, não vale mais 2."}},
+          {i:5,out:"11"}],
+  w:"A pegadinha está na linha 5: quando B ← C + A é executada, A já foi atualizado para 6 na linha anterior. Então B = 5 + 6 = 11, e não 5 + 2 = 7. Numa prova, sempre atualize a tabela linha por linha, na ordem, sem pular."},
+
+ {t:"mc",q:"Em Portugol, qual a diferença entre <code>A ← B</code> e <code>A = B</code> ?",
+  o:["A seta atribui a B o valor guardado em A... não: a seta copia o valor de B para dentro de A, enquanto o igual compara os dois",
+     "Os dois fazem exatamente a mesma coisa, mudando apenas a estética do código",
+     "A seta compara os valores e o igual copia o valor de B para A",
+     "A seta só funciona com números e o igual só funciona com textos",
+     "O igual é usado apenas na declaração de variáveis dentro do VAR"],
+  c:0,
+  hint:["Um deles muda o conteúdo da memória; o outro só responde verdadeiro ou falso.",
+        "Dentro de um SE você nunca quer mudar o valor da variável, só comparar."],
+  w:"A seta ← é atribuição: copia o valor da direita para a variável da esquerda. O = é relacional: compara e devolve verdadeiro ou falso, sendo usado dentro de condições. Trocar um pelo outro é um dos erros mais cobrados em questões de identificar o erro."},
+
+ {t:"mesa",q:"Teste de mesa com repetição.",
+  sub:"Acompanhe o contador e o acumulador a cada volta do laço.",
+  linhas:["cont ← 0;","soma ← 0;","ENQUANTO (cont < 3) FACA","   soma ← soma + cont;","   cont ← cont + 1;","FIM ENQUANTO;","EXIBA (soma);"],
+  passos:[{i:0,set:{cont:0}},{i:1,set:{soma:0}},
+          {i:2,nota:"cont vale 0 e 0 < 3 é verdadeiro: entra no laço."},
+          {i:3,set:{soma:0}},{i:4,set:{cont:1}},
+          {i:2,nota:"1 < 3 é verdadeiro: repete."},
+          {i:3,set:{soma:1}},{i:4,set:{cont:2}},
+          {i:2,nota:"2 < 3 é verdadeiro: repete."},
+          {i:3,set:{soma:3},pergunta:{v:"soma",r:"3",dica:"soma valia 1 e agora recebe soma + cont, com cont valendo 2."}},
+          {i:4,set:{cont:3}},
+          {i:2,nota:"3 < 3 é falso: sai do laço."},
+          {i:6,out:"3"}],
+  w:"O laço roda 3 vezes (cont = 0, 1 e 2) e soma 0 + 1 + 2 = 3. Repare que a condição é testada ANTES de cada volta: quando cont chega a 3, o teste falha e o laço termina sem executar o corpo novamente."},
+
+ {t:"erro",q:"Este algoritmo trava em laço infinito. Clique na linha onde está a causa.",
+  linhas:["cont ← 0;","ENQUANTO (cont < 5) FACA","   EXIBA (\"Olá\");","FIM ENQUANTO;"],
+  errada:2,
+  hint:["Um laço só termina quando a condição fica falsa. Olhe o que a condição observa.",
+        "A condição depende de cont. Alguma linha dentro do laço modifica cont?"],
+  w:"O corpo do laço nunca altera cont, então (cont < 5) permanece verdadeiro para sempre. Faltou a linha cont ← cont + 1 dentro do ENQUANTO. Sempre que usar ENQUANTO, verifique: a variável da condição é modificada lá dentro?"}
+]},
+
+{id:"m5",ico:"🔀",t:"Estruturas condicionais",d:"SE, SENAO, encadeada e CASO",itens:[
+ {t:"mc",q:"Qual estrutura condicional deve ser usada quando há várias opções fixas e conhecidas, como os dias da semana numerados de 1 a 7?",
+  o:["A estrutura de múltipla escolha CASO ... DE",
+     "A estrutura condicional simples com apenas um SE",
+     "A estrutura de repetição ENQUANTO com teste no início",
+     "A estrutura de repetição PARA com variável de controle",
+     "A estrutura sequencial, sem necessidade de condição"],
+  c:0,
+  hint:["Existe uma estrutura feita para comparar uma mesma variável com vários valores possíveis.",
+        "Você poderia usar muitos SE encadeados, mas há uma forma mais limpa quando os valores são fixos."],
+  w:"O CASO (variável) DE compara uma mesma variável com vários valores fixos e ainda aceita um SENAO para o caso de nenhum valor bater. Dá para resolver com SE encadeado, mas o CASO deixa o algoritmo bem mais legível."},
+
+ {t:"ordenar",q:"Monte o algoritmo: ler duas notas, calcular a média e informar se o aluno foi aprovado.",
+  sub:"Use as setas para colocar as linhas na ordem correta.",
+  linhas:["ALGORITMO MEDIA;","VAR","   P1, P2, MF: REAL;","INICIO","   LEIA (P1, P2);","   MF ← (P1 + P2) / 2;",
+          "   SE (MF >= 6.0)","      ENTAO EXIBA (\"Aprovado\")","      SENAO EXIBA (\"Reprovado\");","   FIM SE;","FIM."],
+  hint:["Todo algoritmo em Portugol segue o mesmo esqueleto: nome, VAR, declarações, INICIO, comandos, FIM.",
+        "Você não pode testar a média antes de calculá-la, nem calcular antes de ler as notas."],
+  w:"A ordem obedece ao fluxo entrada → processamento → saída, dentro do esqueleto do Portugol. Decorar esse esqueleto (ALGORITMO, VAR, declarações, INICIO, comandos, FIM.) já garante pontos na parte prática da prova."},
+
+ {t:"erro",q:"Há um erro neste trecho. Clique na linha errada.",
+  linhas:["SE (MF >= 6.0)","   ENTAO EXIBA (\"Aprovado\")","   SENAO EXIBA (\"Reprovado\");","EXIBA (\"Fim\");"],
+  errada:3,
+  hint:["Compare este trecho com a sintaxe completa da estrutura condicional na apostila.",
+        "Toda estrutura em Portugol abre e fecha: SE precisa de um par que o encerre antes do próximo comando."],
+  w:"Faltou o FIM SE; antes do último EXIBA. Em Portugol toda estrutura tem fechamento explícito: FIM SE, FIM CASO, FIM ENQUANTO, FIM PARA. Esquecer o fechamento é erro clássico em questões de identificar o problema no código."},
+
+ {t:"mc",q:"Na estrutura condicional composta, o que acontece quando a condição é falsa?",
+  o:["O bloco do SENAO é executado, e só ele",
+     "Nenhum bloco é executado e o algoritmo encerra imediatamente",
+     "Os dois blocos são executados, na ordem em que aparecem",
+     "O bloco do ENTAO é executado mesmo assim, por segurança",
+     "O algoritmo volta e testa a condição novamente até ficar verdadeira"],
+  c:0,
+  hint:["Composta significa que existem dois caminhos possíveis e mutuamente exclusivos.",
+        "Se a condição fosse verdadeira, rodaria o ENTAO. Sendo falsa, sobra o outro caminho."],
+  w:"Na condicional composta, exatamente um dos dois blocos roda: o ENTAO se a condição for verdadeira, o SENAO se for falsa. Nunca os dois. Na condicional simples não existe SENAO: se a condição for falsa, o algoritmo simplesmente segue adiante."}
+]},
+
+{id:"m6",ico:"🔁",t:"Estruturas de repetição",d:"ENQUANTO, REPITA e PARA",itens:[
+ {t:"pares",q:"Ligue cada estrutura de repetição à sua característica.",
+  sub:"São exatamente as três da seção 11 da apostila.",
+  pares:[
+   {a:"ENQUANTO ... FACA",b:"Testa a condição ANTES; pode não executar nenhuma vez"},
+   {a:"REPITA ... ATE",b:"Testa a condição NO FIM; executa pelo menos uma vez"},
+   {a:"PARA ... ATE ... FACA",b:"Usa variável de controle; ideal quando o número de voltas é conhecido"}],
+  hint:["A posição do teste é o que separa as duas primeiras.",
+        "Se o teste vem depois do corpo, o corpo já rodou ao menos uma vez antes de qualquer verificação."],
+  w:"ENQUANTO testa no início: se a condição já começar falsa, o corpo não roda nenhuma vez. REPITA testa no fim: o corpo sempre roda pelo menos uma vez. PARA controla as voltas com uma variável que é incrementada automaticamente — use quando souber quantas repetições precisa."},
+
+ {t:"mc",q:"Um laço deve executar exatamente 50 vezes, e esse número é conhecido de antemão. A estrutura mais adequada é:",
+  o:["PARA cont ← 1 ATE 50 FACA",
+     "REPITA ... ATE (cont = 50), por ser a única que garante execução",
+     "ENQUANTO (cont < 50) FACA, por ser a estrutura mais rápida",
+     "CASO (cont) DE, listando os 50 valores possíveis",
+     "SE (cont <= 50) ENTAO, repetindo a estrutura 50 vezes no código"],
+  c:0,
+  hint:["Uma das três estruturas já cuida sozinha de iniciar e incrementar o contador.",
+        "Quando o número de voltas é conhecido, você não quer escrever o incremento na mão."],
+  w:"O PARA é a escolha natural quando o número de repetições é conhecido: ele inicializa, testa e incrementa a variável de controle automaticamente. As outras duas funcionariam, mas exigiriam inicializar e incrementar o contador manualmente."},
+
+ {t:"mesa",q:"Teste de mesa com PARA.",
+  sub:"Acompanhe a variável de controle e o acumulador.",
+  linhas:["soma ← 0;","PARA i ← 1 ATE 4 FACA","   soma ← soma + i;","FIM PARA;","EXIBA (soma);"],
+  passos:[{i:0,set:{soma:0}},
+          {i:1,set:{i:1},nota:"i começa em 1."},{i:2,set:{soma:1}},
+          {i:1,set:{i:2},nota:"i passa para 2."},{i:2,set:{soma:3}},
+          {i:1,set:{i:3},nota:"i passa para 3."},{i:2,set:{soma:6}},
+          {i:1,set:{i:4},nota:"i passa para 4."},
+          {i:2,set:{soma:10},pergunta:{v:"soma",r:"10",dica:"soma valia 6 e agora recebe soma + i, com i valendo 4."}},
+          {i:1,nota:"i chegaria a 5, que passa do limite 4: o laço termina."},
+          {i:4,out:"10"}],
+  w:"O PARA de 1 a 4 executa o corpo 4 vezes, somando 1 + 2 + 3 + 4 = 10. A variável de controle é incrementada sozinha ao fim de cada volta, e o laço para quando ela ultrapassa o valor final."},
+
+ {t:"mc",q:"Qual a diferença prática entre ENQUANTO e REPITA quando a condição já começa falsa?",
+  o:["O ENQUANTO não executa o corpo nenhuma vez; o REPITA executa uma vez antes de testar",
+     "Os dois executam o corpo uma vez e depois encerram normalmente",
+     "Os dois encerram sem executar o corpo, pois a condição é falsa",
+     "O ENQUANTO executa uma vez e o REPITA não executa nenhuma vez",
+     "Ambos entram em laço infinito, pois a condição nunca será satisfeita"],
+  c:0,
+  hint:["Desenhe mentalmente onde está o teste em cada estrutura: antes ou depois do corpo.",
+        "Se o teste está no fim, o corpo já foi executado quando a verificação acontece."],
+  w:"Essa é a diferença que mais cai: ENQUANTO testa antes, então pode executar zero vezes; REPITA testa depois, então executa no mínimo uma vez. Lembre-se disso com o exemplo do caixa eletrônico: ele sempre pede a senha pelo menos uma vez."}
+]}
+];
+
+/* ====================== QUIZ FINAL ====================== */
+const QUIZ=[
+{q:"Um algoritmo pode ser definido como:",
+ o:["uma sequência finita e ordenada de passos que resolve um problema ou executa uma tarefa",
+    "um programa já compilado e pronto para ser executado pelo processador",
+    "a linguagem de programação escolhida para escrever a solução de um problema",
+    "o conjunto de erros encontrados durante a execução de um código-fonte",
+    "um diagrama que representa apenas as decisões tomadas dentro de um programa"],
+ c:0,hint:"Pense numa receita de bolo: ela é a sequência de passos, não o forno nem o idioma em que foi escrita.",
+ w:"Algoritmo é a sequência finita e ordenada de passos. Ele é independente de linguagem: o mesmo algoritmo pode virar um programa em C, Python ou Java."},
+{q:"Os três tipos de operadores usados em programação, conforme a apostila, são:",
+ o:["aritméticos, relacionais e lógicos",
+    "numéricos, alfabéticos e simbólicos",
+    "de entrada, de saída e de atribuição",
+    "sequenciais, condicionais e de repetição",
+    "unários, binários e ternários"],
+ c:0,hint:"Um grupo faz contas, outro compara valores e o terceiro combina condições.",
+ w:"Aritméticos (+ - * / RESTO QUOCIENTE), relacionais (> < >= <= = <>) e lógicos (E, OU, NAO). Essa pergunta foi citada pelo pessoal como certa de cair."},
+{q:"Considere A ← 2; B ← 3; C ← 5; A ← B * 2; B ← C + A. Ao final, o valor exibido por EXIBA(B) é:",
+ o:["11","7","10","8","13"],
+ c:0,hint:"Execute na ordem e atualize a tabela linha a linha. Quando B recebe C + A, o valor de A já mudou.",
+ w:"A ← B * 2 faz A valer 6. Depois B ← C + A faz B valer 5 + 6 = 11. O erro comum é usar o A antigo (2) e responder 7."},
+{q:"Sobre a instrução de atribuição em Portugol, é correto afirmar que ela:",
+ o:["copia para a variável o valor de um texto, número ou expressão, substituindo o conteúdo anterior",
+    "compara o conteúdo da variável com o valor indicado e devolve verdadeiro ou falso",
+    "exibe na tela o valor atualmente armazenado na variável indicada",
+    "lê um valor digitado pelo usuário e o guarda na variável indicada",
+    "declara a variável e reserva o espaço dela na memória do computador"],
+ c:0,hint:"Separe os três comandos básicos: um lê, um mostra e um guarda valor.",
+ w:"A atribuição (seta ←) grava um valor na variável, apagando o que havia antes. LEIA faz entrada, EXIBA faz saída e a declaração acontece no VAR."},
+{q:"Qual sequência representa corretamente o esqueleto de um algoritmo em Portugol?",
+ o:["ALGORITMO, VAR com as declarações, INICIO, comandos, FIM.",
+    "INICIO, ALGORITMO, comandos, VAR com as declarações, FIM.",
+    "VAR com as declarações, ALGORITMO, INICIO, FIM., comandos",
+    "ALGORITMO, INICIO, comandos, VAR com as declarações, FIM.",
+    "INICIO, VAR com as declarações, comandos, ALGORITMO, FIM."],
+ c:0,hint:"As variáveis precisam existir antes de serem usadas pelos comandos.",
+ w:"Nome do algoritmo, depois VAR com as declarações de tipo, depois INICIO, os comandos e FIM. com ponto final."},
+{q:"Em Portugol, o operador <> significa:",
+ o:["diferente de","maior ou igual a","menor ou igual a","aproximadamente igual a","atribuição de valor"],
+ c:0,hint:"Ele junta os símbolos de menor e de maior: o valor está de um lado ou do outro, nunca no meio.",
+ w:"<> é o relacional de desigualdade. Em várias linguagens ele aparece como != , mas em Portugol a forma usada é <>."},
+{q:"O valor de (10 RESTO 3) + (10 QUOCIENTE 3) é:",
+ o:["4","3","6","1","13"],
+ c:0,hint:"Calcule os dois separadamente: quanto sobra e quantas vezes cabe.",
+ w:"10 RESTO 3 = 1 (sobra 1) e 10 QUOCIENTE 3 = 3 (cabe 3 vezes). Somando, 1 + 3 = 4."},
+{q:"Considere MF = 7.0 e Freq = 60. Qual o resultado de (MF >= 6.0) E (Freq >= 75) ?",
+ o:["Falso, porque no operador E todas as condições precisam ser verdadeiras",
+    "Verdadeiro, porque a primeira condição é verdadeira e isso basta",
+    "Verdadeiro, porque o operador E soma o resultado das duas condições",
+    "Falso, porque a primeira condição também é falsa nesse caso",
+    "Indefinido, porque as duas variáveis são de tipos diferentes"],
+ c:0,hint:"No E, pense em duas chaves girando ao mesmo tempo: se uma falhar, a porta não abre.",
+ w:"A primeira condição é verdadeira (7.0 >= 6.0), mas a segunda é falsa (60 não é >= 75). No operador E, basta uma falsa para o resultado ser falso."},
+{q:"Assinale o identificador de variável válido:",
+ o:["total_geral","1_total","total geral","total-geral","total#geral"],
+ c:0,hint:"Procure o único que não começa com número, não tem espaço e não usa símbolo diferente do sublinhado.",
+ w:"total_geral é válido: começa por letra e usa apenas letras e sublinhado. Os outros quebram as regras (início com número, espaço, hífen e cerquilha)."},
+{q:"Na estrutura de repetição com teste no final (REPITA ... ATE), o corpo do laço:",
+ o:["é executado pelo menos uma vez, pois a condição só é avaliada depois",
+    "pode não ser executado nenhuma vez, caso a condição já comece falsa",
+    "é executado exatamente o número de vezes indicado na variável de controle",
+    "só é executado se a condição inicial for explicitamente verdadeira",
+    "é executado infinitamente, exigindo um comando de parada externo"],
+ c:0,hint:"Se o teste está no fim da estrutura, o que já aconteceu quando ele é avaliado?",
+ w:"Como o teste vem depois do corpo, o REPITA sempre executa no mínimo uma vez. É a diferença central em relação ao ENQUANTO, que pode executar zero vezes."},
+{q:"O que caracteriza uma linguagem de baixo nível?",
+ o:["Estar mais próxima da linguagem da máquina, com baixo grau de abstração",
+    "Estar mais próxima da linguagem humana, com alto grau de abstração",
+    "Permitir escrever algoritmos sem se preocupar com a sintaxe da linguagem",
+    "Ser utilizada exclusivamente para representar algoritmos em pseudocódigo",
+    "Produzir programas menores porém mais lentos que os de alto nível"],
+ c:0,hint:"O nível indica a distância em relação ao hardware, não a qualidade da linguagem.",
+ w:"Baixo nível significa perto do hardware e pouca abstração, como o Assembly. Alto nível significa perto de como nós falamos, como Python e Java."},
+{q:"Numa divisão em Portugol usando o operador /, o resultado obtido é sempre do tipo:",
+ o:["real","inteiro","caracter","logico","o mesmo tipo dos operandos"],
+ c:0,hint:"Pense em 7 / 2: o resultado exato precisa de casas decimais.",
+ w:"O operador / devolve resultado real, mesmo quando a divisão é exata. Para obter a divisão inteira usa-se QUOCIENTE. Por isso a variável que recebe uma divisão deve ser declarada como REAL."},
+{q:"A instrução LEIA tem a função de:",
+ o:["receber um dado digitado pelo usuário e armazená-lo em uma variável",
+    "exibir na tela uma mensagem de texto para orientar o usuário",
+    "atribuir diretamente um valor fixo a uma variável do algoritmo",
+    "declarar o tipo de dado de cada variável utilizada no algoritmo",
+    "comparar o valor digitado com o valor esperado pelo algoritmo"],
+ c:0,hint:"Das três instruções básicas, essa é a que corresponde à etapa de entrada.",
+ w:"LEIA faz a entrada de dados. EXIBA faz a saída e a seta ← faz a atribuição. Repare que o LEIA costuma vir logo depois de um EXIBA que explica ao usuário o que digitar."},
+{q:"Em <code>SE (nota >= 6) ENTAO EXIBA(\"Aprovado\");</code> sem SENAO, o que ocorre quando nota vale 4?",
+ o:["Nada é exibido e o algoritmo segue para o comando seguinte",
+    "O algoritmo exibe Reprovado automaticamente por padrão",
+    "O algoritmo é encerrado imediatamente com erro de execução",
+    "A condição é testada novamente até que se torne verdadeira",
+    "O comando do ENTAO é executado mesmo com a condição falsa"],
+ c:0,hint:"Na condicional simples existe um único caminho previsto. E quando ele não é tomado?",
+ w:"Na condicional simples, se a condição for falsa o bloco do ENTAO é ignorado e a execução continua na linha seguinte ao FIM SE. Só existe caminho alternativo quando há SENAO."},
+{q:"Indentação, em um algoritmo, serve para:",
+ o:["organizar visualmente o código, evidenciando quais comandos estão dentro de cada estrutura",
+    "acelerar a execução do programa depois que ele é compilado",
+    "reservar espaço adicional na memória para as variáveis declaradas",
+    "substituir os comandos de fechamento como FIM SE e FIM ENQUANTO",
+    "indicar ao computador a ordem em que as linhas devem ser executadas"],
+ c:0,hint:"O computador ignora os espaços. Então para quem eles servem?",
+ w:"Indentação é legibilidade: mostra a hierarquia dos blocos para quem lê. Ela não substitui os fechamentos nem altera a execução, mas é cobrada como boa prática e ajuda você a não esquecer um FIM SE na prova."}
+];
+
+/* ====================== MOTOR ====================== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const escA=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const norm=s=>String(s).trim().toLowerCase().replace(",",".").replace(/\s+/g,"");
+const LS="alg_prog_v1";
+const S={mod:null,idx:0,feito:{},erros:0,acertos:0,quiz:[],qi:0,qresp:[],qsel:null,dica:0,estado:null};
+try{const d=JSON.parse(localStorage.getItem(LS)||"{}");S.feito=d.feito||{};}catch(e){}
+const salvar=()=>{try{localStorage.setItem(LS,JSON.stringify({feito:S.feito}));}catch(e){}};
+const tela=id=>{$$(".screen").forEach(s=>s.classList.toggle("on",s.id===id));window.scrollTo({top:0,behavior:"instant"});};
+const codeHTML=(linhas,cls)=>`<pre class="code">${linhas.map((l,i)=>`<span class="ln ${cls?cls(i):""}" data-i="${i}">${esc(l)||"&nbsp;"}</span>`).join("\n")}</pre>`;
+
+/* ---------- HOME ---------- */
+function home(){
+  const feitos=MODS.filter(m=>S.feito[m.id]).length;
+  $("#homeBody").innerHTML=`
+   <div class="hero">
+     <div class="eyebrow">Prova hoje · treino rápido</div>
+     <h1>Algoritmos e Lógica de Programação</h1>
+     <p>Seis módulos curtos para praticar interagindo, e um quiz de 15 questões no fim. Cada atividade tem dica em dois níveis: a primeira te dá o contexto, a segunda aperta o cerco — nenhuma delas entrega a resposta.</p>
+     <div class="tipbox"><b>Sugestão de rota, se o tempo estiver curto:</b> comece pelos módulos 2, 3 e 4 (variáveis, operadores e teste de mesa). Foi o que o pessoal do grupo apontou como mais provável de cair, junto com identificar erro no código e escrever um algoritmo na mão.</div>
+   </div>
+   <div class="cards">
+     ${MODS.map((m,i)=>`<button class="card ${S.feito[m.id]?"done":""}" data-m="${m.id}">
+        <span class="ico">${S.feito[m.id]?"✓":m.ico}</span>
+        <span><span class="t">${i+1}. ${esc(m.t)}</span><span class="d">${esc(m.d)}</span></span>
+        <span class="meta">${m.itens.length} atividades</span></button>`).join("")}
+     <button class="card" data-m="quiz" style="border-color:var(--brand);background:var(--brand-soft)">
+        <span class="ico" style="background:var(--brand);color:#fff">🎯</span>
+        <span><span class="t">Quiz final</span><span class="d">15 questões de múltipla escolha, no formato da prova</span></span>
+        <span class="meta">${QUIZ.length} questões</span></button>
+   </div>
+   <p style="font-size:12.5px;color:var(--sub);padding-bottom:36px">${feitos} de ${MODS.length} módulos concluídos. O progresso fica salvo neste navegador.</p>`;
+  $$("#homeBody .card").forEach(b=>b.addEventListener("click",()=>b.dataset.m==="quiz"?iniciaQuiz():abreMod(b.dataset.m)));
+  $("#ctx").textContent="Treino rápido para a prova";
+  $("#exitBtn").hidden=true;$("#pfill").style.width="0";
+  tela("scHome");
+}
+
+/* ---------- MÓDULO ---------- */
+function abreMod(id){S.mod=MODS.find(m=>m.id===id);S.idx=0;S.erros=0;S.acertos=0;
+  $("#exitBtn").hidden=false;tela("scAct");renderAtiv();}
+
+function renderAtiv(){
+  const m=S.mod,it=m.itens[S.idx];
+  S.dica=0;S.estado=null;
+  $("#ctx").textContent=m.t;
+  $("#pfill").style.width=(S.idx/m.itens.length*100)+"%";
+  $("#actBody").innerHTML=`
+    <div class="head"><h2>${m.ico} ${esc(m.t)}</h2><span class="step">Atividade ${S.idx+1} de ${m.itens.length}</span></div>
+    <div class="panel">
+      <div class="q">${it.q}</div>
+      ${it.sub?`<div class="sub">${esc(it.sub)}</div>`:""}
+      <div id="corpo"></div>
+      <div id="hintZone"></div>
+      <div id="fbZone"></div>
+    </div>
+    <div class="nav" id="nav"></div>`;
+  TIPOS[it.t](it);
+  navBar();
+}
+function navBar(resolvido){
+  const m=S.mod,ult=S.idx===m.itens.length-1,it=m.itens[S.idx];
+  const temDica=Array.isArray(it.hint)&&it.hint.length>0;
+  $("#nav").innerHTML=`
+    ${temDica&&!resolvido?`<button class="btn btn-gh btn-sm" id="bHint">💡 Dica${S.dica?` (${S.dica}/${it.hint.length})`:""}</button>`:""}
+    <span class="grow"></span>
+    ${resolvido?`<button class="btn btn-pri" id="bNext">${ult?"Concluir módulo":"Próxima atividade"}</button>`
+               :`<button class="btn btn-pri" id="bCheck">Verificar</button>`}`;
+  if($("#bHint"))$("#bHint").addEventListener("click",()=>{
+    if(S.dica>=it.hint.length)return;
+    $("#hintZone").innerHTML+=`<div class="hintbox"><b>Dica ${S.dica+1}</b>${esc(it.hint[S.dica])}</div>`;
+    S.dica++;navBar(resolvido);});
+  if($("#bCheck"))$("#bCheck").addEventListener("click",()=>TIPOS[it.t].check(it));
+  if($("#bNext"))$("#bNext").addEventListener("click",()=>{
+    if(ult){S.feito[m.id]=true;salvar();fimModulo();}else{S.idx++;renderAtiv();}});
+}
+function feedback(ok,it,extra){
+  $("#fbZone").innerHTML=`<div class="fb ${ok?"ok":"err"}"><b>${ok?"Isso mesmo":"Ainda não"}</b>${extra?extra+" ":""}${it.w||""}</div>`;
+  ok?S.acertos++:S.erros++;navBar(true);
+  if($("#fbZone").scrollIntoView)$("#fbZone").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function fimModulo(){
+  const tot=S.acertos+S.erros;
+  $("#resBody").innerHTML=`
+    <div class="rhead"><h2>Módulo concluído</h2><p>${esc(S.mod.t)}</p></div>
+    <div class="panel"><div class="rstats">
+      <div class="rstat ok"><b>${S.acertos}</b><span>de primeira</span></div>
+      <div class="rstat err"><b>${S.erros}</b><span>precisaram de segunda olhada</span></div>
+      <div class="rstat"><b>${tot?Math.round(S.acertos/tot*100):0}%</b><span>aproveitamento</span></div>
+    </div>
+    <p style="margin-top:16px;color:var(--ink2);font-size:14.5px">${
+      S.erros===0?"Passou limpo. Esse conteúdo já está consolidado — siga para o próximo módulo."
+      :S.erros<=2?"Bom resultado. Vale reler a explicação das que escaparam antes de seguir."
+      :"Vale repetir este módulo uma vez antes de ir para o quiz: a repetição aqui rende mais que tempo extra na leitura."}</p>
+    </div>
+    <div class="nav"><button class="btn btn-gh" id="bAgain">Refazer módulo</button><span class="grow"></span>
+      <button class="btn btn-pri" id="bHome">Voltar ao menu</button></div>`;
+  $("#bAgain").addEventListener("click",()=>abreMod(S.mod.id));
+  $("#bHome").addEventListener("click",home);
+  $("#pfill").style.width="100%";tela("scRes");
+}
+
+/* ---------- TIPOS DE ATIVIDADE ---------- */
+const TIPOS={};
+
+/* múltipla escolha */
+TIPOS.mc=it=>{
+  if(!it._o){const p=it.o.map((t,i)=>({t,i}));shuffle(p);it._o=p.map(x=>x.t);it._c=p.findIndex(x=>x.i===it.c);}
+  $("#corpo").innerHTML=`<div class="opts">${it._o.map((t,j)=>
+    `<button class="opt" aria-pressed="false" data-j="${j}"><span class="ol">${String.fromCharCode(65+j)}</span><span>${t}</span></button>`).join("")}</div>`;
+  $$("#corpo .opt").forEach(b=>b.addEventListener("click",()=>{
+    S.estado=+b.dataset.j;$$("#corpo .opt").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));}));
+};
+TIPOS.mc.check=it=>{
+  if(S.estado===null)return;
+  $$("#corpo .opt").forEach((b,j)=>{b.disabled=true;
+    if(j===it._c)b.classList.add("ok");else if(j===S.estado)b.classList.add("err");else b.classList.add("off");});
+  feedback(S.estado===it._c,it);
+};
+
+/* pares */
+TIPOS.pares=it=>{
+  const L=it.pares.map((p,i)=>({t:p.a,i})),R=shuffle(it.pares.map((p,i)=>({t:p.b,i})));
+  S.estado={sel:null,ok:0,total:it.pares.length};
+  $("#corpo").innerHTML=`<div class="pairs">
+    <div class="pcol"><h4>Termo</h4>${L.map(x=>`<button class="pitem" data-lado="L" data-i="${x.i}" aria-pressed="false">${esc(x.t)}</button>`).join("")}</div>
+    <div class="pcol"><h4>Definição</h4>${R.map(x=>`<button class="pitem" data-lado="R" data-i="${x.i}" aria-pressed="false">${esc(x.t)}</button>`).join("")}</div></div>`;
+  $$("#corpo .pitem").forEach(b=>b.addEventListener("click",()=>{
+    if(b.classList.contains("paired"))return;
+    if(b.dataset.lado==="L"){
+      $$('#corpo .pitem[data-lado="L"]').forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+      S.estado.sel=b;return;
+    }
+    const a=S.estado.sel;if(!a)return;
+    if(a.dataset.i===b.dataset.i){
+      a.classList.add("paired");b.classList.add("paired");
+      a.setAttribute("aria-pressed","false");a.disabled=true;b.disabled=true;
+      S.estado.sel=null;S.estado.ok++;
+      if(S.estado.ok===S.estado.total)feedback(S.estado.err?false:true,it,S.estado.err?"Você fechou todos os pares, mas com tentativas erradas pelo caminho.":"");
+    }else{
+      b.classList.add("shake");setTimeout(()=>b.classList.remove("shake"),300);
+      S.estado.err=true;
+    }
+  }));
+};
+TIPOS.pares.check=it=>{
+  if(S.estado.ok<S.estado.total){
+    $("#fbZone").innerHTML=`<div class="fb"><b>Faltam pares</b>Ainda restam ${S.estado.total-S.estado.ok} ligações para fechar. Clique num termo e depois na definição correspondente.</div>`;
+    return;}
+  feedback(!S.estado.err,it);
+};
+
+/* classificar */
+TIPOS.classificar=it=>{
+  const toks=shuffle(it.toks.map((t,i)=>({...t,i})));
+  S.estado={sel:null,post:0,total:toks.length,err:0};
+  $("#corpo").innerHTML=`
+    <div class="bank" id="bank">${toks.map(t=>`<button class="tokn" data-i="${t.i}" data-k="${t.k}" aria-pressed="false">${esc(t.x)}</button>`).join("")}</div>
+    <div class="bins">${it.bins.map(b=>`<button class="bin" data-k="${b.k}"><h5>${esc(b.n)}</h5><small>${esc(b.d||"")}</small><span class="drop"></span></button>`).join("")}</div>`;
+  $$("#corpo .tokn").forEach(b=>b.addEventListener("click",()=>{
+    S.estado.sel=b;$$("#corpo .tokn").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));}));
+  $$("#corpo .bin").forEach(bin=>bin.addEventListener("click",()=>{
+    const t=S.estado.sel;if(!t)return;
+    const certo=t.dataset.k===bin.dataset.k;
+    if(!certo)S.estado.err++;
+    bin.querySelector(".drop").innerHTML+=`<span class="chipin ${certo?"":"bad"}">${esc(t.textContent)}</span>`;
+    t.remove();S.estado.sel=null;S.estado.post++;
+    if(S.estado.post===S.estado.total)
+      feedback(S.estado.err===0,it,S.estado.err?`${S.estado.err} ${S.estado.err===1?"item ficou":"itens ficaram"} na caixa errada (marcados em vermelho). `:"");
+  }));
+};
+TIPOS.classificar.check=it=>{
+  if(S.estado.post<S.estado.total){
+    $("#fbZone").innerHTML=`<div class="fb"><b>Faltam itens</b>Ainda há ${S.estado.total-S.estado.post} para classificar. Clique no item e depois na caixa.</div>`;return;}
+  feedback(S.estado.err===0,it);
+};
+
+/* resposta digitada */
+TIPOS.input=it=>{
+  S.estado="";
+  $("#corpo").innerHTML=`<div class="ansrow"><input class="txt" id="inp" placeholder="sua resposta" autocomplete="off"></div>`;
+  $("#inp").addEventListener("input",e=>S.estado=e.target.value);
+  $("#inp").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();TIPOS.input.check(it);}});
+};
+TIPOS.input.check=it=>{
+  if(!String(S.estado).trim())return;
+  const ok=it.resp.some(r=>norm(r)===norm(S.estado));
+  $("#inp").disabled=true;
+  feedback(ok,it,ok?"":`Você respondeu <code>${escA(S.estado)}</code> e o valor correto é <code>${escA(it.resp[0])}</code>. `);
+};
+
+/* teste de mesa */
+TIPOS.mesa=it=>{
+  S.estado={p:0,vars:{},out:[],pend:null,err:0};
+  $("#corpo").innerHTML=`<div class="mesa">
+      <div id="mCode"></div>
+      <div><div class="vars"><table><thead><tr><th>Variável</th><th>Valor</th></tr></thead><tbody id="mVars">
+        <tr><td colspan="2" style="color:var(--sub)">nenhuma variável ainda</td></tr></tbody></table></div>
+        <div class="out" id="mOut"><span class="lbl">SAÍDA</span></div></div>
+    </div>
+    <div id="mAsk"></div>
+    <div class="ansrow"><button class="btn btn-gh btn-sm" id="bStep">▶ Executar próximo passo</button>
+      <button class="btn btn-gh btn-sm" id="bReset">↺ Reiniciar</button></div>`;
+  pintaMesa(it);
+  $("#bStep").addEventListener("click",()=>passo(it));
+  $("#bReset").addEventListener("click",()=>{TIPOS.mesa(it);navBar(false);});
+};
+function pintaMesa(it,chg){
+  const st=S.estado,at=st.p<it.passos.length?it.passos[st.p].i:-1;
+  $("#mCode").innerHTML=codeHTML(it.linhas,i=>i===at?"cur":"");
+  const ks=Object.keys(st.vars);
+  $("#mVars").innerHTML=ks.length?ks.map(k=>`<tr class="${chg===k?"chg":""}"><td>${esc(k)}</td><td class="v">${esc(st.vars[k])}</td></tr>`).join("")
+    :`<tr><td colspan="2" style="color:var(--sub)">nenhuma variável ainda</td></tr>`;
+  $("#mOut").innerHTML=`<span class="lbl">SAÍDA</span>${st.out.map(esc).join("\n")}`;
+}
+function passo(it){
+  const st=S.estado;
+  if(st.pend)return;
+  if(st.p>=it.passos.length){
+    feedback(st.err===0,it,st.err?"Você chegou ao fim, mas errou alguma previsão pelo caminho. ":"");return;}
+  const pa=it.passos[st.p];
+  if(pa.pergunta&&!pa._resp){
+    st.pend=pa;
+    $("#mAsk").innerHTML=`<div class="hintbox"><b>Antes de revelar</b>Qual será o valor de <code>${escA(pa.pergunta.v)}</code> depois desta linha?
+      <div class="ansrow"><input class="txt" id="pIn" placeholder="valor" autocomplete="off">
+      <button class="btn btn-pri btn-sm" id="pOk">Conferir</button>
+      <button class="btn btn-gh btn-sm" id="pSkip">Não sei, revelar</button></div></div>`;
+    const resolve=acertou=>{
+      pa._resp=true;st.pend=null;
+      if(acertou===false)st.err++;
+      $("#mAsk").innerHTML=acertou===null?""
+        :`<div class="fb ${acertou?"ok":"err"}"><b>${acertou?"Certo":"Não era esse"}</b>${esc(pa.pergunta.dica)}</div>`;
+      passo(it);
+    };
+    $("#pOk").addEventListener("click",()=>{
+      const v=$("#pIn").value;if(!v.trim())return;
+      resolve(norm(v)===norm(pa.pergunta.r));});
+    $("#pIn").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("#pOk").click();}});
+    $("#pSkip").addEventListener("click",()=>{st.err++;resolve(null);});
+    return;
+  }
+  let chg=null;
+  if(pa.set){for(const k in pa.set){st.vars[k]=pa.set[k];chg=k;}}
+  if(pa.out!==undefined)st.out.push(pa.out);
+  if(pa.nota&&!pa.pergunta)$("#mAsk").innerHTML=`<div class="fb"><b>Nesta linha</b>${esc(pa.nota)}</div>`;
+  st.p++;
+  pintaMesa(it,chg);
+  if(st.p>=it.passos.length){
+    $("#bStep").disabled=true;$("#bStep").textContent="Fim do algoritmo";
+    feedback(st.err===0,it,st.err?"":"Você acompanhou o algoritmo até o fim sem errar nenhuma previsão. ");
+  }
+}
+TIPOS.mesa.check=it=>{
+  if(S.estado.p<it.passos.length){
+    $("#fbZone").innerHTML=`<div class="fb"><b>Ainda em execução</b>Use o botão <b>Executar próximo passo</b> até o fim do algoritmo.</div>`;return;}
+  feedback(S.estado.err===0,it);
+};
+
+/* ordenar linhas */
+TIPOS.ordenar=it=>{
+  const ord=it.linhas.map((t,i)=>({t,i}));
+  do{shuffle(ord);}while(ord.every((x,i)=>x.i===i));
+  S.estado=ord;
+  desenhaOrd(it);
+};
+function desenhaOrd(it,marcar){
+  $("#corpo").innerHTML=`<div class="sortlist">${S.estado.map((x,pos)=>{
+    const cls=marcar?(x.i===pos?"ok":"bad"):"";
+    return `<div class="srow ${cls}"><span class="num">${pos+1}</span><span class="txt">${esc(x.t)}</span>
+      ${marcar?"":`<span class="mv"><button data-up="${pos}" ${pos===0?"disabled":""}>↑</button><button data-dn="${pos}" ${pos===S.estado.length-1?"disabled":""}>↓</button></span>`}</div>`;
+  }).join("")}</div>`;
+  if(marcar)return;
+  $$("#corpo [data-up]").forEach(b=>b.addEventListener("click",()=>{
+    const p=+b.dataset.up;[S.estado[p-1],S.estado[p]]=[S.estado[p],S.estado[p-1]];desenhaOrd(it);}));
+  $$("#corpo [data-dn]").forEach(b=>b.addEventListener("click",()=>{
+    const p=+b.dataset.dn;[S.estado[p+1],S.estado[p]]=[S.estado[p],S.estado[p+1]];desenhaOrd(it);}));
+}
+TIPOS.ordenar.check=it=>{
+  const ok=S.estado.every((x,i)=>x.i===i);
+  const fora=S.estado.filter((x,i)=>x.i!==i).length;
+  desenhaOrd(it,true);
+  feedback(ok,it,ok?"":`${fora} ${fora===1?"linha está":"linhas estão"} fora de posição (em vermelho). `);
+};
+
+/* caça ao erro */
+TIPOS.erro=it=>{
+  S.estado=null;
+  $("#corpo").innerHTML=codeHTML(it.linhas,()=>"click");
+  $$("#corpo .ln").forEach(l=>l.addEventListener("click",()=>{
+    S.estado=+l.dataset.i;$$("#corpo .ln").forEach(x=>x.classList.toggle("sel",x===l));}));
+};
+TIPOS.erro.check=it=>{
+  if(S.estado===null)return;
+  $$("#corpo .ln").forEach((l,i)=>{l.classList.remove("sel","click");
+    if(i===it.errada)l.classList.add("hit");else if(i===S.estado)l.classList.add("miss");});
+  feedback(S.estado===it.errada,it);
+};
+
+/* ---------- QUIZ ---------- */
+function iniciaQuiz(){
+  S.quiz=QUIZ.map(q=>{const p=q.o.map((t,i)=>({t,i}));shuffle(p);
+    return {...q,o:p.map(x=>x.t),c:p.findIndex(x=>x.i===q.c)};});
+  S.qi=0;S.qresp=new Array(S.quiz.length).fill(null);S.qsel=null;
+  $("#exitBtn").hidden=false;tela("scAct");renderQuiz();
+}
+function renderQuiz(){
+  const q=S.quiz[S.qi],resp=S.qresp[S.qi]!==null;
+  S.dica=0;
+  $("#ctx").textContent="Quiz final";
+  $("#pfill").style.width=((S.qi+(resp?1:0))/S.quiz.length*100)+"%";
+  const ac=S.qresp.filter(r=>r===true).length,er=S.qresp.filter(r=>r===false).length;
+  $("#actBody").innerHTML=`
+    <div class="head"><h2>🎯 Quiz final</h2><span class="step">Questão ${S.qi+1} de ${S.quiz.length} · ${ac} certas · ${er} erradas</span></div>
+    <div class="panel">
+      <div class="q">${q.q}</div>
+      <div class="opts">${q.o.map((t,j)=>{
+        let cls="";if(resp){cls=j===q.c?"ok":(j===S.qsel?"err":"off");}
+        return `<button class="opt ${cls}" aria-pressed="false" ${resp?"disabled":""} data-j="${j}">
+          <span class="ol">${String.fromCharCode(65+j)}</span><span>${t}</span></button>`;}).join("")}</div>
+      <div id="hintZone"></div>
+      ${resp?`<div class="fb ${S.qresp[S.qi]?"ok":"err"}"><b>${S.qresp[S.qi]?"Correta":"Gabarito: "+String.fromCharCode(65+q.c)}</b>${q.w}</div>`:""}
+    </div>
+    <div class="nav" id="nav"></div>`;
+  if(!resp)$$("#actBody .opt").forEach(b=>b.addEventListener("click",()=>{
+    S.qsel=+b.dataset.j;$$("#actBody .opt").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+    $("#bMain").disabled=false;}));
+  const ult=S.qi===S.quiz.length-1;
+  $("#nav").innerHTML=`
+    ${!resp&&q.hint?`<button class="btn btn-gh btn-sm" id="bHint">💡 Dica</button>`:""}
+    <span class="grow"></span>
+    ${resp?`<button class="btn btn-pri" id="bMain">${ult?"Ver resultado":"Próxima questão"}</button>`
+          :`<button class="btn btn-pri" id="bMain" disabled>Responder</button>`}`;
+  if($("#bHint"))$("#bHint").addEventListener("click",()=>{
+    $("#hintZone").innerHTML=`<div class="hintbox"><b>Dica</b>${esc(q.hint)}</div>`;$("#bHint").disabled=true;});
+  $("#bMain").addEventListener("click",()=>{
+    if(S.qresp[S.qi]===null){S.qresp[S.qi]=(S.qsel===q.c);renderQuiz();return;}
+    if(ult){fimQuiz();return;}
+    S.qi++;S.qsel=null;renderQuiz();});
+}
+function fimQuiz(){
+  const ac=S.qresp.filter(r=>r===true).length,tot=S.quiz.length,pct=Math.round(ac/tot*100);
+  const erradas=S.quiz.map((q,i)=>({q,i})).filter(x=>S.qresp[x.i]===false);
+  $("#resBody").innerHTML=`
+    <div class="rhead"><h2>${pct>=80?"Pronto para a prova":pct>=60?"Quase lá":"Revise antes de ir"}</h2>
+      <p>${ac} de ${tot} questões · ${pct}% de acerto</p></div>
+    <div class="panel">
+      <div class="rstats">
+        <div class="rstat ok"><b>${ac}</b><span>acertos</span></div>
+        <div class="rstat err"><b>${tot-ac}</b><span>erros</span></div>
+        <div class="rstat"><b>${pct}%</b><span>aproveitamento</span></div>
+      </div>
+      ${erradas.length?`<div class="sect">O que revisar antes da prova</div>
+        ${erradas.map(x=>`<div class="revrow"><span>${x.q.q.replace(/<[^>]+>/g,"")}</span><span class="badge err">errou</span></div>`).join("")}`
+        :`<p style="margin-top:16px;color:var(--ok);font-size:14.5px">Você não errou nenhuma. Dá para ir para a prova com tranquilidade — se sobrar tempo, refaça o módulo de teste de mesa, que é o que mais cai na parte prática.</p>`}
+    </div>
+    <div class="nav"><button class="btn btn-gh" id="bAgain">Refazer quiz</button><span class="grow"></span>
+      <button class="btn btn-pri" id="bHome">Voltar ao menu</button></div>`;
+  $("#bAgain").addEventListener("click",iniciaQuiz);
+  $("#bHome").addEventListener("click",home);
+  $("#pfill").style.width="100%";tela("scRes");
+}
+
+$("#exitBtn").addEventListener("click",home);
+window.APP={S,MODS,QUIZ,TIPOS};
+home();
+
+</script>
+</body>
+</html>
