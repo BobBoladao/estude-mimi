@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101828">
+<title>Simulado · Avaliação da Aprendizagem</title>
+<style>
+:root{
+  --brand:#3557D6; --brand-600:#2C48B8; --brand-700:#233A96; --brand-soft:#EDF1FE; --brand-ring:rgba(53,87,214,.25);
+  --ok:#127A54; --ok-soft:#E8F5EF; --ok-line:#9FD8C0;
+  --err:#C4362B; --err-soft:#FCEDEB; --err-line:#EFB6AF;
+  --warn:#A85C09; --warn-soft:#FFF4E5;
+  --bg:#F6F7F9; --surface:#FFFFFF; --surface-2:#FBFBFC;
+  --ink:#101828; --ink-2:#344054; --muted:#667085; --subtle:#98A2B3;
+  --line:#E4E7EC; --line-2:#D0D5DD;
+  --r-xs:6px; --r-sm:8px; --r:12px; --r-lg:16px;
+  --sh-1:0 1px 2px rgba(16,24,40,.05);
+  --sh-2:0 4px 16px rgba(16,24,40,.07);
+  --sh-3:0 12px 32px rgba(16,24,40,.12);
+  --fs-body:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg); color:var(--ink); font-size:var(--fs-body); line-height:1.55;
+  -webkit-font-smoothing:antialiased; padding-bottom:env(safe-area-inset-bottom);
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--brand); outline-offset:2px; border-radius:4px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+.screen{display:none}
+.screen.on{display:block}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- TOPO ---------- */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{max-width:760px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.01em;font-size:15px}
+.brand-mark{width:26px;height:26px;border-radius:7px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700}
+.top-sep{width:1px;height:20px;background:var(--line);flex:none}
+.top-ctx{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.top-act{font-size:13px;font-weight:500;color:var(--muted);padding:6px 10px;border-radius:var(--r-sm);flex:none}
+.top-act:hover{background:var(--bg);color:var(--ink-2)}
+.pbar{height:3px;background:var(--line)}
+.pbar span{display:block;height:100%;background:var(--brand);width:0;transition:width .35s cubic-bezier(.4,0,.2,1)}
+
+/* ---------- SETUP ---------- */
+.hero{padding:44px 0 28px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);margin-bottom:10px}
+h1{font-size:32px;line-height:1.2;letter-spacing:-.025em;font-weight:700}
+.hero p{color:var(--muted);margin-top:10px;max-width:52ch}
+.filters{display:grid;gap:14px;padding-bottom:24px}
+.fgroup{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh-1)}
+.fhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.flabel{font-size:13px;font-weight:600;color:var(--ink-2)}
+.fhint{font-size:12px;color:var(--subtle)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13.5px;font-weight:500;color:var(--ink-2);border:1px solid var(--line-2);background:var(--surface);
+  padding:7px 13px;border-radius:999px;transition:background .12s,border-color .12s,color .12s}
+.chip:hover{border-color:var(--brand);color:var(--brand)}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.chip.sm{font-size:13px;padding:6px 11px}
+.startbar{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(246,247,249,0),var(--bg) 32%);padding:16px 0 24px}
+.startcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-2);
+  padding:14px 16px;display:flex;align-items:center;gap:14px}
+.startinfo{flex:1;min-width:0}
+.startinfo b{font-size:15px}
+.startinfo span{display:block;font-size:12.5px;color:var(--muted)}
+
+/* ---------- BOTOES ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;
+  padding:12px 20px;border-radius:var(--r-sm);transition:background .13s,border-color .13s,transform .06s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:0 1px 2px rgba(16,24,40,.1)}
+.btn-primary:hover{background:var(--brand-600)}
+.btn-primary:disabled{background:var(--line-2);color:#fff;cursor:not-allowed;box-shadow:none}
+.btn-ghost{color:var(--ink-2);border:1px solid var(--line-2);background:var(--surface)}
+.btn-ghost:hover{background:var(--surface-2);border-color:var(--line-2)}
+.btn-quiet{color:var(--muted);font-weight:500}
+.btn-quiet:hover{color:var(--ink-2)}
+.btn-block{width:100%}
+
+/* ---------- METRICAS ---------- */
+.metrics{display:flex;align-items:center;gap:18px;padding:16px 2px 14px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.metrics b{color:var(--ink-2);font-weight:600}
+.mdot{width:4px;height:4px;border-radius:50%;background:var(--line-2)}
+.mspace{flex:1}
+
+/* ---------- QUESTAO ---------- */
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:26px 26px 22px}
+.qtop{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:14px}
+.qnum{font-size:14px;font-weight:700;color:var(--ink)}
+.qsrc{font-size:12.5px;color:var(--subtle);text-align:right}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tag{font-size:11.5px;font-weight:500;color:var(--ink-2);background:var(--bg);border:1px solid var(--line);padding:3px 9px;border-radius:var(--r-xs)}
+.tag.med{background:var(--brand-soft);border-color:#CFDAFB;color:var(--brand-700)}
+.tag.dif{background:var(--warn-soft);border-color:#F5DFC0;color:var(--warn)}
+.qtext{font-size:17px;line-height:1.68;color:var(--ink);letter-spacing:-.003em}
+.qtext .it{display:block;margin-top:9px;padding-left:22px;text-indent:-22px;font-size:16px;color:var(--ink-2)}
+.qimg{margin-top:16px;width:100%;border:1px solid var(--line);border-radius:var(--r);display:block}
+.opts{display:grid;gap:9px;margin-top:20px}
+.opt{display:flex;gap:13px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r);padding:13px 15px;
+  font-size:15px;line-height:1.5;color:var(--ink-2);transition:border-color .12s,background .12s,box-shadow .12s}
+.opt:hover:not(:disabled){border-color:var(--brand);background:#FAFBFF}
+.opt:disabled{cursor:default}
+.ol{flex:none;width:25px;height:25px;border-radius:var(--r-xs);display:grid;place-items:center;
+  font-size:12.5px;font-weight:700;background:var(--bg);border:1px solid var(--line-2);color:var(--muted);margin-top:1px}
+.opt[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft);box-shadow:0 0 0 3px var(--brand-ring)}
+.opt[aria-pressed="true"] .ol{background:var(--brand);border-color:var(--brand);color:#fff}
+.opt.is-ok{border-color:var(--ok-line);background:var(--ok-soft);box-shadow:none;color:var(--ink)}
+.opt.is-ok .ol{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.is-err{border-color:var(--err-line);background:var(--err-soft);box-shadow:none}
+.opt.is-err .ol{background:var(--err);border-color:var(--err);color:#fff}
+.opt.is-off{opacity:.55}
+.fb{margin-top:18px;border-radius:var(--r);padding:15px 17px;border:1px solid var(--line);background:var(--surface-2);border-left:3px solid var(--line-2)}
+.fb.ok{background:var(--ok-soft);border-color:var(--ok-line);border-left-color:var(--ok)}
+.fb.err{background:var(--err-soft);border-color:var(--err-line);border-left-color:var(--err)}
+.fb-t{font-size:13.5px;font-weight:700;margin-bottom:5px}
+.fb.ok .fb-t{color:var(--ok)} .fb.err .fb-t{color:var(--err)}
+.fb-b{font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+
+/* ---------- NAV ---------- */
+.nav{display:flex;align-items:center;gap:10px;margin:16px 0 10px}
+.nav .btn-primary{min-width:190px}
+.navspace{flex:1}
+.khint{text-align:center;font-size:12px;color:var(--subtle);padding-bottom:30px}
+.khint kbd{font-family:inherit;font-size:11px;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:5px;padding:1px 5px;color:var(--muted);background:var(--surface)}
+
+/* ---------- RESULTADO ---------- */
+.rhead{text-align:center;padding:36px 0 8px}
+.rhead h2{font-size:26px;letter-spacing:-.02em}
+.rhead p{color:var(--muted);font-size:14.5px;margin-top:6px}
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:26px;margin-top:20px}
+.donutrow{display:flex;align-items:center;gap:30px;flex-wrap:wrap;justify-content:center}
+.donut{position:relative;width:150px;height:150px;flex:none}
+.donut svg{transform:rotate(-90deg)}
+.donut-c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.donut-c b{font-size:32px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.donut-c span{font-size:12px;color:var(--muted)}
+.rstats{display:grid;grid-template-columns:repeat(2,minmax(120px,1fr));gap:10px;flex:1;min-width:240px}
+.rstat{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.rstat b{display:block;font-size:20px;font-weight:700;letter-spacing:-.02em}
+.rstat span{font-size:12.5px;color:var(--muted)}
+.rstat.ok b{color:var(--ok)} .rstat.err b{color:var(--err)}
+.sect-t{font-size:13px;font-weight:600;color:var(--ink-2);margin:26px 0 12px}
+.brow{display:grid;grid-template-columns:1fr 46px;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.brow:first-of-type{border-top:none}
+.bname{font-size:13.5px;color:var(--ink-2);margin-bottom:6px}
+.btrack{height:6px;background:var(--bg);border-radius:99px;overflow:hidden}
+.bfill{height:100%;border-radius:99px;background:var(--brand)}
+.bfill.low{background:var(--err)} .bfill.mid{background:#D9910D} .bfill.high{background:var(--ok)}
+.bpct{font-size:13px;font-weight:600;text-align:right;color:var(--ink-2)}
+.ractions{display:flex;gap:10px;margin:22px 0 40px}
+.ractions .btn{flex:1}
+
+@media(max-width:640px){
+  .wrap{padding:0 16px}
+  .top-in{padding:11px 16px}
+  h1{font-size:26px}
+  .hero{padding:30px 0 22px}
+  .qcard{padding:20px 18px 18px;border-radius:var(--r)}
+  .qtext{font-size:16.5px}
+  .opt{font-size:14.5px;padding:12px 13px}
+  .qtop{flex-direction:column;gap:4px}
+  .qsrc{text-align:left}
+  .nav{position:sticky;bottom:0;background:linear-gradient(180deg,rgba(246,247,249,0),var(--bg) 30%);
+    padding:12px 0 14px;margin:8px 0 0}
+  .nav .btn-primary{min-width:0;flex:1}
+  .khint{display:none}
+  .donutrow{gap:20px}
+  .ractions{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><span class="brand-mark">A</span>Avaliação da Aprendizagem</div>
+    <div class="top-sep"></div>
+    <div class="top-ctx" id="ctx">Avaliação da Aprendizagem</div>
+    <button class="top-act" id="exitBtn" hidden>Sair</button>
+  </div>
+  <div class="pbar"><span id="pfill"></span></div>
+</header>
+
+<!-- ===================== SETUP ===================== -->
+<section class="screen on" id="scSetup">
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Pedagogia · 2º semestre · 1ª prova</div>
+    <h1>Avaliação da Aprendizagem</h1>
+    <p>80 questões sobre concepções e funções da avaliação, Luckesi, Hoffmann, LDB, instrumentos e avaliação na educação infantil. Escolha os filtros e comece a praticar.</p>
+  </div>
+
+  <div class="filters">
+    <div class="fgroup">
+      <div class="fhead"><span class="flabel">Dificuldade</span></div>
+      <div class="chips" id="fDif"></div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="flabel">Quantidade de questões</span></div>
+      <div class="chips" id="fQtd"></div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="flabel">Banca</span><span class="fhint">estilo da prova</span></div>
+      <div class="chips" id="fBanca"></div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="flabel">Assunto</span><button class="btn-quiet" id="fAllSub" style="font-size:12.5px">Selecionar todos</button></div>
+      <div class="chips" id="fSub"></div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="flabel">Ordem das questões</span></div>
+      <div class="chips" id="fOrd"></div>
+    </div>
+  </div>
+
+  <div class="startbar">
+    <div class="startcard">
+      <div class="startinfo"><b id="poolTxt">200 questoes</b><span id="poolSub">disponiveis com os filtros atuais</span></div>
+      <button class="btn btn-primary" id="startBtn">Iniciar simulado</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== QUIZ ===================== -->
+<section class="screen" id="scQuiz">
+<div class="wrap">
+  <div class="metrics" id="metrics"></div>
+  <article class="qcard" id="qcard"></article>
+  <div class="nav" id="nav"></div>
+  <div class="khint"><kbd>A</kbd>–<kbd>E</kbd> selecionar · <kbd>Enter</kbd> responder · <kbd>&larr;</kbd> <kbd>&rarr;</kbd> navegar</div>
+</div>
+</section>
+
+<!-- ===================== RESULTADO ===================== -->
+<section class="screen" id="scResult">
+<div class="wrap" id="resultBody"></div>
+</section>
+
+<script>
+const BANK = [{"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Conceito de avaliação", "nivel": "med", "q": "A palavra avaliar vem do latim a + valere, cujo significado original é:", "o": ["atribuir valor e mérito ao objeto em estudo", "separar os aprovados dos reprovados ao final do curso", "medir com exatidão a quantidade de conteúdo memorizado", "registrar oficialmente o desempenho obtido pelo estudante", "comparar o rendimento de um aluno com o da sua turma"], "c": 0, "w": "Avaliar, do latim a + valere, significa atribuir valor e mérito ao objeto em estudo. Por isso avaliar é emitir um juízo de valor sobre uma ação ou matéria, e não apenas medir ou classificar."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Conceito de avaliação", "nivel": "med", "q": "Segundo Libâneo, a avaliação é uma tarefa didática necessária e permanente do trabalho docente, que deve:", "o": ["acompanhar passo a passo o processo de ensino e aprendizagem", "ocorrer somente ao final de cada bimestre, para gerar as notas", "restringir-se à verificação do conteúdo retido pelos estudantes", "ser delegada à coordenação pedagógica da unidade escolar", "limitar-se à aplicação de provas escritas padronizadas"], "c": 0, "w": "Para Libâneo, a avaliação acompanha passo a passo o processo e é uma reflexão sobre o nível de qualidade do trabalho escolar, tanto do professor quanto dos alunos."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Conceito de avaliação", "nivel": "med", "q": "A afirmação de Paulo Freire de que a avaliação é da prática educativa e não um pedaço dela significa que ela:", "o": ["atravessa todo o processo educativo, e não se reduz a um momento isolado", "deve ser aplicada apenas por quem não participou das aulas da turma", "corresponde à etapa final do planejamento elaborado pelo professor", "serve para medir exclusivamente o desempenho individual do estudante", "só tem sentido quando resulta em nota registrada no diário de classe"], "c": 0, "w": "A frase recusa a ideia de avaliação como etapa isolada: ela é constitutiva da prática educativa inteira, presente em todo o percurso de ensino e aprendizagem."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Avaliar e examinar (Luckesi)", "nivel": "med", "q": "Para Luckesi, a diferença central entre avaliar e examinar está em que o ato de avaliar:", "o": ["tem foco na construção dos melhores resultados possíveis, enquanto examinar se centra no julgamento de aprovação ou reprovação", "é mais rigoroso que examinar, por exigir instrumentos quantitativos precisos", "ocorre no fim do processo, enquanto examinar acontece ao longo dele", "cabe ao professor, enquanto examinar é atribuição da equipe gestora", "dispensa qualquer registro, enquanto examinar exige documentação formal"], "c": 0, "w": "Luckesi afirma que são atos praticamente opostos: avaliar é diagnosticar para reorientar e produzir o melhor resultado; examinar é julgar para aprovar ou reprovar."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "Avaliar e examinar (Luckesi)", "nivel": "med", "q": "Segundo Luckesi, o ato de avaliar caracteriza-se por ser:", "o": ["diagnóstico e inclusivo, e não classificatório nem seletivo", "classificatório e seletivo, para garantir critérios objetivos", "pontual e quantitativo, voltado à atribuição de notas finais", "externo à sala de aula, realizado por avaliadores independentes", "facultativo, ficando a critério de cada professor adotá-lo"], "c": 0, "w": "Para Luckesi, avaliar é diagnosticar uma experiência para reorientá-la, o que torna o ato inclusivo e contrário à lógica classificatória e seletiva do exame."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "Avaliar e examinar (Luckesi)", "nivel": "med", "q": "Luckesi observa que, na prática escolar cotidiana, professores e professoras frequentemente:", "o": ["praticam exames acreditando estar praticando avaliação", "praticam avaliação formativa sem registrar os resultados obtidos", "substituem completamente as provas por instrumentos qualitativos", "abandonam a avaliação por falta de tempo no calendário escolar", "aplicam somente avaliações externas de larga escala"], "c": 0, "w": "Luckesi aponta que a distinção entre avaliar e examinar não é feita na prática cotidiana, e por isso se praticam exames sob o nome de avaliação."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Avaliar e examinar (Luckesi)", "nivel": "med", "q": "A respeito da lógica do exame, segundo Luckesi, julgue os itens a seguir.\nI - É pontual e atribui um valor final estático ao desempenho do estudante.\nII - Tem caráter seletivo e excludente.\nIII - Busca diagnosticar para promover o avanço da aprendizagem.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III descreve a avaliação, e não o exame: diagnosticar para promover avanço é justamente o que diferencia o avaliar do examinar."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Avaliação mediadora (Hoffmann)", "nivel": "med", "q": "Para Jussara Hoffmann, a avaliação mediadora é muito mais que informar o desempenho do aluno: ela consiste em:", "o": ["dialogar com o estudante sobre seu processo de aprendizagem, discutindo dificuldades e superações", "registrar com precisão as notas obtidas em cada instrumento aplicado", "comparar o rendimento do estudante com a média geral da turma", "antecipar o resultado final para que a família se prepare", "aplicar instrumentos variados sem interferir no percurso do aluno"], "c": 0, "w": "Para Hoffmann, a avaliação mediadora é dialógica: o professor conversa com o aluno sobre seu processo e, a partir daí, refaz o planejamento para adequá-lo ao percurso de aprendizagem."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Avaliação mediadora (Hoffmann)", "nivel": "med", "q": "A principal crítica de Hoffmann à avaliação classificatória é que ela:", "o": ["é pontual, quantitativa e excludente, focada na aprovação ou reprovação com base na memorização", "exige do professor tempo excessivo de correção e registro das atividades ao longo de todo o processo", "depende de instrumentos caros e de difícil aplicação na escola pública", "valoriza demais a participação do estudante nas atividades em grupo", "impede a atribuição de notas exigida pela legislação educacional"], "c": 0, "w": "Hoffmann critica o caráter pontual, quantitativo e excludente da avaliação classificatória, que reduz o processo ao par aprovação/reprovação apoiado na memorização."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Avaliação mediadora (Hoffmann)", "nivel": "med", "q": "Na perspectiva mediadora, a postura esperada do professor é:", "o": ["investigativa e reflexiva, acompanhando o desenvolvimento individual do estudante", "neutra e distanciada, para não interferir no resultado da avaliação", "rigorosa na aplicação dos mesmos critérios a todos, sem exceção", "centrada na quantificação precisa do desempenho de cada aluno", "restrita ao cumprimento dos prazos de lançamento das notas"], "c": 0, "w": "A avaliação mediadora exige postura investigativa e reflexiva, com acompanhamento individual e uso do erro como hipótese construtiva para novas intervenções."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Avaliação mediadora (Hoffmann)", "nivel": "med", "q": "Hoffmann define a avaliação como reflexão transformada em ação. Isso implica que ela:", "o": ["impulsiona novas reflexões, num processo interativo em que educandos e educadores aprendem", "encerra o ciclo pedagógico, consolidando o julgamento sobre o desempenho obtido segundo os autores da área", "deve ser conduzida exclusivamente pelo professor, sem participação do estudante em todas as situações analisadas", "produz dados que serão utilizados apenas pela gestão escolar da unidade", "substitui o planejamento, por já indicar o que deve ser feito em seguida em todas as situações analisadas"], "c": 0, "w": "Para Hoffmann, a avaliação é reflexão que vira ação e realimenta novas reflexões, num processo interativo em que educandos e educadores aprendem sobre si e sobre a realidade escolar."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Funções da avaliação", "nivel": "med", "q": "As três funções pedagógicas tradicionalmente atribuídas à avaliação da aprendizagem são:", "o": ["diagnóstica, formativa e somativa", "qualitativa, quantitativa e mista", "inicial, intermediária e recuperativa", "interna, externa e institucional", "individual, coletiva e autoavaliativa"], "c": 0, "w": "As três funções são diagnóstica (antes), formativa (durante) e somativa (depois do ensino), conforme o quadro trabalhado em aula."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Funções da avaliação", "nivel": "med", "q": "A avaliação diagnóstica é realizada:", "o": ["no início de um ciclo ou unidade, para mapear conhecimentos prévios e dificuldades", "ao final do semestre, para atribuir as notas e conceitos do período segundo os autores da área", "continuamente, para acompanhar a evolução do estudante durante o processo conforme a perspectiva adotada", "apenas quando o estudante apresenta resultados insatisfatórios", "por avaliadores externos, ao final de cada etapa da educação básica"], "c": 0, "w": "A diagnóstica ocorre no início e coleta dados sobre os pré-requisitos necessários, permitindo prever dificuldades e escolher conteúdos e estratégias adequados."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Funções da avaliação", "nivel": "med", "q": "A avaliação formativa caracteriza-se por:", "o": ["ocorrer continuamente durante o processo, reorientando a prática e dando retorno ao estudante", "ser aplicada uma única vez, ao término da unidade de ensino", "classificar os estudantes conforme o rendimento alcançado no período ao longo de todo o processo", "dispensar o registro das observações feitas pelo professor", "limitar-se ao diagnóstico dos conhecimentos prévios da turma conforme a perspectiva adotada segundo os autores da área"], "c": 0, "w": "A formativa é contínua: acompanha o progresso, localiza dificuldades em curso, retroalimenta o processo e orienta correção e recuperação, com feedback individualizado."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Funções da avaliação", "nivel": "med", "q": "A avaliação somativa tem como objetivo principal:", "o": ["classificar e certificar o nível de rendimento alcançado ao final de um período", "mapear os conhecimentos prévios dos estudantes antes do início do curso em todas as situações analisadas", "acompanhar passo a passo o progresso de cada aluno durante as aulas segundo os autores da área", "fornecer feedback qualitativo imediato sobre as dificuldades observadas segundo os autores da área", "orientar a correção do planejamento ao longo do processo de ensino"], "c": 0, "w": "A somativa ocorre ao final de um programa, unidade ou período, coleta dados sobre o nível de aprendizagem obtido e resulta em notas ou conceitos quantitativos."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "Funções da avaliação", "nivel": "med", "q": "Relacione corretamente cada função da avaliação ao momento em que é realizada:", "o": ["diagnóstica antes do ensino; formativa durante o ensino; somativa depois do ensino", "diagnóstica durante o ensino; formativa depois do ensino; somativa antes do ensino", "diagnóstica depois do ensino; formativa antes do ensino; somativa durante o ensino", "as três ocorrem simultaneamente, ao longo de todo o período letivo", "as três ocorrem ao final do processo, variando apenas o instrumento utilizado"], "c": 0, "w": "O quadro trabalhado em aula organiza exatamente assim: antes do ensino a inicial ou diagnóstica, durante o ensino a formativa e depois do ensino a somativa."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Funções da avaliação", "nivel": "med", "q": "Julgue os itens a seguir sobre as funções da avaliação.\nI - A diagnóstica coleta dados sobre os pré-requisitos necessários à continuidade do programa.\nII - A formativa retroalimenta o processo educacional e localiza dificuldades em curso.\nIII - A somativa é utilizada para julgar condições de promoção ou retenção.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 4, "w": "Os três itens estão corretos e correspondem exatamente ao que o quadro das etapas da avaliação apresenta para cada função."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "Etapas da avaliação", "nivel": "med", "q": "Quanto ao retorno dado ao estudante, a avaliação formativa caracteriza-se por oferecer:", "o": ["feedback individualizado, com informações qualitativas sobre o progresso obtido", "notas e conceitos quantitativos, normalmente divulgados de forma ampla", "um perfil individual com os conhecimentos prévios diagnosticados", "um relatório final enviado exclusivamente à coordenação pedagógica", "nenhum retorno, por se tratar de instrumento de uso interno do professor"], "c": 0, "w": "No quadro das etapas, o retorno da formativa é o feedback individualizado e qualitativo; as notas quantitativas amplamente divulgadas pertencem à somativa."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Etapas da avaliação", "nivel": "med", "q": "Em relação ao planejamento, a avaliação somativa caracteriza-se porque nela o planejamento:", "o": ["permanece estático, não sendo alterado pelos resultados da avaliação", "é continuamente alterado e corrigido ao longo do curso", "é adequado ao diagnóstico obtido sobre os pré-requisitos", "é elaborado apenas depois da divulgação dos resultados", "é substituído por um plano de recuperação individualizado ao longo de todo o processo"], "c": 0, "w": "Segundo o quadro, na somativa o planejamento permanece estático, enquanto na formativa ele é continuamente alterado e na diagnóstica é adequado ao diagnóstico obtido."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Etapas da avaliação", "nivel": "med", "q": "Que dados são coletados pela avaliação formativa?", "o": ["dados referentes ao contínuo progresso do estudante durante o processo de aprendizagem", "dados sobre o nível de aprendizagem obtido logo após o programa de aula", "dados relacionados aos pré-requisitos necessários à continuidade do programa", "dados comparativos entre o desempenho da turma e o de outras escolas", "dados sobre a frequência e a pontualidade dos estudantes nas aulas"], "c": 0, "w": "A formativa coleta dados do progresso contínuo durante o processo. Os pré-requisitos pertencem à diagnóstica e o nível obtido após o programa, à somativa."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Etapas da avaliação", "nivel": "med", "q": "Na avaliação diagnóstica, o retorno ao estudante assume a forma de:", "o": ["um perfil individual com informações sobre os conhecimentos prévios diagnosticados", "notas quantitativas registradas no histórico escolar do aluno em todas as situações analisadas", "um parecer descritivo com o resultado final do período letivo conforme a perspectiva adotada", "um relatório comparativo com o desempenho dos demais colegas ao longo de todo o processo", "uma certificação do nível de rendimento alcançado na unidade"], "c": 0, "w": "O quadro indica que a diagnóstica produz um perfil individual com os conhecimentos prévios identificados, orientando o planejamento do que virá."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "LDB e verificação do rendimento", "nivel": "med", "q": "Segundo o artigo 24 da LDB n.º 9.394/1996, a verificação do rendimento escolar deve observar o critério de:", "o": ["avaliação contínua e cumulativa do desempenho do aluno", "aplicação obrigatória de exame final ao término de cada bimestre", "comparação do desempenho do aluno com a média nacional da etapa", "prevalência dos aspectos quantitativos sobre os qualitativos", "classificação dos estudantes em grupos conforme o rendimento"], "c": 0, "w": "O art. 24 determina avaliação contínua e cumulativa, com prevalência dos aspectos qualitativos sobre os quantitativos e dos resultados ao longo do período sobre os de eventuais exames finais."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "LDB e verificação do rendimento", "nivel": "med", "q": "Ainda conforme o artigo 24 da LDB, na verificação do rendimento escolar deve haver prevalência:", "o": ["dos aspectos qualitativos sobre os quantitativos", "dos aspectos quantitativos sobre os qualitativos", "dos exames finais sobre os resultados obtidos ao longo do período", "das avaliações externas sobre as avaliações internas da escola", "da média da turma sobre o desempenho individual do estudante"], "c": 0, "w": "A LDB fixa a prevalência dos aspectos qualitativos sobre os quantitativos e dos resultados ao longo do período sobre os de eventuais provas finais."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "LDB e verificação do rendimento", "nivel": "med", "q": "Julgue os itens a seguir sobre o artigo 24 da LDB.\nI - A avaliação do desempenho deve ser contínua e cumulativa.\nII - É prevista a possibilidade de aceleração de estudos para alunos com atraso escolar.\nIII - Os resultados de exames finais devem prevalecer sobre os obtidos ao longo do período.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III inverte a regra: a LDB determina a prevalência dos resultados ao longo do período sobre os de eventuais exames finais."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "O erro no processo de aprendizagem", "nivel": "med", "q": "Na concepção construtivista de avaliação, o erro do estudante deve ser compreendido como:", "o": ["uma etapa lógica do raciocínio do aluno, que revela seu nível de elaboração conceitual", "um fracasso que precisa ser corrigido por meio de nota baixa", "uma falha de atenção que se resolve com maior repetição do conteúdo conforme a perspectiva adotada", "um indicativo de que o estudante não estudou o suficiente em casa", "um problema que deve ser comunicado imediatamente à família"], "c": 0, "w": "Na perspectiva construtivista o erro é construtivo: deixa de ser falta a ser punida e passa a ser pista sobre o raciocínio do aluno, orientando a intervenção do professor."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "O erro no processo de aprendizagem", "nivel": "med", "q": "Diante de um erro do estudante, a intervenção docente mais coerente com a avaliação mediadora é:", "o": ["compreender o raciocínio que levou ao erro e propor desafios que ajudem a superá-lo", "registrar o erro na avaliação e seguir para o próximo conteúdo previsto conforme a perspectiva adotada", "repetir a explicação da mesma forma até que o estudante memorize", "solicitar que o aluno refaça a atividade como tarefa extra em casa conforme a perspectiva adotada", "encaminhar o estudante para reforço fora do horário de aula"], "c": 0, "w": "A mediação parte do erro como hipótese construtiva: compreender a elaboração do aluno e propor mediações e desafios que permitam a superação."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "O erro no processo de aprendizagem", "nivel": "med", "q": "A expressão erro construtivo indica que o erro:", "o": ["informa sobre o processo de construção do conhecimento e orienta novas intervenções", "deve ser evitado a todo custo para não consolidar aprendizagens equivocadas", "só tem valor pedagógico quando cometido por estudantes com bom desempenho", "serve para medir o grau de esforço dedicado pelo aluno à disciplina", "representa uma falha do planejamento elaborado pelo professor"], "c": 0, "w": "Erro construtivo é aquele que revela a lógica do pensamento do estudante naquele momento e, por isso, fornece ao professor a informação necessária para intervir."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Instrumentos e feedback", "nivel": "med", "q": "A diversificação dos instrumentos avaliativos justifica-se porque a prova escrita tradicional, usada isoladamente:", "o": ["privilegia um único tipo de habilidade e não contempla os diferentes estilos e ritmos de aprendizagem", "exige muito tempo de correção por parte do professor regente ao longo de todo o processo conforme a perspectiva adotada", "é proibida pela legislação educacional na educação básica", "não permite a atribuição de notas exigidas pela secretaria conforme a perspectiva adotada segundo os autores da área", "favorece excessivamente os estudantes com dificuldade de escrita segundo os autores da área em qualquer etapa do trabalho pedagógico"], "c": 0, "w": "A prova escrita pontual privilegia memorização e escrita sob pressão. Diversificar com portfólios, autoavaliação, seminários, observação e projetos produz dados mais completos e justos."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Instrumentos e feedback", "nivel": "med", "q": "A autoavaliação, como prática pedagógica, consiste em:", "o": ["o próprio estudante refletir sobre sua aprendizagem, identificando avanços e dificuldades", "o professor avaliar a si mesmo ao final de cada unidade de ensino ao longo de todo o processo", "a turma avaliar coletivamente o desempenho de cada colega segundo os autores da área em qualquer etapa do trabalho pedagógico", "a família atribuir um conceito ao desempenho do estudante em casa em todas as situações analisadas", "a escola avaliar seus próprios resultados nas provas externas em todas as situações analisadas"], "c": 0, "w": "Na autoavaliação o estudante reflete sobre o próprio processo, o que desenvolve a metacognição e o torna agente ativo e consciente da sua trajetória escolar."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Instrumentos e feedback", "nivel": "med", "q": "Metacognição, no contexto da autoavaliação, significa:", "o": ["a capacidade do indivíduo de pensar sobre o seu próprio processo de pensamento", "o conhecimento acumulado pelo estudante ao longo de toda a escolaridade segundo os autores da área", "a habilidade de memorizar conteúdos com maior rapidez e precisão", "o conjunto de estratégias usadas pelo professor para explicar um conceito ao longo de todo o processo", "a comparação entre o desempenho individual e o da turma como um todo"], "c": 0, "w": "Metacognição é pensar sobre o próprio pensamento. A autoavaliação a desenvolve, tornando o estudante consciente de como aprende e do que precisa ajustar."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Instrumentos e feedback", "nivel": "med", "q": "Para impulsionar a aprendizagem, o feedback formativo deve ser:", "o": ["específico, descritivo, oferecido em tempo hábil e orientador", "genérico e breve, para não desestimular o estudante", "restrito à indicação de certo ou errado em cada questão segundo os autores da área", "postergado até o encerramento do período letivo", "dirigido à turma como um todo, sem individualização"], "c": 0, "w": "O feedback formativo eficiente é específico, descritivo, tempestivo e orientador: aponta onde o aluno acertou, onde precisa melhorar e que estratégias pode adotar."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "Instrumentos e feedback", "nivel": "med", "q": "Rubricas de avaliação podem ser definidas como:", "o": ["guias ou matrizes que articulam critérios claros e níveis de desempenho esperados", "registros descritivos elaborados pelo estudante ao final de cada atividade em todas as situações analisadas", "instrumentos de coleta de dados sobre a frequência escolar da turma", "fichas de observação preenchidas exclusivamente pela coordenação", "modelos de prova padronizados fornecidos pela rede de ensino"], "c": 0, "w": "Rubricas são matrizes com critérios e níveis de desempenho. Dão transparência ao estudante e reduzem a subjetividade da correção para o professor."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Instrumentos e feedback", "nivel": "med", "q": "Julgue os itens a seguir sobre instrumentos de avaliação.\nI - O portfólio permite acompanhar a evolução do estudante ao longo do tempo.\nII - A diversificação de instrumentos torna a avaliação mais justa e fidedigna.\nIII - A prova escrita deve ser abolida, por ser incompatível com a avaliação formativa.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III exagera: a prova não precisa ser abolida, o problema é usá-la como instrumento exclusivo."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Avaliação e planejamento", "nivel": "med", "q": "A relação entre avaliação da aprendizagem e planejamento de ensino pode ser descrita como:", "o": ["uma relação de retroalimentação, em que os dados da avaliação reorientam o planejamento", "uma relação de independência, já que cada um atende a finalidades distintas conforme a perspectiva adotada", "uma relação de subordinação, em que o planejamento determina a nota final ao longo de todo o processo", "uma sequência linear, em que a avaliação encerra definitivamente o processo segundo os autores da área", "uma relação administrativa, exigida apenas para fins de registro escolar ao longo de todo o processo"], "c": 0, "w": "Avaliação e planejamento mantêm relação dialética de retroalimentação: os resultados informam a eficácia das metodologias e levam o professor a reformular o planejamento."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Avaliação e planejamento", "nivel": "med", "q": "Afirmar que a avaliação não é o fim do processo significa reconhecer que ela:", "o": ["fornece dados que alimentam decisões pedagógicas sobre o que fazer em seguida", "deve ser realizada antes de qualquer atividade de ensino ser iniciada", "tem valor apenas quando convertida em nota registrada no sistema", "é responsabilidade da equipe gestora, e não do professor regente", "pode ser dispensada quando a turma apresenta bom rendimento"], "c": 0, "w": "A avaliação é ferramenta diagnóstica e contínua: seus dados realimentam o planejamento, em vez de encerrar o processo com um julgamento final."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Avaliação e planejamento", "nivel": "med", "q": "Segundo Perrenoud, na avaliação da aprendizagem o professor não deve permitir que:", "o": ["os resultados das provas periódicas, de caráter classificatório, sejam supervalorizados em detrimento das observações diárias", "as observações diárias substituam completamente os instrumentos formais de avaliação ao longo de todo o processo conforme a perspectiva adotada", "os estudantes participem da definição dos critérios usados na avaliação ao longo de todo o processo conforme a perspectiva adotada", "a avaliação seja utilizada para reorientar o planejamento de ensino", "as famílias tenham acesso aos registros produzidos durante o processo"], "c": 0, "w": "Perrenoud alerta contra a supervalorização das provas periódicas classificatórias em prejuízo das observações diárias, que têm caráter diagnóstico."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Avaliação na educação infantil", "nivel": "med", "q": "Conforme a Resolução CNE/CEB n.º 5/2009, as instituições de educação infantil devem criar procedimentos de acompanhamento e avaliação do desenvolvimento das crianças:", "o": ["sem objetivo de seleção, promoção ou classificação", "com vistas à classificação das crianças por nível de desenvolvimento", "para decidir sobre a promoção da criança à etapa seguinte", "exclusivamente por meio de instrumentos padronizados nacionais", "a partir do segundo ano de frequência na instituição"], "c": 0, "w": "O art. 10 da Resolução CNE/CEB n.º 5/2009 é expresso: o acompanhamento e a avaliação na educação infantil ocorrem sem objetivo de seleção, promoção ou classificação."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "Avaliação na educação infantil", "nivel": "med", "q": "Entre as garantias previstas no artigo 10 da Resolução CNE/CEB n.º 5/2009 está:", "o": ["a não retenção das crianças na educação infantil", "a aplicação de prova de sondagem ao final da pré-escola", "a retenção da criança que não atingir os objetivos previstos", "a classificação das turmas conforme o desempenho observado", "a avaliação externa anual das instituições de educação infantil"], "c": 0, "w": "O inciso V do art. 10 garante expressamente a não retenção das crianças na educação infantil, coerente com a recusa da lógica classificatória nessa etapa."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Avaliação na educação infantil", "nivel": "med", "q": "Ainda segundo a Resolução CNE/CEB n.º 5/2009, a avaliação na educação infantil deve utilizar:", "o": ["múltiplos registros realizados por adultos e crianças, como relatórios, fotografias e desenhos", "exclusivamente fichas padronizadas preenchidas pelo professor regente em todas as situações analisadas", "provas objetivas adaptadas à faixa etária das crianças atendidas ao longo de todo o processo conforme a perspectiva adotada", "somente os relatórios produzidos pela coordenação pedagógica", "instrumentos quantitativos que permitam comparar turmas diferentes segundo os autores da área em qualquer etapa do trabalho pedagógico"], "c": 0, "w": "O inciso II do art. 10 prevê a utilização de múltiplos registros realizados por adultos e crianças: relatórios, fotografias, desenhos, álbuns e outros."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Avaliação na educação infantil", "nivel": "med", "q": "São ações necessárias para a avaliação na educação infantil, conforme trabalhado em aula:", "o": ["observação, registro, documentação e estratégias adequadas", "aplicação, correção, atribuição de nota e divulgação", "sondagem, classificação, recuperação e promoção", "diagnóstico, prova, recuperação paralela e conselho de classe", "planejamento, execução, fiscalização e prestação de contas"], "c": 0, "w": "As quatro ações apresentadas são observação, registro, documentação e estratégias adequadas, coerentes com os incisos do art. 10 da Resolução CNE/CEB n.º 5/2009."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Conceito de avaliação", "nivel": "dif", "q": "A afirmação de que avaliar é atribuir juízo de valor tem como implicação pedagógica reconhecer que a avaliação:", "o": ["nunca é neutra, pois envolve critérios e concepções assumidas por quem avalia", "deve ser evitada sempre que possível, por carregar subjetividade ao longo de todo o processo", "só é legítima quando traduzida em dados estritamente numéricos conforme a perspectiva adotada", "independe da concepção de ensino adotada pela escola segundo os autores da área", "equivale a uma medição objetiva do conhecimento adquirido ao longo de todo o processo"], "c": 0, "w": "Se avaliar é atribuir valor, há sempre critérios e concepções em jogo. Daí a importância de explicitá-los, e não de fingir neutralidade: a questão não é eliminar o juízo, é fundamentá-lo."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Conceito de avaliação", "nivel": "dif", "q": "Um professor afirma que avalia bem porque mede com precisão o quanto cada aluno memorizou. Essa concepção é problemática porque:", "o": ["confunde avaliação com medida, reduzindo o processo à verificação de conteúdo retido", "exige instrumentos sofisticados que a escola pública não possui em todas as situações analisadas", "contraria a exigência legal de atribuição de notas bimestrais", "desconsidera a necessidade de comparar o aluno com a média da turma em todas as situações analisadas", "impede o registro formal dos resultados no diário de classe"], "c": 0, "w": "Medir é apenas uma das operações possíveis. Avaliar envolve atribuir valor e tomar decisões pedagógicas, o que a verificação de memorização não alcança."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "Conceito de avaliação", "nivel": "dif", "q": "Julgue os itens a seguir sobre concepções de avaliação.\nI - Avaliar envolve emitir juízo de valor sobre uma ação ou matéria.\nII - A avaliação deve estar a serviço da individualização da aprendizagem.\nIII - A avaliação é um procedimento técnico neutro, independente de concepções pedagógicas.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III está errado: toda avaliação carrega uma concepção de ensino, de aprendizagem e de sujeito."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Avaliar e examinar (Luckesi)", "nivel": "dif", "q": "Uma escola aplica provas bimestrais, atribui notas e decide aprovação ao final do ano, sem usar os resultados para reorientar o ensino. Segundo Luckesi, essa prática configura:", "o": ["exame, pois está centrada no julgamento de aprovação ou reprovação", "avaliação formativa, por ocorrer ao longo de todo o ano letivo", "avaliação diagnóstica, por identificar quem domina os conteúdos", "avaliação mediadora, por acompanhar o desempenho periodicamente", "autoavaliação institucional, por envolver toda a escola no processo"], "c": 0, "w": "A periodicidade não transforma exame em avaliação. O que define é a finalidade: sem uso diagnóstico para reorientar o ensino, há julgamento classificatório, isto é, exame."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "Avaliar e examinar (Luckesi)", "nivel": "dif", "q": "A caracterização da avaliação como amorosa, em Luckesi, deve ser entendida como:", "o": ["acolhimento da realidade do aluno como ponto de partida para decisões que promovam seu avanço", "afetividade que dispensa a cobrança de resultados de aprendizagem", "tolerância com o baixo desempenho para preservar a autoestima do estudante", "ausência de critérios, para que nenhum aluno se sinta prejudicado", "aproximação pessoal entre professor e aluno fora do horário de aula"], "c": 0, "w": "Amorosa, em Luckesi, significa acolher o estudante como ele está para decidir o que fazer a partir daí. Não é ausência de critério nem complacência com o resultado."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Avaliar e examinar (Luckesi)", "nivel": "dif", "q": "A principal diferença de finalidade entre exame e avaliação, em Luckesi, é que o exame:", "o": ["verifica o que o aluno retém no momento da prova, enquanto a avaliação diagnostica para decidir o que fazer", "ocorre no início do processo, enquanto a avaliação ocorre no fim", "é aplicado pelo professor, enquanto a avaliação cabe à gestão escolar em todas as situações analisadas ao longo de todo o processo", "utiliza instrumentos variados, enquanto a avaliação usa apenas a prova conforme a perspectiva adotada segundo os autores da área", "é obrigatório por lei, enquanto a avaliação é facultativa na educação básica em todas as situações analisadas"], "c": 0, "w": "O exame produz um retrato estático do momento; a avaliação produz um diagnóstico que fundamenta decisões pedagógicas para promover o avanço da aprendizagem."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Avaliar e examinar (Luckesi)", "nivel": "dif", "q": "Julgue os itens a seguir à luz da distinção entre avaliar e examinar.\nI - A avaliação é inclusiva porque busca a aprendizagem de todos.\nII - O exame é seletivo porque opera na lógica da classificação.\nIII - Avaliar e examinar são etapas complementares de um mesmo processo.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III está errado: Luckesi os caracteriza como atos praticamente opostos quanto à finalidade, e não como etapas complementares."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Avaliação mediadora (Hoffmann)", "nivel": "dif", "q": "Na avaliação mediadora, após identificar dificuldades recorrentes na turma, a atitude esperada do professor é:", "o": ["refazer o planejamento para adequá-lo ao percurso de aprendizagem dos alunos", "repetir a avaliação até que a maioria alcance a média estabelecida", "registrar as dificuldades e seguir o cronograma previsto para o bimestre ao longo de todo o processo", "encaminhar os alunos com dificuldade para atendimento fora da sala", "reduzir o grau de exigência das próximas avaliações aplicadas"], "c": 0, "w": "Hoffmann é explícita: no processo dialógico, o professor refaz seu planejamento para adequá-lo ao percurso de aprendizagem dos seus alunos."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Avaliação mediadora (Hoffmann)", "nivel": "dif", "q": "A avaliação mediadora é descrita como processo interativo porque nele:", "o": ["educandos e educadores aprendem sobre si mesmos e sobre a realidade escolar", "a turma participa da correção das provas aplicadas pelo professor", "os resultados são discutidos em reunião com as famílias dos estudantes conforme a perspectiva adotada", "a coordenação pedagógica acompanha todas as etapas da avaliação", "os estudantes avaliam uns aos outros em atividades coletivas"], "c": 0, "w": "Hoffmann define a avaliação como processo interativo no qual educandos e educadores aprendem sobre si mesmos e sobre a realidade escolar."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "Avaliação mediadora (Hoffmann)", "nivel": "dif", "q": "Uma professora devolve a prova com a nota e a observação estude mais. Do ponto de vista da avaliação mediadora, essa devolutiva é insuficiente porque:", "o": ["não dialoga sobre o processo nem indica caminhos concretos para a superação das dificuldades", "deveria ter sido registrada no sistema antes de ser entregue ao aluno", "não compara o desempenho do estudante com o da turma", "não foi acompanhada de uma segunda oportunidade de avaliação", "não traz a assinatura do responsável pelo estudante"], "c": 0, "w": "A mediação exige diálogo sobre o processo: apontar o que o aluno já domina, onde está a dificuldade e que estratégias adotar. Nota mais exortação genérica não cumpre esse papel."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Avaliação mediadora (Hoffmann)", "nivel": "dif", "q": "Julgue os itens seguintes sobre a avaliação mediadora.\nI - O erro é compreendido como hipótese construtiva para novas intervenções.\nII - A avaliação mediadora dispensa qualquer forma de registro do percurso.\nIII - A postura esperada do professor é investigativa e reflexiva.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 3, "w": "Os itens I e III estão certos. O item II está errado: acompanhar o desenvolvimento individual exige registro sistemático do percurso do estudante."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Funções da avaliação", "nivel": "dif", "q": "Um professor aplica uma atividade na primeira semana de aula para identificar o que a turma já domina. Essa avaliação cumpre função:", "o": ["diagnóstica, pois mapeia pré-requisitos para orientar o planejamento", "formativa, pois ocorre dentro do processo de ensino e aprendizagem", "somativa, pois gera dados sobre o rendimento dos estudantes", "classificatória, pois permite separar a turma por nível de conhecimento", "institucional, pois avalia a qualidade do trabalho da escola"], "c": 0, "w": "A função é determinada pela finalidade e pelo momento: no início, para mapear pré-requisitos e orientar o planejamento, trata-se de avaliação diagnóstica."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Funções da avaliação", "nivel": "dif", "q": "A principal diferença entre avaliação formativa e somativa está em que a formativa:", "o": ["ocorre durante o processo e serve para reorientá-lo, enquanto a somativa ocorre ao final e classifica o resultado", "utiliza instrumentos qualitativos, enquanto a somativa utiliza apenas provas objetivas ao longo de todo o processo", "é aplicada pelo professor, enquanto a somativa é aplicada por avaliadores externos ao longo de todo o processo conforme a perspectiva adotada", "dispensa registro, enquanto a somativa exige documentação detalhada ao longo de todo o processo conforme a perspectiva adotada", "é facultativa, enquanto a somativa é obrigatória por força de lei em todas as situações analisadas ao longo de todo o processo"], "c": 0, "w": "A distinção é de momento e finalidade: a formativa acompanha e corrige o percurso; a somativa fecha o período e classifica o resultado alcançado."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Funções da avaliação", "nivel": "dif", "q": "Uma escola afirma que realiza avaliação formativa porque aplica provas mensais em vez de bimestrais. Essa afirmação é:", "o": ["incorreta, pois o que define a função formativa é o uso dos resultados para reorientar o ensino, não a frequência das provas", "correta, pois a maior frequência caracteriza o acompanhamento contínuo segundo os autores da área em qualquer etapa do trabalho pedagógico", "correta, desde que as provas mensais sejam registradas no diário segundo os autores da área em qualquer etapa do trabalho pedagógico", "incorreta, pois a avaliação formativa não admite o uso de provas", "irrelevante, já que as três funções podem ser usadas indistintamente em todas as situações analisadas ao longo de todo o processo"], "c": 0, "w": "Aumentar a frequência das provas sem usar os resultados para intervir apenas multiplica exames. O traço formativo está no uso dos dados para corrigir o percurso."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Funções da avaliação", "nivel": "dif", "q": "As três funções da avaliação devem ser compreendidas como:", "o": ["complementares, pois respondem a necessidades diferentes do processo educativo", "excludentes, devendo a escola optar por apenas uma delas por período conforme a perspectiva adotada", "hierárquicas, prevalecendo sempre a somativa sobre as demais", "equivalentes, variando apenas o nome conforme a rede de ensino", "independentes do planejamento, por terem finalidade estritamente técnica em todas as situações analisadas"], "c": 0, "w": "Diagnóstica, formativa e somativa respondem a perguntas distintas e se complementam ao longo do processo; não se trata de escolher uma e descartar as outras."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "Funções da avaliação", "nivel": "dif", "q": "Segundo o quadro das etapas da avaliação, a diferença entre diagnóstica e formativa quanto ao uso das informações obtidas é que a diagnóstica:", "o": ["prevê futuras dificuldades e guia a escolha de conteúdos e estratégias, enquanto a formativa retroalimenta o processo em curso", "retroalimenta o processo em curso, enquanto a formativa prevê futuras dificuldades segundo os autores da área em qualquer etapa do trabalho pedagógico", "classifica os estudantes, enquanto a formativa certifica o rendimento final conforme a perspectiva adotada segundo os autores da área", "não gera informações utilizáveis, servindo apenas para fins de registro", "orienta a promoção ou retenção, enquanto a formativa orienta a recuperação em todas as situações analisadas ao longo de todo o processo"], "c": 0, "w": "A diagnóstica antecipa dificuldades e orienta escolhas iniciais; a formativa localiza dificuldades em curso e guia correção e recuperação durante o processo."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "Funções da avaliação", "nivel": "dif", "q": "Julgue os itens a seguir sobre as três funções da avaliação.\nI - Na somativa, o planejamento não é alterado pelos resultados obtidos.\nII - Na formativa, o retorno ao estudante é quantitativo e amplamente divulgado.\nIII - Na diagnóstica, coletam-se dados sobre pré-requisitos para o programa.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 3, "w": "Os itens I e III estão certos. O item II troca as funções: o retorno quantitativo amplamente divulgado é da somativa; na formativa o feedback é individualizado e qualitativo."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Etapas da avaliação", "nivel": "dif", "q": "O modelo de etapas da avaliação organiza-se a partir de cinco perguntas. Entre elas está:", "o": ["como a avaliação reflete no planejamento", "quantos estudantes atingiram a média exigida", "qual o custo de aplicação de cada instrumento", "quem é o responsável legal pelo registro das notas", "em que momento a família deve ser convocada"], "c": 0, "w": "As cinco perguntas são: quando é realizada, que dados coleta, o que se faz com as informações, que retorno é dado ao estudante e como reflete no planejamento."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "Etapas da avaliação", "nivel": "dif", "q": "O fato de o planejamento permanecer estático na avaliação somativa evidencia que ela:", "o": ["não tem por finalidade corrigir o percurso, e sim verificar o resultado alcançado", "é incompatível com qualquer proposta pedagógica contemporânea conforme a perspectiva adotada", "deve ser substituída pela avaliação formativa em todas as etapas em todas as situações analisadas", "produz dados menos confiáveis que os das demais funções", "dispensa a participação do professor regente na sua aplicação"], "c": 0, "w": "A somativa fecha o período e certifica o rendimento. Isso não a invalida, mas explica por que não pode ser o único instrumento: ela não realimenta o processo em curso."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Etapas da avaliação", "nivel": "dif", "q": "Em qual função da avaliação as informações obtidas são utilizadas para julgar condições de promoção ou retenção?", "o": ["somativa", "formativa", "diagnóstica", "mediadora", "processual"], "c": 0, "w": "Conforme o quadro, as informações da somativa são usadas para classificação dos estudantes e julgamento sobre promoção ou retenção ao fim do programa."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Etapas da avaliação", "nivel": "dif", "q": "Uma professora coleta dados continuamente, devolve comentários qualitativos individualizados e ajusta seu plano de aula ao longo do bimestre. Essa prática corresponde à função:", "o": ["formativa", "somativa", "diagnóstica", "classificatória", "certificativa"], "c": 0, "w": "Coleta contínua, feedback individualizado qualitativo e alteração do planejamento ao longo do curso são as três marcas da avaliação formativa no quadro das etapas."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "LDB e verificação do rendimento", "nivel": "dif", "q": "Uma escola define que a nota final será exclusivamente a do exame aplicado em dezembro. Essa decisão contraria a LDB porque:", "o": ["a lei determina a prevalência dos resultados obtidos ao longo do período sobre os de exames finais", "a lei proíbe expressamente a realização de exames finais na educação básica segundo os autores da área", "a lei exige que a nota final seja definida pelo conselho de classe", "a lei determina que a avaliação seja exclusivamente qualitativa", "a lei impede a atribuição de notas numéricas aos estudantes"], "c": 0, "w": "O art. 24 fixa a avaliação contínua e cumulativa e a prevalência dos resultados ao longo do período sobre os de eventuais provas finais."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "LDB e verificação do rendimento", "nivel": "dif", "q": "A previsão legal de aceleração de estudos e avanço nos cursos mediante verificação do aprendizado indica que a LDB:", "o": ["admite percursos diferenciados conforme a aprendizagem demonstrada pelo estudante", "obriga todas as escolas a oferecer turmas de aceleração anualmente ao longo de todo o processo", "proíbe a retenção de estudantes em qualquer etapa da educação básica conforme a perspectiva adotada", "restringe a progressão ao cumprimento integral da carga horária prevista segundo os autores da área", "transfere ao estudante a responsabilidade pela definição do seu percurso conforme a perspectiva adotada"], "c": 0, "w": "Ao prever aceleração e avanço mediante verificação do aprendizado, a LDB reconhece que o tempo escolar pode ser flexibilizado conforme a aprendizagem demonstrada."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "LDB e verificação do rendimento", "nivel": "dif", "q": "A determinação legal de prevalência dos aspectos qualitativos sobre os quantitativos implica que o professor deve:", "o": ["considerar o percurso e a qualidade das aprendizagens, e não apenas o somatório de pontos", "abolir as notas numéricas de todos os instrumentos de avaliação", "atribuir peso maior às atividades realizadas em grupo", "registrar apenas pareceres descritivos no diário de classe", "dispensar a aplicação de qualquer instrumento formal de avaliação"], "c": 0, "w": "A prevalência do qualitativo não elimina a nota: exige que o juízo sobre a aprendizagem leve em conta o percurso e a qualidade, não apenas a soma aritmética de pontos."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "O erro no processo de aprendizagem", "nivel": "dif", "q": "Um aluno escreve sapo com ç. Na perspectiva construtivista, essa grafia deve ser lida como:", "o": ["uma hipótese coerente com o nível de elaboração do aluno sobre o sistema de escrita", "um descuido que se resolve com cópia repetida da palavra correta em todas as situações analisadas", "uma falha de atenção sem valor pedagógico para o professor", "um indicativo de que o estudante precisa de avaliação externa", "um erro grave que compromete a aprovação no período letivo"], "c": 0, "w": "O erro construtivo revela a hipótese que a criança construiu sobre o sistema de escrita. Ele informa o professor sobre o nível de elaboração conceitual e orienta a intervenção."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "O erro no processo de aprendizagem", "nivel": "dif", "q": "Punir o erro com nota baixa, sem qualquer intervenção pedagógica, é incoerente com a avaliação formativa porque:", "o": ["desperdiça a informação que o erro oferece sobre o processo de aprendizagem", "contraria a exigência legal de registro das notas no sistema escolar", "impede a comparação do desempenho entre os estudantes da turma", "reduz o tempo disponível para o cumprimento do conteúdo previsto", "transfere à família a responsabilidade pela recuperação do aluno"], "c": 0, "w": "O erro é dado diagnóstico. Convertê-lo apenas em nota baixa descarta a informação mais valiosa que ele carrega e abandona o estudante no mesmo ponto."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "O erro no processo de aprendizagem", "nivel": "dif", "q": "Julgue os itens a seguir sobre o erro na avaliação.\nI - O erro pode indicar o nível de elaboração conceitual alcançado pelo estudante.\nII - A intervenção docente deve partir da compreensão do raciocínio que gerou o erro.\nIII - Na perspectiva construtivista, o erro deve ser ignorado para não constranger o aluno.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III está errado: o erro não é ignorado, e sim tomado como ponto de partida para a intervenção pedagógica."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Instrumentos e feedback", "nivel": "dif", "q": "Um professor avalia exclusivamente por prova escrita individual. O principal problema dessa escolha é que ela:", "o": ["coleta evidências de um único tipo de habilidade e desconsidera diferentes ritmos e estilos de aprendizagem", "exige tempo excessivo de elaboração e correção por parte do docente conforme a perspectiva adotada segundo os autores da área", "não permite o registro dos resultados no sistema da rede de ensino ao longo de todo o processo conforme a perspectiva adotada", "favorece os estudantes que participam mais das atividades em grupo", "contraria a determinação legal de aplicar ao menos três instrumentos conforme a perspectiva adotada segundo os autores da área"], "c": 0, "w": "A prova escrita isolada privilegia memorização e escrita sob pressão. A diversificação produz dados mais completos, justos e fidedignos sobre as competências desenvolvidas."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Instrumentos e feedback", "nivel": "dif", "q": "O portfólio como instrumento avaliativo distingue-se da prova tradicional principalmente por:", "o": ["documentar a evolução do estudante ao longo do tempo, evidenciando o processo e não apenas o produto", "permitir a atribuição de notas com maior precisão matemática em todas as situações analisadas ao longo de todo o processo", "exigir menor tempo de análise por parte do professor regente conforme a perspectiva adotada segundo os autores da área", "eliminar a subjetividade presente na correção de atividades segundo os autores da área em qualquer etapa do trabalho pedagógico", "possibilitar a comparação direta entre estudantes de turmas diferentes ao longo de todo o processo conforme a perspectiva adotada"], "c": 0, "w": "O portfólio reúne produções ao longo do tempo e torna visível o percurso. É isso que o torna coerente com a avaliação formativa e mediadora."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "Instrumentos e feedback", "nivel": "dif", "q": "Um feedback que apenas informa a nota obtida é considerado pouco formativo porque:", "o": ["não indica onde o estudante acertou, onde precisa melhorar e que estratégias adotar", "não é registrado formalmente nos documentos escolares da turma segundo os autores da área", "não permite que a família acompanhe o desempenho do estudante segundo os autores da área", "não é entregue dentro do prazo estabelecido pela coordenação", "não compara o desempenho do aluno com o restante da turma"], "c": 0, "w": "Feedback formativo é específico, descritivo, tempestivo e orientador. A nota isolada não cumpre nenhuma dessas quatro características."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Instrumentos e feedback", "nivel": "dif", "q": "Entre as vantagens das rubricas para o professor, destaca-se:", "o": ["a redução da subjetividade na correção, com maior coerência e equidade", "a dispensa da elaboração de critérios específicos para cada tarefa", "a possibilidade de corrigir sem precisar ler integralmente os trabalhos", "a eliminação da necessidade de devolutiva individual ao estudante", "a padronização nacional dos critérios de avaliação entre escolas"], "c": 0, "w": "Rubricas reduzem a subjetividade e aumentam coerência, equidade e agilidade na correção. Para o aluno, oferecem transparência sobre o que se espera dele."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2022, "assunto": "Instrumentos e feedback", "nivel": "dif", "q": "A autoavaliação contribui para a autonomia do estudante porque:", "o": ["o coloca como agente ativo, consciente do próprio percurso e capaz de identificar o que precisa ajustar", "transfere ao aluno a responsabilidade pela atribuição da sua nota final", "reduz a necessidade de acompanhamento sistemático pelo professor", "permite que o estudante escolha quais conteúdos deseja ser avaliado", "dispensa o uso de outros instrumentos avaliativos no período"], "c": 0, "w": "Ao refletir sobre o próprio processo, o estudante desenvolve metacognição e assume papel ativo. Isso não substitui a avaliação feita pelo professor, mas a complementa."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Instrumentos e feedback", "nivel": "dif", "q": "Julgue os itens seguintes sobre rubricas de avaliação.\nI - Articulam critérios claros e níveis de desempenho esperados para uma tarefa.\nII - Dão transparência ao estudante sobre o que se espera do seu trabalho.\nIII - Devem ser mantidas em sigilo até a correção, para não induzir as respostas.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III contraria a função da rubrica: ela só cumpre seu papel quando conhecida previamente pelo estudante."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2023, "assunto": "Avaliação e planejamento", "nivel": "dif", "q": "A relação dialética entre avaliação e planejamento significa que:", "o": ["cada um influencia e é influenciado pelo outro, num movimento contínuo de retroalimentação", "o planejamento determina a avaliação, sem ser afetado por ela conforme a perspectiva adotada", "a avaliação substitui o planejamento quando os resultados são insatisfatórios em todas as situações analisadas", "ambos são independentes, sendo a avaliação posterior ao planejamento segundo os autores da área", "o planejamento só deve ser revisto no início de cada ano letivo ao longo de todo o processo"], "c": 0, "w": "Dialética aqui significa mútua determinação: o planejamento orienta a avaliação e os resultados avaliativos reorientam o planejamento, num ciclo que não se fecha."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Avaliação e planejamento", "nivel": "dif", "q": "Os resultados de uma avaliação indicam que a maior parte da turma não compreendeu determinado conceito. A conduta mais coerente com a avaliação formativa é:", "o": ["rever a abordagem metodológica adotada e planejar novas situações de aprendizagem", "registrar as notas e prosseguir com o conteúdo seguinte do planejamento conforme a perspectiva adotada", "aplicar nova prova sobre o mesmo conteúdo para confirmar o resultado em todas as situações analisadas", "encaminhar os estudantes para recuperação ao final do bimestre", "comunicar às famílias o baixo rendimento apresentado pela turma"], "c": 0, "w": "Quando a maior parte da turma não aprendeu, o dado aponta para o ensino, não apenas para os alunos. A resposta formativa é rever a metodologia e replanejar."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Avaliação e planejamento", "nivel": "dif", "q": "Julgue os itens a seguir sobre avaliação e planejamento.\nI - A avaliação fornece dados sobre a eficácia das metodologias adotadas.\nII - O planejamento deve ser reformulado conforme as necessidades reais da turma.\nIII - A avaliação constitui a etapa final do processo pedagógico.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III está errado: a avaliação não encerra o processo, ela o realimenta continuamente."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2023, "assunto": "Avaliação na educação infantil", "nivel": "dif", "q": "A vedação de seleção, promoção ou classificação na avaliação da educação infantil fundamenta-se na compreensão de que:", "o": ["a finalidade dessa etapa é o desenvolvimento integral, e não a certificação de rendimento", "as crianças dessa faixa etária ainda não podem ser observadas sistematicamente ao longo de todo o processo", "a avaliação nessa etapa é responsabilidade exclusiva da família", "não existem objetivos de aprendizagem definidos para a educação infantil", "os registros produzidos nessa etapa não têm valor pedagógico posterior"], "c": 0, "w": "A educação infantil tem finalidade de desenvolvimento integral. Avaliar aqui é acompanhar e documentar processos, não medir rendimento para promover ou reter."}, {"banca": "VUNESP", "inst": "Pref. SP", "ano": 2023, "assunto": "Avaliação na educação infantil", "nivel": "dif", "q": "Segundo Oliveira-Formosinho e Pascal, o processo de avaliação participativa organiza-se em quatro fases que são:", "o": ["avaliação, planejamento da ação, aperfeiçoamento e reflexão", "diagnóstico, aplicação, correção e divulgação segundo os autores da área", "observação, prova, recuperação e promoção", "sondagem, classificação, intervenção e certificação em todas as situações analisadas", "planejamento, execução, monitoramento e prestação de contas"], "c": 0, "w": "As quatro fases encadeiam-se continuamente: avaliação (coleta e documentação), planejamento da ação (metas e prioridades), aperfeiçoamento (implementação e monitoramento) e reflexão (relatório que gera novo ciclo)."}, {"banca": "FGV", "inst": "Pref. RJ", "ano": 2022, "assunto": "Avaliação na educação infantil", "nivel": "dif", "q": "Para Fèneyrou, a avaliação na educação infantil não é simples constatação do rendimento da criança: ela deve produzir efeitos:", "o": ["sobre a criança avaliada, sobre o adulto que avalia e sobre a família", "exclusivamente sobre o planejamento elaborado pela equipe pedagógica em todas as situações analisadas", "apenas sobre os registros oficiais mantidos pela instituição conforme a perspectiva adotada", "somente sobre a criança, principal destinatária do processo em todas as situações analisadas", "sobre a rede de ensino, que define as diretrizes da etapa"], "c": 0, "w": "Fèneyrou destaca os três destinatários dos efeitos da avaliação: a criança, o adulto que avalia e a família, o que exige formas adequadas de comunicação para cada um."}, {"banca": "CEBRASPE", "inst": "SEDUC", "ano": 2022, "assunto": "Avaliação na educação infantil", "nivel": "dif", "q": "Julgue os itens a seguir sobre a comunicação dos resultados da avaliação na educação infantil.\nI - Para a criança, a comunicação deve ser adequada à sua capacidade de compreensão e favorecer imagem positiva de si.\nII - Para a família, a comunicação deve ser clara e permitir o contraste de diferentes hipóteses sobre a criança.\nIII - Para o professor, a avaliação diária não produz efeitos sobre o futuro da criança.\nAssinale a opção correta.", "o": ["Apenas o item I está certo.", "Apenas o item II está certo.", "Apenas os itens I e II estão certos.", "Apenas os itens I e III estão certos.", "Todos os itens estão certos."], "c": 2, "w": "Os itens I e II estão certos. O item III está errado: o professor deve ter consciência de que pode sugestionar o futuro de uma criança a partir da avaliação que faz no dia a dia."}];
+
+/* ---------------- estado ---------------- */
+const S = {
+  filtros:{dif:"all", qtd:20, banca:"all", assuntos:new Set(), ordem:"rand"},
+  lista:[], i:0, sel:null, resp:[], t0:0, timer:null, revisao:false
+};
+const $ = s => document.querySelector(s);
+const L = i => String.fromCharCode(65+i);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ASSUNTOS = [...new Set(BANK.map(q=>q.assunto))].sort();
+const BANCAS = [...new Set(BANK.map(q=>q.banca))].sort();
+ASSUNTOS.forEach(a=>S.filtros.assuntos.add(a));
+
+/* ---------------- setup ---------------- */
+function chips(host, itens, get, set){
+  host.innerHTML = itens.map(it=>
+    `<button class="chip" role="button" aria-pressed="false" data-v="${esc(it.v)}">${esc(it.t)}</button>`).join("");
+  const sync = () => host.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed", String(get(c.dataset.v))));
+  host.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ set(c.dataset.v); sync(); atualizaPool(); }));
+  sync();
+}
+function montaSetup(){
+  chips($("#fDif"), [{v:"all",t:"Todas"},{v:"med",t:"Médias"},{v:"dif",t:"Difíceis"}],
+    v=>S.filtros.dif===v, v=>S.filtros.dif=v);
+  chips($("#fQtd"), [{v:"10",t:"10"},{v:"20",t:"20"},{v:"30",t:"30"},{v:"50",t:"50"},{v:"0",t:"Todas"}],
+    v=>String(S.filtros.qtd)===v, v=>S.filtros.qtd=+v);
+  chips($("#fBanca"), [{v:"all",t:"Todas"}].concat(BANCAS.map(b=>({v:b,t:b}))),
+    v=>S.filtros.banca===v, v=>S.filtros.banca=v);
+  chips($("#fSub"), ASSUNTOS.map(a=>({v:a,t:a})),
+    v=>S.filtros.assuntos.has(v),
+    v=>{ S.filtros.assuntos.has(v) ? S.filtros.assuntos.delete(v) : S.filtros.assuntos.add(v);
+         if(!S.filtros.assuntos.size) S.filtros.assuntos.add(v); });
+  chips($("#fOrd"), [{v:"rand",t:"Aleatória"},{v:"seq",t:"Sequencial"}],
+    v=>S.filtros.ordem===v, v=>S.filtros.ordem=v);
+  $("#fAllSub").addEventListener("click",()=>{
+    const todos = S.filtros.assuntos.size===ASSUNTOS.length;
+    S.filtros.assuntos = new Set(todos ? [ASSUNTOS[0]] : ASSUNTOS);
+    $("#fAllSub").textContent = todos ? "Selecionar todos" : "Limpar seleção";
+    $("#fSub").querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(S.filtros.assuntos.has(c.dataset.v))));
+    atualizaPool();
+  });
+  atualizaPool();
+}
+function pool(){
+  const f = S.filtros;
+  return BANK.filter(q =>
+    (f.dif==="all" || q.nivel===f.dif) &&
+    (f.banca==="all" || q.banca===f.banca) &&
+    f.assuntos.has(q.assunto));
+}
+function atualizaPool(){
+  const n = pool().length, q = S.filtros.qtd===0 ? n : Math.min(S.filtros.qtd, n);
+  $("#poolTxt").textContent = q===0 ? "Nenhuma questão" : (q===1 ? "1 questão" : q+" questões");
+  $("#poolSub").textContent = n===0 ? "ajuste os filtros para continuar" : "selecionadas de "+n+" disponíveis";
+  $("#startBtn").disabled = q===0;
+}
+const embaralha = a => { for(let i=a.length-1;i>0;i--){ const j=Math.random()*(i+1)|0; [a[i],a[j]]=[a[j],a[i]]; } return a; };
+
+/* ---------------- simulado ---------------- */
+function iniciar(){
+  let lista = pool().map(q=>{
+    const pares = q.o.map((t,i)=>({t,i}));
+    embaralha(pares);
+    return {...q, o:pares.map(p=>p.t), c:pares.findIndex(p=>p.i===q.c)};
+  });
+  if(S.filtros.ordem==="rand") embaralha(lista);
+  if(S.filtros.qtd>0) lista = lista.slice(0,S.filtros.qtd);
+  S.lista = lista; S.i = 0; S.sel = null; S.revisao = false;
+  S.resp = new Array(lista.length).fill(null);
+  S.t0 = Date.now();
+  clearInterval(S.timer); S.timer = setInterval(()=>{ if(!S.revisao) pintaMetricas(); }, 1000);
+  tela("scQuiz"); $("#exitBtn").hidden = false; $("#exitBtn").textContent="Sair"; render();
+}
+function tela(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on", s.id===id));
+  window.scrollTo({top:0,behavior:"instant"});
+}
+const acertos = () => S.resp.filter(r=>r===true).length;
+const erros   = () => S.resp.filter(r=>r===false).length;
+function relogio(){
+  const s = Math.floor((Date.now()-S.t0)/1000);
+  return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+}
+function pintaMetricas(){
+  const feitas = acertos()+erros(), pct = feitas ? Math.round(acertos()/feitas*100) : 0;
+  $("#metrics").innerHTML =
+    `<span>Questão <b>${S.i+1}</b> de <b>${S.lista.length}</b></span><i class="mdot"></i>`+
+    `<span>Acertos <b>${acertos()}</b></span><i class="mdot"></i>`+
+    `<span>Erros <b>${erros()}</b></span><i class="mdot"></i>`+
+    `<span>Aproveitamento <b>${pct}%</b></span>`+
+    `<span class="mspace"></span><span aria-label="tempo decorrido">${S.revisao?"Revisão":relogio()}</span>`;
+  $("#pfill").style.width = ((S.i + (S.resp[S.i]!==null?1:0)) / S.lista.length * 100) + "%";
+}
+function render(){
+  const q = S.lista[S.i], respondida = S.resp[S.i]!==null;
+  $("#ctx").textContent = q.assunto;
+  pintaMetricas();
+
+  const opts = q.o.map((t,j)=>{
+    let cls="opt", press="false";
+    if(respondida){
+      if(j===q.c) cls+=" is-ok";
+      else if(j===S.sel) cls+=" is-err";
+      else cls+=" is-off";
+    } else if(S.sel===j){ press="true"; }
+    const mark = respondida ? (j===q.c ? "&#10003;" : (j===S.sel ? "&#10005;" : L(j))) : L(j);
+    return `<button class="${cls}" aria-pressed="${press}" ${respondida?"disabled":""} data-j="${j}">
+      <span class="ol" aria-hidden="true">${mark}</span><span>${esc(t)}</span></button>`;
+  }).join("");
+
+  let fb = "";
+  if(respondida){
+    const ok = S.resp[S.i]===true;
+    fb = `<div class="fb ${ok?"ok":"err"}">
+      <div class="fb-t">${ok?"Resposta correta":"Resposta incorreta &middot; gabarito "+L(q.c)}</div>
+      <div class="fb-b">${esc(q.w)}</div></div>`;
+  }
+
+  $("#qcard").innerHTML = `
+    <div class="qtop">
+      <div class="qnum">Questão ${S.i+1}</div>
+      <div class="qsrc">${esc(q.banca)} &middot; ${esc(q.inst)} &middot; ${esc(q.ano)}</div>
+    </div>
+    <div class="tags">
+      <span class="tag">Avaliação</span>
+      <span class="tag">${esc(q.assunto)}</span>
+      <span class="tag ${q.nivel}">${q.nivel==="med"?"Média":"Difícil"}</span>
+    </div>
+    <div class="qtext">${esc(q.q).replace(/\n/g,"<br>")}</div>
+    ${q.img?`<img class="qimg" src="${esc(q.img)}" alt="Imagem da questao">`:""}
+    <div class="opts" role="group" aria-label="Alternativas">${opts}</div>
+    ${fb}`;
+
+  $("#qcard").querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>escolher(+b.dataset.j)));
+
+  const ultima = S.i===S.lista.length-1;
+  const principal = S.revisao
+      ? (ultima ? `<button class="btn btn-primary" id="bMain">Voltar ao resultado</button>`
+                : `<button class="btn btn-primary" id="bMain">Próxima questão</button>`)
+      : respondida
+        ? `<button class="btn btn-primary" id="bMain">${ultima?"Ver resultado":"Próxima questão"}</button>`
+        : `<button class="btn btn-primary" id="bMain" ${S.sel===null?"disabled":""}>Responder</button>`;
+  $("#nav").innerHTML =
+    `<button class="btn btn-ghost" id="bPrev" ${S.i===0?"disabled":""}>Anterior</button>
+     <span class="navspace"></span>${principal}`;
+  $("#bPrev").addEventListener("click", ()=>irPara(S.i-1));
+  $("#bMain").addEventListener("click", principalAcao);
+}
+function escolher(j){
+  if(S.resp[S.i]!==null) return;
+  S.sel = j; render();
+}
+function principalAcao(){
+  const respondida = S.resp[S.i]!==null;
+  if(!S.revisao && !respondida){
+    if(S.sel===null) return;
+    S.resp[S.i] = (S.sel===S.lista[S.i].c); render(); return;
+  }
+  if(S.i===S.lista.length-1){ resultado(); return; }
+  irPara(S.i+1);
+}
+function irPara(i){
+  if(i<0 || i>=S.lista.length) return;
+  S.i = i; S.sel = S.resp[i]!==null ? S.selPorQuestao(i) : null; render();
+}
+S.selPorQuestao = i => S.escolhas ? S.escolhas[i] : null;
+
+/* guarda a escolha de cada questao para poder voltar e rever */
+const _escolher = escolher;
+escolher = function(j){ if(S.resp[S.i]!==null) return; S.escolhas = S.escolhas||{}; S.escolhas[S.i]=j; _escolher(j); };
+const _principal = principalAcao;
+principalAcao = function(){ if(S.resp[S.i]===null && S.sel!==null){ S.escolhas=S.escolhas||{}; S.escolhas[S.i]=S.sel; } _principal(); };
+
+/* ---------------- resultado ---------------- */
+function resultado(){
+  clearInterval(S.timer);
+  const total = S.lista.length, ok = acertos(), er = erros(), naoResp = total-ok-er;
+  const pct = total ? Math.round(ok/total*100) : 0;
+  const tempo = relogio();
+
+  const porAssunto = {};
+  S.lista.forEach((q,i)=>{
+    const a = porAssunto[q.assunto] || (porAssunto[q.assunto]={ok:0,n:0});
+    a.n++; if(S.resp[i]===true) a.ok++;
+  });
+  const linhas = Object.entries(porAssunto).sort((a,b)=>(a[1].ok/a[1].n)-(b[1].ok/b[1].n)).map(([a,v])=>{
+    const p = Math.round(v.ok/v.n*100);
+    const cls = p<50?"low":(p<75?"mid":"high");
+    return `<div class="brow"><div>
+        <div class="bname">${esc(a)} <span style="color:var(--subtle)">&middot; ${v.ok}/${v.n}</span></div>
+        <div class="btrack"><div class="bfill ${cls}" style="width:${p}%"></div></div>
+      </div><div class="bpct">${p}%</div></div>`;
+  }).join("");
+
+  const msg = pct>=85 ? "Ótimo desempenho. Mantenha a revisão dos assuntos mais fracos."
+            : pct>=70 ? "Bom resultado. Reforce os assuntos abaixo de 70%."
+            : pct>=50 ? "Base razoável. Priorize os três primeiros assuntos da lista."
+            : "Comece pela revisão teórica dos assuntos com menor aproveitamento.";
+  const circ = 2*Math.PI*54;
+
+  $("#resultBody").innerHTML = `
+    <div class="rhead"><h2>Simulado concluído</h2><p>${esc(msg)}</p></div>
+    <div class="rcard">
+      <div class="donutrow">
+        <div class="donut">
+          <svg width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
+            <circle cx="75" cy="75" r="54" fill="none" stroke="var(--line)" stroke-width="13"></circle>
+            <circle cx="75" cy="75" r="54" fill="none" stroke="var(--brand)" stroke-width="13" stroke-linecap="round"
+              stroke-dasharray="${circ}" stroke-dashoffset="${circ*(1-pct/100)}"></circle>
+          </svg>
+          <div class="donut-c"><b>${pct}%</b><span>aproveitamento</span></div>
+        </div>
+        <div class="rstats">
+          <div class="rstat ok"><b>${ok}</b><span>acertos</span></div>
+          <div class="rstat err"><b>${er}</b><span>erros</span></div>
+          <div class="rstat"><b>${total}</b><span>questões${naoResp?` (${naoResp} em branco)`:""}</span></div>
+          <div class="rstat"><b>${tempo}</b><span>tempo total</span></div>
+        </div>
+      </div>
+      <div class="sect-t">Desempenho por assunto</div>
+      ${linhas}
+    </div>
+    <div class="ractions">
+      <button class="btn btn-ghost" id="bRev">Revisar questões</button>
+      <button class="btn btn-primary" id="bNovo">Novo simulado</button>
+    </div>`;
+  $("#bRev").addEventListener("click", ()=>{ S.revisao=true; S.i=0; S.sel=(S.escolhas||{})[0]??null;
+    $("#exitBtn").hidden=false; $("#exitBtn").textContent="Voltar ao resultado"; tela("scQuiz"); render(); });
+  $("#bNovo").addEventListener("click", voltarInicio);
+  $("#ctx").textContent = "Resultado";
+  $("#pfill").style.width = "100%";
+  tela("scResult");
+}
+function voltarInicio(){
+  clearInterval(S.timer); S.escolhas={}; S.revisao=false;
+  $("#exitBtn").hidden = true; $("#pfill").style.width="0";
+  $("#ctx").textContent = "Sociologia";
+  tela("scSetup"); atualizaPool();
+}
+
+/* ---------------- eventos ---------------- */
+$("#startBtn").addEventListener("click", iniciar);
+$("#exitBtn").addEventListener("click", ()=>{
+  if(S.revisao){ resultado(); return; }
+  if(confirm("Encerrar o simulado e voltar ao início?")) voltarInicio();
+});
+document.addEventListener("keydown", e=>{
+  if(!$("#scQuiz").classList.contains("on")) return;
+  const k = e.key.toUpperCase();
+  if(k.length===1 && k>="A" && k<="E" && S.resp[S.i]===null){ escolher(k.charCodeAt(0)-65); e.preventDefault(); }
+  else if(k.length===1 && k>="1" && k<="5" && S.resp[S.i]===null){ escolher(+k-1); e.preventDefault(); }
+  else if(e.key==="Enter"){ principalAcao(); e.preventDefault(); }
+  else if(e.key==="ArrowLeft"){ irPara(S.i-1); }
+  else if(e.key==="ArrowRight"){ if(S.i<S.lista.length-1) irPara(S.i+1); }
+});
+montaSetup();
+</script>
+</body>
+</html>
