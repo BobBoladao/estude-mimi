@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0D14">
+<title>Estatística Educacional</title>
+<style>
+:root{
+  --a1:#34D399; --a2:#2DD4BF; --a3:#22D3EE;
+  --bg:#0A0D14; --bg2:#0E1320;
+  --card:rgba(255,255,255,.045); --card2:rgba(255,255,255,.07);
+  --bd:rgba(255,255,255,.09); --bd2:rgba(255,255,255,.16);
+  --tx:#EAEEF7; --tx2:#AAB4C8; --tx3:#6E7A91;
+  --ok:#2DD4A8; --ok-bg:rgba(45,212,168,.13); --ok-bd:rgba(45,212,168,.45);
+  --er:#FF6B81; --er-bg:rgba(255,107,129,.12); --er-bd:rgba(255,107,129,.42);
+  --wa:#FFC24D; --wa-bg:rgba(255,194,77,.11); --wa-bd:rgba(255,194,77,.38);
+  --r:14px; --r2:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg); color:var(--tx); font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+  padding-bottom:env(safe-area-inset-bottom);
+  background-image:
+    radial-gradient(900px 480px at 12% -8%, color-mix(in srgb, var(--a1) 22%, transparent), transparent 70%),
+    radial-gradient(760px 420px at 92% 4%, color-mix(in srgb, var(--a3) 16%, transparent), transparent 72%);
+  background-attachment:fixed;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--a2);outline-offset:3px;border-radius:8px}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ============ TOPO ============ */
+.top{position:sticky;top:0;z-index:50;background:rgba(10,13,20,.82);backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--bd)}
+.top-in{max-width:860px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.01em;min-width:0}
+.logo-m{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;font-size:14px;font-weight:800;
+  background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;
+  box-shadow:0 4px 16px color-mix(in srgb, var(--a2) 42%, transparent)}
+.logo span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sp{flex:1}
+.xp{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--a2);
+  background:color-mix(in srgb, var(--a2) 13%, transparent);border:1px solid color-mix(in srgb, var(--a2) 28%, transparent);
+  padding:5px 11px;border-radius:999px;flex:none}
+.ghost{font-size:13px;font-weight:600;color:var(--tx2);padding:6px 12px;border-radius:999px;border:1px solid var(--bd);flex:none;
+  transition:.16s}
+.ghost:hover{color:var(--tx);border-color:var(--bd2);background:var(--card)}
+.bar{height:3px;background:rgba(255,255,255,.07)}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a1),var(--a3));
+  transition:width .5s cubic-bezier(.34,1.3,.4,1);box-shadow:0 0 12px var(--a2)}
+
+/* ============ TELAS ============ */
+.scr{display:none;animation:in .34s cubic-bezier(.2,.8,.3,1)}
+.scr.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* hero */
+.hero{padding:40px 0 26px}
+.kicker{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--a2);background:color-mix(in srgb, var(--a2) 12%, transparent);
+  border:1px solid color-mix(in srgb, var(--a2) 26%, transparent);padding:5px 12px;border-radius:999px;margin-bottom:16px}
+h1{font-size:36px;line-height:1.12;letter-spacing:-.03em;font-weight:800}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--a1),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--tx2);margin-top:12px;font-size:16.5px;max-width:56ch}
+
+/* módulos */
+.mods{display:grid;gap:13px;padding:8px 0 40px}
+.mod{position:relative;display:flex;align-items:center;gap:15px;text-align:left;width:100%;
+  background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:17px 18px;
+  transition:transform .18s cubic-bezier(.34,1.4,.5,1),border-color .18s,background .18s,box-shadow .18s}
+.mod:hover{transform:translateY(-3px);border-color:color-mix(in srgb, var(--a2) 44%, transparent);background:var(--card2);
+  box-shadow:0 14px 34px rgba(0,0,0,.42),0 0 0 1px color-mix(in srgb, var(--a2) 16%, transparent)}
+.mod:active{transform:translateY(-1px) scale(.995)}
+.mod-i{width:50px;height:50px;border-radius:15px;flex:none;display:grid;place-items:center;font-size:23px;
+  background:linear-gradient(140deg,color-mix(in srgb, var(--a1) 26%, transparent),color-mix(in srgb, var(--a3) 20%, transparent));
+  border:1px solid var(--bd2)}
+.mod-b{flex:1;min-width:0}
+.mod-t{font-size:16.5px;font-weight:700;letter-spacing:-.015em;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.mod-s{font-size:13.5px;color:var(--tx3);margin-top:3px;line-height:1.45}
+.mod-n{font-size:12px;font-weight:700;color:var(--tx3);background:rgba(255,255,255,.06);border:1px solid var(--bd);
+  padding:2px 8px;border-radius:999px;flex:none}
+.mod.done{border-color:var(--ok-bd);background:var(--ok-bg)}
+.mod.done .mod-i{background:linear-gradient(140deg,rgba(45,212,168,.3),rgba(45,212,168,.14));border-color:var(--ok-bd)}
+.chk{width:24px;height:24px;border-radius:999px;background:var(--ok);color:#04231B;display:grid;place-items:center;
+  font-size:13px;font-weight:900;flex:none;box-shadow:0 0 16px rgba(45,212,168,.5)}
+.mod-arrow{color:var(--tx3);font-size:19px;flex:none;transition:transform .18s,color .18s}
+.mod:hover .mod-arrow{transform:translateX(4px);color:var(--a2)}
+
+/* ============ ATIVIDADE ============ */
+.act{padding:22px 0 40px}
+.crumb{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--tx3);margin-bottom:16px;flex-wrap:wrap}
+.crumb b{color:var(--a2);font-weight:600}
+.dots{display:flex;gap:5px;margin-left:auto}
+.dot{width:7px;height:7px;border-radius:999px;background:rgba(255,255,255,.14);transition:.3s}
+.dot.on{background:var(--a2);box-shadow:0 0 9px var(--a2);transform:scale(1.35)}
+.dot.ok{background:var(--ok)}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:24px 22px;
+  box-shadow:0 18px 44px rgba(0,0,0,.34)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--a2);margin-bottom:11px}
+.enun{font-size:19px;line-height:1.45;font-weight:600;letter-spacing:-.015em}
+.enun b{color:var(--a2)}
+.ctx{font-size:14.5px;color:var(--tx2);margin-top:11px;line-height:1.6}
+.ctx b{color:var(--tx)}
+.mono{font-family:"Cascadia Mono",Consolas,monospace;font-size:14px;background:rgba(0,0,0,.35);
+  border:1px solid var(--bd);border-radius:10px;padding:11px 13px;margin-top:13px;color:var(--tx);
+  white-space:pre-wrap;line-height:1.7;overflow-x:auto}
+
+/* alternativas */
+.opts{display:grid;gap:10px;margin-top:20px}
+.opt{display:flex;align-items:flex-start;gap:12px;text-align:left;width:100%;
+  background:rgba(255,255,255,.035);border:1px solid var(--bd);border-radius:var(--r);padding:14px 15px;
+  font-size:15px;line-height:1.45;transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.opt:hover:not(:disabled){transform:translateY(-2px);border-color:color-mix(in srgb, var(--a2) 50%, transparent);
+  background:rgba(255,255,255,.07);box-shadow:0 8px 22px rgba(0,0,0,.34)}
+.opt:active:not(:disabled){transform:scale(.985)}
+.opt:disabled{cursor:default}
+.ol{width:26px;height:26px;border-radius:9px;flex:none;display:grid;place-items:center;font-size:12.5px;font-weight:800;
+  background:rgba(255,255,255,.08);border:1px solid var(--bd2);color:var(--tx2);transition:.15s}
+.opt:hover:not(:disabled) .ol{background:color-mix(in srgb, var(--a2) 24%, transparent);color:var(--tx);border-color:var(--a2)}
+.opt.ok{border-color:var(--ok-bd);background:var(--ok-bg);animation:pop .4s cubic-bezier(.34,1.5,.4,1)}
+.opt.ok .ol{background:var(--ok);color:#04231B;border-color:var(--ok)}
+.opt.er{border-color:var(--er-bd);background:var(--er-bg);animation:shake .42s}
+.opt.er .ol{background:var(--er);color:#2B0710;border-color:var(--er)}
+.opt.off{opacity:.42}
+@keyframes pop{0%{transform:scale(1)}42%{transform:scale(1.035)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}18%{transform:translateX(-7px)}38%{transform:translateX(6px)}
+  58%{transform:translateX(-4px)}78%{transform:translateX(3px)}}
+
+/* chips / pares / classificar */
+.pool{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.chip{font-size:14px;font-weight:500;padding:9px 14px;border-radius:999px;border:1px solid var(--bd2);
+  background:rgba(255,255,255,.05);transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.chip:hover:not(:disabled){transform:translateY(-2px);border-color:var(--a2);background:color-mix(in srgb, var(--a2) 15%, transparent);
+  box-shadow:0 7px 18px rgba(0,0,0,.36)}
+.chip:active:not(:disabled){transform:scale(.95)}
+.chip.sel{background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;border-color:transparent;font-weight:700;
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 22%, transparent)}
+.chip.used{opacity:.26;pointer-events:none;text-decoration:line-through}
+.chip.ok{background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok);font-weight:600}
+.chip.er{background:var(--er-bg);border-color:var(--er-bd);color:var(--er)}
+
+.buckets{display:grid;gap:12px;margin-top:18px}
+.bucket{border:1.5px dashed var(--bd2);border-radius:var(--r);padding:13px 15px;min-height:74px;transition:.18s;background:rgba(255,255,255,.02)}
+.bucket.live{border-color:var(--a2);background:color-mix(in srgb, var(--a2) 9%, transparent);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 12%, transparent)}
+.bucket-t{font-size:13px;font-weight:700;color:var(--tx2);margin-bottom:9px;display:flex;gap:8px;align-items:center}
+.bucket-t i{width:8px;height:8px;border-radius:999px;background:var(--a2);flex:none}
+.bucket .pool{margin-top:0}
+
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.pair{text-align:left;font-size:14.5px;line-height:1.4;padding:13px 14px;border-radius:var(--r);border:1px solid var(--bd);
+  background:rgba(255,255,255,.035);transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.pair:hover:not(:disabled){transform:translateY(-2px);border-color:var(--a2);background:rgba(255,255,255,.07);box-shadow:0 8px 20px rgba(0,0,0,.34)}
+.pair.sel{border-color:transparent;background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;font-weight:650;
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 22%, transparent)}
+.pair.ok{border-color:var(--ok-bd);background:var(--ok-bg);opacity:.72;pointer-events:none}
+.pair.er{animation:shake .42s;border-color:var(--er-bd);background:var(--er-bg)}
+
+/* ordenar */
+.steps{display:grid;gap:9px;margin-top:18px;counter-reset:s}
+.step{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--bd);
+  border-radius:var(--r);padding:12px 14px;font-size:14.5px;line-height:1.4;transition:.18s}
+.step-n{width:25px;height:25px;border-radius:8px;flex:none;display:grid;place-items:center;font-size:12.5px;font-weight:800;
+  background:color-mix(in srgb, var(--a2) 20%, transparent);color:var(--a2);border:1px solid color-mix(in srgb, var(--a2) 34%, transparent)}
+.step-tx{flex:1;min-width:0}
+.step-b{display:flex;flex-direction:column;gap:3px;flex:none}
+.arw{width:28px;height:21px;border-radius:7px;background:rgba(255,255,255,.07);border:1px solid var(--bd);
+  display:grid;place-items:center;font-size:10px;color:var(--tx2);transition:.14s}
+.arw:hover:not(:disabled){background:color-mix(in srgb, var(--a2) 26%, transparent);color:var(--tx);border-color:var(--a2);transform:scale(1.1)}
+.arw:disabled{opacity:.22;cursor:default}
+.step.ok{border-color:var(--ok-bd);background:var(--ok-bg)}
+.step.er{border-color:var(--er-bd);background:var(--er-bg)}
+
+/* input / tabela */
+.ins{display:flex;flex-wrap:wrap;gap:11px;margin-top:18px;align-items:flex-end}
+.inb{flex:1;min-width:140px}
+.inb label{display:block;font-size:12.5px;font-weight:600;color:var(--tx2);margin-bottom:6px}
+input[type=text],input[type=number]{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--bd2);border-radius:11px;
+  padding:12px 14px;color:var(--tx);font:inherit;font-size:15.5px;transition:.16s}
+input::placeholder{color:var(--tx3)}
+input:focus{outline:none;border-color:var(--a2);background:rgba(0,0,0,.42);box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 17%, transparent)}
+input.ok{border-color:var(--ok-bd);background:var(--ok-bg)}
+input.er{border-color:var(--er-bd);background:var(--er-bg);animation:shake .42s}
+.tw{overflow-x:auto;margin-top:18px;border:1px solid var(--bd);border-radius:var(--r);background:rgba(0,0,0,.22)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:380px}
+th{text-align:left;font-weight:700;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--tx2);
+  background:rgba(255,255,255,.05);padding:10px 13px;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.055);color:var(--tx2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td input{padding:8px 10px;font-size:14px;max-width:110px}
+td b{color:var(--tx)}
+
+/* símbolos (numerais) */
+.syms{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.sym{min-width:62px;padding:11px 13px;border-radius:13px;border:1px solid var(--bd2);background:rgba(255,255,255,.05);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:transform .15s cubic-bezier(.34,1.5,.5,1),background .15s,border-color .15s,box-shadow .15s}
+.sym:hover:not(:disabled){transform:translateY(-3px) scale(1.04);border-color:var(--a2);
+  background:color-mix(in srgb, var(--a2) 16%, transparent);box-shadow:0 9px 22px rgba(0,0,0,.4)}
+.sym:active:not(:disabled){transform:scale(.94)}
+.sym-g{font-size:23px;line-height:1}
+.sym-v{font-size:10.5px;color:var(--tx3);font-weight:700;letter-spacing:.04em}
+.canvas{margin-top:16px;border:1px solid var(--bd);border-radius:var(--r);background:rgba(0,0,0,.26);
+  padding:16px;min-height:86px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;align-content:center}
+.canvas .ph{color:var(--tx3);font-size:14px}
+.cs{font-size:25px;line-height:1;padding:5px 7px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid var(--bd);
+  animation:pop .3s cubic-bezier(.34,1.5,.4,1)}
+.tot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;
+  font-size:14px;color:var(--tx2);padding:0 2px}
+.tot b{font-size:21px;color:var(--a2);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* feedback e botões */
+.fb{margin-top:18px;border-radius:var(--r);padding:15px 17px;font-size:14.8px;line-height:1.6;
+  animation:in .3s cubic-bezier(.2,.8,.3,1)}
+.fb.ok{background:var(--ok-bg);border:1px solid var(--ok-bd)}
+.fb.er{background:var(--er-bg);border:1px solid var(--er-bd)}
+.fb.hint{background:var(--wa-bg);border:1px solid var(--wa-bd)}
+.fb-t{font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+.fb.ok .fb-t{color:var(--ok)} .fb.er .fb-t{color:var(--er)} .fb.hint .fb-t{color:var(--wa)}
+.fb b{color:var(--tx)}
+
+.nav{display:flex;gap:11px;margin-top:20px;flex-wrap:wrap}
+.btn{flex:1;min-width:140px;padding:14px 20px;border-radius:13px;font-size:15.5px;font-weight:700;letter-spacing:-.01em;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  transition:transform .16s cubic-bezier(.34,1.4,.5,1),box-shadow .16s,filter .16s,opacity .16s}
+.btn-p{background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;
+  box-shadow:0 8px 26px color-mix(in srgb, var(--a2) 36%, transparent)}
+.btn-p:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.1);
+  box-shadow:0 13px 34px color-mix(in srgb, var(--a2) 48%, transparent)}
+.btn-p:active:not(:disabled){transform:translateY(0) scale(.98)}
+.btn-g{background:rgba(255,255,255,.05);border:1px solid var(--bd2);color:var(--tx2);flex:0 0 auto;min-width:auto}
+.btn-g:hover:not(:disabled){background:rgba(255,255,255,.1);color:var(--tx);border-color:var(--bd2);transform:translateY(-2px)}
+.btn:disabled{opacity:.35;cursor:default;box-shadow:none;transform:none;filter:none}
+
+/* resultado */
+.done-w{text-align:center;padding:48px 0}
+.ring{width:132px;height:132px;margin:0 auto 22px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring-n{position:absolute;inset:0;display:grid;place-items:center;font-size:33px;font-weight:800;letter-spacing:-.03em}
+.done-w h2{font-size:28px;letter-spacing:-.025em;font-weight:800}
+.done-w p{color:var(--tx2);margin-top:9px;font-size:16px}
+.stats{display:flex;gap:11px;justify-content:center;margin:26px 0;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px 20px;min-width:104px}
+.stat b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.conf{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}
+.cf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{0%{transform:translateY(-30px) rotate(0);opacity:1}100%{transform:translateY(102vh) rotate(680deg);opacity:0}}
+
+@media(max-width:620px){
+  h1{font-size:28px} .sub{font-size:15px} .enun{font-size:17px}
+  .card{padding:19px 16px;border-radius:17px}
+  .pairs{grid-template-columns:1fr}
+  .hero{padding:28px 0 20px}
+  .mod{padding:14px 15px;gap:12px} .mod-i{width:44px;height:44px;font-size:20px;border-radius:13px}
+  .btn{min-width:100%}.btn-g{min-width:100%}
+  .stat{flex:1;min-width:88px;padding:12px 10px}
+}
+</style>
+</head>
+<body>
+<div class="conf" id="conf"></div>
+
+<header class="top">
+  <div class="top-in">
+    <div class="logo"><span class="logo-m">ES</span><span>Estatística</span></div>
+    <div class="sp"></div>
+    <div class="xp" id="xp">0 / 0</div>
+    <button class="ghost" id="homeBtn" hidden>Módulos</button>
+  </div>
+  <div class="bar"><i id="barFill"></i></div>
+</header>
+
+<div class="wrap">
+
+<section class="scr on" id="scHome">
+  <div class="hero">
+    <div class="kicker">Pedagogia · Galileu · 1º bimestre</div>
+    <h1><em>Estatística</em> Educacional</h1>
+    <p class="sub">Do conceito de dado até a tabela de frequências completa — incluindo o exercício dos 20 alunos resolvido passo a passo, do jeito que a professora deixou no material.</p>
+  </div>
+  <div class="mods" id="modList"></div>
+</section>
+
+<section class="scr" id="scAct">
+  <div class="act">
+    <div class="crumb" id="crumb"></div>
+    <div class="card" id="actCard"></div>
+    <div class="nav" id="actNav"></div>
+  </div>
+</section>
+
+<section class="scr" id="scDone">
+  <div class="done-w" id="doneBox"></div>
+</section>
+
+</div>
+<script>
+const BANK = [{"id": "oque", "ic": "&#128202;", "t": "O que é Estatística", "s": "Definição, descritiva e inferencial", "ats": [{"t": "txt", "q": "Você já usa Estatística todo dia — só não chamava assim.", "ctx": "Diariamente somos expostos a uma enorme quantidade de informações que usam os <b>números</b> como base: pesquisas, índices, notas, preços, previsões.<br><br>Em alguns momentos somos <b>consumidores</b> dessas informações numéricas (<i>data users</i>), em outros somos <b>produtores</b> delas (<i>data producers</i>). Uma professora que aplica uma prova e calcula a média da turma é, nesse momento, uma produtora de dados."}, {"t": "ord", "q": "A definição oficial da disciplina diz que a Estatística fornece métodos para cinco ações, nesta ordem. Monte a sequência.", "o": ["Coleta", "Organização", "Descrição", "Análise", "Interpretação dos dados"], "d": ["Pense no caminho natural: primeiro você precisa ter os dados, por último você entende o que eles dizem.", "A ordem é a mesma que aparece na definição do slide."], "e": "<b>“A Estatística é uma parte da Matemática Aplicada que fornece métodos para a coleta, organização, descrição, análise e interpretação de dados e para a utilização dos mesmos na tomada de decisões.”</b><br><br>Decore essa frase — ela é a definição que mais cai em prova, e termina com o objetivo final: <b>tomada de decisões</b>."}, {"t": "mc", "q": "Qual é o <b>ponto de partida</b> de qualquer trabalho estatístico?", "o": ["Os dados", "O gráfico", "A média", "A conclusão"], "c": 0, "d": ["Sem ele, não há nada para organizar nem analisar."], "e": "<b>Os dados.</b> Sem dados não há Estatística — tudo o mais (tabelas, gráficos, médias, conclusões) vem depois deles."}, {"t": "cls", "q": "A Estatística se divide em duas. Classifique cada descrição.", "cat": [{"n": "Estatística Descritiva", "i": ["Coleta, descreve, organiza e apresenta dados numéricos", "É chamada de “a ciência dos dados”", "Trabalha com os dados que já se tem em mãos", "Monta tabelas e gráficos do que foi observado"]}, {"n": "Estatística Inferencial (indutiva)", "i": ["Tira informações de uma amostra para concluir sobre um grupo maior", "Serve para fazer previsões", "Apoia a tomada de decisões sobre um fenômeno", "Vai além do que foi observado"]}], "d": ["Descritiva = descrever o que eu <i>vi</i>. Inferencial = <i>inferir</i>, ou seja, concluir sobre o que eu não vi.", "Se a frase fala em amostra, previsão ou conclusão sobre um grupo maior, é inferencial."], "e": "<b>Descritiva:</b> coletar, descrever, organizar e apresentar dados — é a ciência dos dados. <b>Inferencial ou indutiva:</b> usar uma amostra para concluir sobre um grupo maior, fazer previsões e tomar decisões. A palavra-chave da inferencial é <b>amostra</b>."}, {"t": "mc", "q": "Uma coordenadora calcula a média das notas das 3 turmas do 5º ano da sua escola e monta um gráfico comparando-as. Que tipo de Estatística ela está fazendo?", "o": ["Descritiva, porque ela organiza e apresenta os dados que já possui.", "Inferencial, porque ela está trabalhando com notas de alunos.", "Inferencial, porque ela usou um gráfico para apresentar o resultado.", "Nenhuma das duas, porque calcular média não é Estatística."], "c": 0, "d": ["Pergunte: ela está concluindo algo sobre um grupo <i>maior</i> do que aquele que ela mediu?"], "e": "É <b>descritiva</b>. Ela tem os dados de todas as três turmas e apenas os organiza e apresenta. Se ela pegasse 30 alunos de uma rede de 5.000 e estimasse o desempenho da rede inteira, aí sim seria <b>inferencial</b>."}, {"t": "cls", "q": "Dois fatores históricos impulsionaram o desenvolvimento da Estatística. Quais?", "cat": [{"n": "Impulsionou a Estatística", "i": ["A necessidade de governos coletarem dados censitários", "O desenvolvimento da teoria do cálculo das probabilidades"]}, {"n": "Não é citado como causa", "i": ["A invenção do computador pessoal", "A criação da internet", "A popularização das redes sociais"]}], "d": ["São dois fatores bem antigos: um vem do Estado, outro vem da Matemática."], "e": "Dois motores: a <b>necessidade dos governos de coletarem dados censitários</b> (quantas pessoas, onde moram, quanto produzem — para cobrar imposto e planejar) e o <b>desenvolvimento da teoria do cálculo das probabilidades</b>."}]}, {"id": "peda", "ic": "&#127891;", "t": "Estatística na Pedagogia", "s": "Para que serve isso na sua profissão", "ats": [{"t": "txt", "q": "Por que uma pedagoga precisa de Estatística?", "ctx": "Porque a escola é feita de decisões, e decisão boa precisa de dado. Quantos alunos reprovaram? Em qual conteúdo a turma foi pior? A evasão aumentou? Qual o IDEB da escola?<br><br>Vivemos numa <b>sociedade de massas</b> que precisa ser compreendida em seus desejos — e isso se faz com números."}, {"t": "cls", "q": "Onde a Estatística aparece no trabalho pedagógico? Separe o que o material cita.", "cat": [{"n": "Citado no material", "i": ["Formação de planos", "Elaboração de programas", "Projetos de ensino", "Formulação e análise das avaliações", "Gestão escolar", "Análise dos indicadores educacionais", "Ensino e elaboração de gráficos e tabelas", "Aplicação em concursos e no ENADE"]}, {"n": "Não citado", "i": ["Cálculo da folha de pagamento dos professores", "Projeto arquitetônico da escola"]}], "d": ["A lista do slide tem nove itens e vai do planejamento à avaliação externa."], "e": "A Estatística atravessa toda a profissão: <b>planejar</b> (planos, programas, projetos), <b>avaliar</b> (formulação e análise das avaliações), <b>gerir</b> (gestão escolar e indicadores educacionais), <b>ensinar</b> (gráficos e tabelas são conteúdo dos anos iniciais) e <b>ser avaliada</b> (concursos e ENADE)."}, {"t": "ord", "q": "Ordene as perguntas da introdução, da menor para a maior abrangência.", "o": ["Quantos alunos existem dentro da minha sala?", "Quantos alunos existem dentro da minha escola?", "Quantas escolas existem dentro do meu bairro?", "Quantas escolas existem na minha cidade?"], "d": ["Começa dentro da sala de aula e vai abrindo o zoom."], "e": "Essa escadinha mostra como o mesmo raciocínio estatístico serve para a sala, a escola, o bairro e a cidade — muda só a escala. E repare que, quanto maior a abrangência, mais difícil fica pesquisar <b>todo mundo</b> — é aí que entra a amostra, no próximo módulo."}]}, {"id": "pop", "ic": "&#128101;", "t": "População e amostra", "s": "Os conceitos fundamentais da disciplina", "ats": [{"t": "txt", "q": "Nem sempre dá para perguntar a todo mundo.", "ctx": "<b>População</b> é o conjunto <i>completo</i> de todos os elementos que interessam à pesquisa. <b>Amostra</b> é uma parte dessa população, escolhida para representá-la.<br><br>Quando se consegue pesquisar a população inteira, isso se chama <b>censo</b>. Quando não dá — por custo, tempo ou tamanho — pesquisa-se uma amostra e se usa a <b>Estatística Inferencial</b> para concluir sobre o todo."}, {"t": "cls", "q": "Numa pesquisa sobre a merenda escolar de uma rede com 4.000 alunos, foram entrevistados 200. Classifique:", "cat": [{"n": "População", "i": ["Os 4.000 alunos da rede", "O conjunto completo que interessa à pesquisa", "Aquilo sobre o que se quer concluir"]}, {"n": "Amostra", "i": ["Os 200 alunos entrevistados", "A parte escolhida para representar o todo", "Aquilo que foi efetivamente pesquisado"]}], "d": ["População é o grupo <i>inteiro</i>; amostra é o pedacinho que você conseguiu entrevistar."], "e": "<b>População = os 4.000.</b> <b>Amostra = os 200.</b> Repare que a população é definida pela <i>pergunta da pesquisa</i>, não pelo tamanho: se o interesse fosse só uma escola, a população seria os alunos daquela escola."}, {"t": "mc", "q": "Uma diretora quer saber a opinião dos pais sobre o novo horário e envia o formulário para <b>todos</b> os 180 responsáveis da escola, obtendo resposta de todos. O que ela fez?", "o": ["Um censo, porque pesquisou a população inteira.", "Uma amostragem, porque 180 é um número pequeno.", "Uma inferência, porque usou os dados para decidir sobre o horário.", "Nada disso, porque opinião não é um dado estatístico."], "c": 0, "d": ["A palavra decisiva do enunciado é “todos”."], "e": "É um <b>censo</b>: toda a população foi pesquisada. Quando se tem o censo, não é preciso inferir nada — os dados já descrevem a realidade completa daquele grupo."}, {"t": "par", "q": "Ligue cada termo à sua definição.", "p": [["População", "O conjunto completo de elementos que interessam à pesquisa"], ["Amostra", "Parte da população, escolhida para representá-la"], ["Censo", "Pesquisa feita com todos os elementos da população"], ["Variável", "A característica que está sendo observada"], ["Dado", "Cada valor observado da variável"]], "d": ["Variável é a <i>pergunta</i>; dado é a <i>resposta</i>."], "e": "Fixe a diferença entre os dois últimos, porque ela cai muito: a <b>variável</b> é a característica estudada (por exemplo, “idade dos alunos”); o <b>dado</b> é cada valor observado dessa característica (7, 8, 9...)."}]}, {"id": "var", "ic": "&#127991;&#65039;", "t": "Classificação das variáveis", "s": "O assunto que mais cai em prova", "ats": [{"t": "txt", "q": "Toda variável cai em uma de quatro gavetas.", "ctx": "Primeiro, uma pergunta: <b>o resultado é um número ou uma qualidade?</b><br><br>Se for <b>qualidade</b> → variável <b>qualitativa</b>, que se divide em:<br>• <b>nominal</b> — só dá nome, não existe ordem (cor dos olhos, bairro, sexo);<br>• <b>ordinal</b> — existe uma ordem natural (ótimo/bom/ruim, grau de escolaridade).<br><br>Se for <b>número</b> → variável <b>quantitativa</b>, que se divide em:<br>• <b>discreta</b> — vem de <b>contagem</b>, só assume valores inteiros e isolados (número de alunos, de faltas, de filhos);<br>• <b>contínua</b> — vem de <b>medição</b>, pode assumir qualquer valor num intervalo, inclusive quebrado (altura, peso, tempo)."}, {"t": "mc", "q": "Qual é o truque mais rápido para separar <b>discreta</b> de <b>contínua</b>?", "o": ["Discreta vem de contar; contínua vem de medir.", "Discreta é sempre um número pequeno; contínua é sempre um número grande.", "Discreta tem vírgula; contínua é sempre inteira.", "Discreta é qualitativa; contínua é quantitativa."], "c": 0, "d": ["Faça a pergunta: para obter esse valor eu conto no dedo ou uso um instrumento de medida?"], "e": "<b>Contou → discreta. Mediu → contínua.</b> Ninguém tem 2,4 filhos (contagem, discreta), mas alguém pode ter 1,68 m de altura (medição, contínua). Esse é o atalho que resolve quase toda questão desse tipo."}, {"t": "cls", "q": "Classifique cada variável nas quatro gavetas.", "cat": [{"n": "Qualitativa NOMINAL", "i": ["Cor dos olhos dos alunos", "Bairro onde o aluno mora", "Turma (A, B ou C)", "Tipo de escola (pública ou privada)"]}, {"n": "Qualitativa ORDINAL", "i": ["Conceito na avaliação (ótimo, bom, regular)", "Grau de satisfação com a merenda", "Nível de escolaridade dos pais"]}, {"n": "Quantitativa DISCRETA", "i": ["Número de alunos da sala", "Número de faltas no bimestre", "Quantidade de livros lidos no ano"]}, {"n": "Quantitativa CONTÍNUA", "i": ["Altura dos alunos em metros", "Tempo de leitura em minutos", "Peso da mochila em quilos"]}], "d": ["Primeiro separe número de qualidade. Só depois pergunte: tem ordem? / contou ou mediu?", "“Turma A, B ou C” não tem ordem — a turma B não é melhor que a A. Já “ótimo, bom, regular” tem."], "e": "Repare nas duas pegadinhas clássicas: <b>turma (A, B, C)</b> parece ter ordem por causa das letras, mas é <b>nominal</b>; e <b>tempo em minutos</b> parece contagem, mas é <b>medição</b> — portanto <b>contínua</b>."}, {"t": "mc", "q": "Numa pesquisa sobre leitura, registrou-se o <b>tempo, em minutos, que cada aluno dedicou à leitura</b>. Como se classifica essa variável?", "o": ["Quantitativa contínua", "Quantitativa discreta", "Qualitativa ordinal", "Qualitativa nominal"], "c": 0, "d": ["Tempo se mede com relógio, não se conta no dedo. E um aluno pode ler por 12 minutos e meio."], "e": "<b>Quantitativa contínua.</b> Guarde bem esta, porque é exatamente a letra (a) do exercício que a professora deixou no material — e é o que vamos resolver inteiro no próximo módulo."}, {"t": "cls", "q": "Rodada rápida: número ou qualidade?", "cat": [{"n": "Qualitativa", "i": ["Disciplina preferida", "Sexo", "Meio de transporte até a escola", "Já foi reprovado (sim ou não)"]}, {"n": "Quantitativa", "i": ["Idade em anos completos", "Nota na prova", "Número de irmãos", "Distância de casa até a escola"]}], "d": ["“Sim ou não” é uma qualidade, mesmo que depois alguém conte quantos disseram sim."], "e": "Cuidado com a armadilha do “sim/não”: a resposta é uma <b>qualidade</b> (qualitativa nominal). O fato de contarmos <i>quantas pessoas</i> responderam sim não transforma a variável em quantitativa — isso é a <b>frequência</b>, que é outra coisa."}]}, {"id": "freq", "ic": "&#128203;", "t": "A tabela de frequências", "s": "O exercício dos 20 alunos, resolvido passo a passo", "ats": [{"t": "txt", "q": "Este é o exercício que está no material da professora.", "ctx": "<b>“Uma professora do Ensino Fundamental realizou uma pesquisa com 20 alunos do 5º ano para verificar o tempo, em minutos, que cada estudante dedicou à leitura de um livro em determinado dia.”</b>", "mono": "12, 25, 18, 35, 42, 27, 31, 15, 48,\n22, 38, 19, 33, 45, 28, 17, 39, 24,\n51, 30"}, {"t": "mc", "q": "<b>Letra (a):</b> identifique a variável estudada e classifique-a.", "o": ["Tempo de leitura em minutos — quantitativa contínua", "Tempo de leitura em minutos — quantitativa discreta", "Alunos do 5º ano — qualitativa nominal", "Quantidade de alunos — quantitativa discreta"], "c": 0, "d": ["A variável é a <i>característica observada</i>, não quem foi observado.", "Tempo se mede."], "e": "A variável é o <b>tempo, em minutos, dedicado à leitura</b>, e ela é <b>quantitativa contínua</b>. Erro comum: dizer que a variável são “os alunos” — os alunos são os <i>elementos</i> pesquisados; a variável é o que se mediu neles."}, {"t": "in", "q": "Para montar as classes, precisamos de três números. Observe os dados acima e preencha.", "ctx": "Dica: o <b>rol</b> é a lista de dados em ordem crescente. Organizar o rol primeiro evita erro aqui.", "mono": "12, 25, 18, 35, 42, 27, 31, 15, 48, 22, 38, 19, 33, 45, 28, 17, 39, 24, 51, 30", "f": [{"l": "Menor valor", "r": ["12"], "ph": "?", "num": true}, {"l": "Maior valor", "r": ["51"], "ph": "?", "num": true}, {"l": "Amplitude total (maior − menor)", "r": ["39"], "ph": "?", "num": true}], "d": ["Procure com calma: o menor está logo no começo da lista.", "51 − 12 = ?"], "e": "Menor = <b>12</b>, maior = <b>51</b>, amplitude total <b>A = 51 − 12 = 39</b>. A amplitude total é o “tamanho” do conjunto de dados, e é dela que sai o tamanho de cada classe."}, {"t": "in", "q": "O enunciado pede <b>5 intervalos de classe</b>. Qual será a amplitude de cada classe?", "ctx": "A amplitude de classe é <b>h = A ÷ k</b>, em que A é a amplitude total e k é o número de classes. Quando não dá um número redondo, <b>arredonda-se para cima</b>.", "f": [{"l": "h = 39 ÷ 5 =", "r": ["7.8", "7,8", "78/10"], "ph": "com vírgula", "num": true}, {"l": "Arredondando para cima, h =", "r": ["8"], "ph": "?", "num": true}], "d": ["39 dividido por 5 dá 7 inteiros e sobra 4 — ou seja, 7 vírgula alguma coisa.", "Arredondar para cima garante que todos os dados caibam nas 5 classes."], "e": "<b>h = 39 ÷ 5 = 7,8</b>, que arredondamos para <b>8</b>. Começando em 12 e andando de 8 em 8, as classes ficam: 12⊢20, 20⊢28, 28⊢36, 36⊢44 e 44⊢52.<br><br>O símbolo <b>⊢</b> significa que o primeiro valor <b>entra</b> na classe e o último <b>não entra</b> — ele pertence à classe seguinte. Por isso o aluno de 28 minutos vai para a terceira classe, e não para a segunda."}, {"t": "tab", "q": "<b>Letra (b):</b> agora conte. Preencha a frequência absoluta (fi) de cada classe.", "ctx": "Vá riscando mentalmente os valores conforme conta. No fim, a soma precisa dar <b>20</b>.", "mono": "12, 25, 18, 35, 42, 27, 31, 15, 48, 22, 38, 19, 33, 45, 28, 17, 39, 24, 51, 30", "h": ["Classe (minutos)", "fi — frequência absoluta"], "l": [["12 ⊢ 20", {"r": ["5"]}], ["20 ⊢ 28", {"r": ["4"]}], ["28 ⊢ 36", {"r": ["5"]}], ["36 ⊢ 44", {"r": ["3"]}], ["44 ⊢ 52", {"r": ["3"]}], ["<b>Total</b>", {"r": ["20"]}]], "d": ["Na primeira classe entram 12, 15, 17, 18 e 19 — atenção, o 20 NÃO entra aqui.", "Segunda classe (20 a 27): 22, 24, 25 e 27. O 28 pertence à terceira."], "e": "As frequências são <b>5, 4, 5, 3 e 3</b>, somando <b>20</b> — e essa conferência é obrigatória: se a soma das frequências não bate com o total de elementos, há erro na contagem.<br><br>A <b>frequência absoluta (fi)</b> é simplesmente <i>quantas vezes</i> os valores caíram naquela classe."}, {"t": "tab", "q": "Agora a frequência em <b>porcentagem</b>. Calcule fi ÷ 20 × 100 para cada classe.", "ctx": "Essa coluna é a <b>frequência relativa</b>. A soma dela tem que dar 100%.", "h": ["Classe", "fi", "fi % (só o número)"], "l": [["12 ⊢ 20", "5", {"r": ["25", "25%"]}], ["20 ⊢ 28", "4", {"r": ["20", "20%"]}], ["28 ⊢ 36", "5", {"r": ["25", "25%"]}], ["36 ⊢ 44", "3", {"r": ["15", "15%"]}], ["44 ⊢ 52", "3", {"r": ["15", "15%"]}], ["<b>Total</b>", "<b>20</b>", {"r": ["100", "100%"]}]], "d": ["Com 20 alunos, cada aluno vale 5%. Então é só multiplicar a frequência por 5.", "5 alunos = 25%. 4 alunos = 20%."], "e": "<b>25%, 20%, 25%, 15% e 15%</b> — somando <b>100%</b>. O atalho aqui: como são 20 alunos, cada um vale 5%, então basta multiplicar a frequência absoluta por 5.<br><br>A frequência relativa é o que permite <b>comparar turmas de tamanhos diferentes</b>: 5 alunos em 20 (25%) é muito mais que 5 alunos em 100 (5%)."}, {"t": "in", "q": "<b>Letra (c):</b> quantos alunos dedicaram <b>menos de 30 minutos</b> à leitura?", "ctx": "Cuidado: 30 minutos não é fronteira de classe nenhuma. Volte aos dados originais e conte um por um.", "mono": "12, 25, 18, 35, 42, 27, 31, 15, 48, 22, 38, 19, 33, 45, 28, 17, 39, 24, 51, 30", "f": [{"l": "Quantidade de alunos", "r": ["10"], "ph": "?", "num": true}, {"l": "Isso corresponde a quantos por cento?", "r": ["50", "50%"], "ph": "só o número", "num": true}], "d": ["Os valores abaixo de 30 são: 12, 25, 18, 27, 15, 22, 19, 28, 17 e 24.", "Atenção: o aluno de exatamente 30 minutos NÃO entra, porque 30 não é menos que 30."], "e": "São <b>10 alunos</b>, ou seja, <b>50%</b> da turma.<br><br>E aqui está a lição mais importante deste módulo: <b>a tabela de classes não respondia esta pergunta</b>. Pelas classes, até 28 minutos temos 5 + 4 = 9 alunos, mas o 28 está na terceira classe junto com o 30 e o 31. Ao agrupar os dados em classes, você <b>perde a informação individual</b> — e quando a pergunta exige precisão, é preciso voltar aos dados brutos."}, {"t": "mc", "q": "Olhando a tabela pronta, o que se pode afirmar sobre a turma?", "ctx": "12⊢20: 25% &middot; 20⊢28: 20% &middot; 28⊢36: 25% &middot; 36⊢44: 15% &middot; 44⊢52: 15%", "o": ["Os tempos se distribuem de forma relativamente equilibrada, com leve concentração nos tempos menores.", "Quase todos os alunos leram mais de 40 minutos.", "Nenhum aluno leu menos de 20 minutos.", "Todos os alunos leram exatamente o mesmo tempo."], "c": 0, "d": ["Some as duas primeiras classes e compare com as duas últimas."], "e": "As duas primeiras classes somam <b>45%</b> e as duas últimas, <b>30%</b> — há uma leve concentração nos tempos menores, mas a distribuição é razoavelmente equilibrada. <b>Ler a tabela</b> é tão importante quanto montá-la: é esse passo que transforma números em informação para a tomada de decisão."}]}, {"id": "fim", "ic": "&#127942;", "t": "Desafio final", "s": "Mistura tudo — faça este por último", "ats": [{"t": "cls", "q": "Rodada relâmpago de classificação de variáveis.", "cat": [{"n": "Qualitativa nominal", "i": ["Religião declarada", "Nome da escola"]}, {"n": "Qualitativa ordinal", "i": ["Classificação no ranking da olimpíada", "Faixa de renda (baixa, média, alta)"]}, {"n": "Quantitativa discreta", "i": ["Número de salas da escola", "Quantidade de reprovações"]}, {"n": "Quantitativa contínua", "i": ["Tempo gasto na prova", "Massa corporal em quilos"]}], "e": "Posição em ranking é <b>ordinal</b>: existe ordem clara (1º, 2º, 3º), mas a diferença entre eles não é mensurável como número. Já “número de salas” é contagem pura."}, {"t": "mc", "q": "Uma pesquisa entrevistou 500 professores de uma rede com 6.000 e concluiu que “cerca de 70% dos professores da rede aprovam a nova formação continuada”. Que tipo de Estatística foi usada?", "o": ["Inferencial, porque concluiu sobre toda a rede a partir de uma amostra.", "Descritiva, porque apresentou um resultado em porcentagem.", "Descritiva, porque entrevistou um número grande de pessoas.", "Nenhuma, porque opinião não pode ser medida estatisticamente."], "c": 0, "e": "É <b>inferencial</b>. O sinal está na palavra “cerca de” e no salto de 500 entrevistados para uma afirmação sobre 6.000 pessoas. Porcentagem aparece nos dois tipos — ela não é o que define."}, {"t": "par", "q": "Ligue cada conceito ao exemplo correspondente.", "p": [["População", "Todos os 6.000 professores da rede"], ["Amostra", "Os 500 professores entrevistados"], ["Variável", "A opinião sobre a formação continuada"], ["Dado", "A resposta “aprovo” dada por um professor"], ["Frequência absoluta", "350 professores responderam que aprovam"], ["Frequência relativa", "70% dos entrevistados aprovam"]], "e": "Os dois últimos são o par que mais confunde: a <b>frequência absoluta</b> é a contagem bruta (350) e a <b>relativa</b> é a proporção (70%). Uma vira a outra dividindo pelo total."}, {"t": "in", "q": "Treino final de cálculo. Numa turma de <b>25 alunos</b>, 10 tiraram nota acima de 7.", "f": [{"l": "Frequência absoluta dos que tiraram acima de 7", "r": ["10"], "ph": "?", "num": true}, {"l": "Frequência relativa em % (10 ÷ 25 × 100)", "r": ["40", "40%"], "ph": "só o número", "num": true}, {"l": "Quantos ficaram com 7 ou menos?", "r": ["15"], "ph": "?", "num": true}], "d": ["10 ÷ 25 = 0,4. E 0,4 × 100 = ?", "O total menos os que ficaram acima de 7."], "e": "<b>fi = 10</b>, <b>fr = 40%</b> e <b>15 alunos</b> com 7 ou menos (que são os outros 60%). Confira sempre: 40% + 60% = 100%, e 10 + 15 = 25."}, {"t": "ord", "q": "Para fechar: ordene as etapas de um trabalho estatístico completo.", "o": ["Definir a população e a variável a ser estudada", "Coletar os dados", "Organizar os dados em rol e em classes", "Montar a tabela de frequências", "Analisar e interpretar o que a tabela mostra", "Tomar a decisão com base na informação obtida"], "d": ["É a definição do primeiro módulo, ampliada: coleta, organização, descrição, análise, interpretação e tomada de decisão."], "e": "Esse é o ciclo completo — e repare que ele começa <b>antes</b> dos dados (definindo o que se quer saber) e termina <b>depois</b> dos números (na decisão). É isso que a definição do slide quer dizer com “utilização dos mesmos na tomada de decisões”.<br><br>Acabou. Boa prova! &#128170;"}]}];
+const KEY = "estat_edu_v1";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mix = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+const norm = s => String(s).trim().toLowerCase().replace(/\s+/g," ").replace(/,/g,".")
+  .normalize("NFD").replace(/[̀-ͯ]/g,"");
+
+let P = { done: [] };
+try { const r = localStorage.getItem(KEY); if(r) P = JSON.parse(r); } catch(e){}
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(P)); }catch(e){} };
+
+const S = { m:null, i:0, st:null, checked:false, hint:0, acertos:0, erros:0, primeira:true };
+const TOTAL = BANK.reduce((n,m)=>n+m.ats.length,0);
+
+/* ---------- navegação ---------- */
+function scr(id){
+  document.querySelectorAll(".scr").forEach(s=>s.classList.toggle("on", s.id===id));
+  $("#homeBtn").hidden = (id==="scHome");
+  try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); }
+}
+function pintaTopo(){
+  const feitas = BANK.reduce((n,m)=> n + (P.done.includes(m.id)? m.ats.length : 0), 0);
+  $("#xp").textContent = feitas + " / " + TOTAL;
+  $("#barFill").style.width = (feitas/TOTAL*100) + "%";
+}
+function home(){
+  scr("scHome"); pintaTopo();
+  $("#modList").innerHTML = BANK.map((m,k)=>{
+    const d = P.done.includes(m.id);
+    return `<button class="mod ${d?"done":""}" data-k="${k}">
+      <span class="mod-i">${m.ic}</span>
+      <span class="mod-b">
+        <span class="mod-t">${esc(m.t)} <span class="mod-n">${m.ats.length} etapas</span></span>
+        <span class="mod-s">${esc(m.s)}</span>
+      </span>
+      ${d?'<span class="chk">&#10003;</span>':'<span class="mod-arrow">&rarr;</span>'}
+    </button>`;
+  }).join("");
+  $("#modList").querySelectorAll(".mod").forEach(b=>
+    b.addEventListener("click",()=>abrir(+b.dataset.k)));
+}
+function abrir(k){
+  S.m=k; S.i=0; S.acertos=0; S.erros=0;
+  scr("scAct"); render();
+}
+
+/* ---------- render ---------- */
+function render(){
+  const m = BANK[S.m], a = m.ats[S.i];
+  S.st = null; S.checked = false; S.hint = 0; S.primeira = true;
+  $("#crumb").innerHTML = `<b>${esc(m.t)}</b> <span>&middot;</span> <span>etapa ${S.i+1} de ${m.ats.length}</span>
+    <span class="dots">${m.ats.map((_,j)=>`<i class="dot ${j===S.i?"on":(j<S.i?"ok":"")}"></i>`).join("")}</span>`;
+  const T = TIPOS[a.t];
+  $("#actCard").innerHTML =
+    `<div class="tag">${T.rot}</div><div class="enun">${a.q}</div>` +
+    (a.ctx?`<div class="ctx">${a.ctx}</div>`:"") +
+    (a.mono?`<div class="mono">${esc(a.mono)}</div>`:"") +
+    `<div id="zone"></div><div id="fb"></div>`;
+  T.ini(a);
+  botoes(a);
+}
+function botoes(a){
+  const T = TIPOS[a.t], ultima = S.i === BANK[S.m].ats.length-1;
+  const temDica = a.d && a.d.length;
+  let html = "";
+  if(T.auto){ html = `<button class="btn btn-p" id="bMain">${ultima?"Concluir módulo":"Continuar"} &rarr;</button>`; }
+  else if(!S.checked){
+    html = (temDica && S.hint < a.d.length ? `<button class="btn btn-g" id="bDica">&#128161; Dica</button>` : "")
+         + `<button class="btn btn-p" id="bMain">Verificar</button>`;
+  } else {
+    html = `<button class="btn btn-p" id="bMain">${ultima?"Concluir módulo":"Continuar"} &rarr;</button>`;
+  }
+  $("#actNav").innerHTML = html;
+  const bm = $("#bMain");
+  bm.addEventListener("click", ()=>{
+    if(T.auto || S.checked) avanca();
+    else verificar(a);
+  });
+  if($("#bDica")) $("#bDica").addEventListener("click", ()=>{
+    const d = a.d[S.hint]; S.hint++;
+    $("#fb").innerHTML = `<div class="fb hint"><div class="fb-t">Dica ${S.hint}</div>${d}</div>`;
+    botoes(a);
+  });
+}
+function verificar(a){
+  const T = TIPOS[a.t], ok = T.ver(a);
+  if(ok){
+    S.checked = true;
+    if(S.primeira) S.acertos++; 
+    $("#fb").innerHTML = `<div class="fb ok"><div class="fb-t">&#10003; Isso mesmo</div>${a.e}</div>`;
+    botoes(a);
+  } else {
+    if(S.primeira){ S.erros++; S.primeira = false; }
+    const mais = (a.d && S.hint < a.d.length) ? " Toque em <b>Dica</b> para uma pista." : "";
+    $("#fb").innerHTML = `<div class="fb er"><div class="fb-t">Ainda não</div>${a.err||"Não foi dessa vez — ajuste e tente de novo."}${mais}</div>`;
+    botoes(a);
+  }
+}
+function avanca(){
+  const m = BANK[S.m];
+  if(S.i < m.ats.length-1){ S.i++; render(); return; }
+  if(!P.done.includes(m.id)){ P.done.push(m.id); save(); }
+  concluido();
+}
+
+/* ---------- conclusão ---------- */
+function concluido(){
+  const m = BANK[S.m];
+  const n = m.ats.filter(a=>!TIPOS[a.t].auto).length;   // telas de leitura não entram na nota
+  const pct = n ? Math.round(S.acertos/n*100) : 100;
+  const C=2*Math.PI*58, off=C*(1-pct/100);
+  const falta = BANK.filter(x=>!P.done.includes(x.id));
+  const msg = pct>=85 ? "Mandou muito bem. Esse assunto está dominado."
+            : pct>=60 ? "Bom resultado. Vale reler as explicações das que você errou."
+            : "Refaça este módulo uma vez — na segunda passada ele gruda.";
+  $("#doneBox").innerHTML = `
+    <div class="ring">
+      <svg width="132" height="132" viewBox="0 0 132 132">
+        <circle cx="66" cy="66" r="58" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="11"/>
+        <circle cx="66" cy="66" r="58" fill="none" stroke="url(#g)" stroke-width="11" stroke-linecap="round"
+          stroke-dasharray="${C}" stroke-dashoffset="${C}" id="arc"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="var(--a1)"/><stop offset="1" stop-color="var(--a3)"/></linearGradient></defs>
+      </svg>
+      <div class="ring-n">${pct}%</div>
+    </div>
+    <h2>Módulo concluído</h2>
+    <p>${esc(m.t)}</p>
+    <div class="stats">
+      <div class="stat"><b style="color:var(--ok)">${S.acertos}/${n}</b><span>de primeira</span></div>
+      <div class="stat"><b style="color:var(--er)">${S.erros}</b><span>com tentativa</span></div>
+      <div class="stat"><b>${BANK.length - falta.length}/${BANK.length}</b><span>módulos</span></div>
+    </div>
+    <p style="margin-bottom:22px">${msg}</p>
+    <div class="nav" style="max-width:420px;margin:0 auto">
+      ${falta.length?`<button class="btn btn-p" id="bNext">Próximo módulo &rarr;</button>`
+        :`<button class="btn btn-p" id="bNext">Ver todos os módulos</button>`}
+      <button class="btn btn-g" id="bAgain">Refazer</button>
+    </div>`;
+  scr("scDone"); pintaTopo();
+  setTimeout(()=>{ const arc=$("#arc"); if(arc){ arc.style.transition="stroke-dashoffset 1.1s cubic-bezier(.3,1,.4,1)"; arc.style.strokeDashoffset=off; } },90);
+  if(pct>=60) confete();
+  $("#bAgain").addEventListener("click",()=>abrir(S.m));
+  $("#bNext").addEventListener("click",()=>{
+    if(falta.length){ abrir(BANK.indexOf(falta[0])); } else home();
+  });
+}
+function confete(){
+  const cs=["var(--a1)","var(--a3)","var(--ok)","var(--wa)","#fff"], box=$("#conf");
+  for(let i=0;i<46;i++){
+    const d=document.createElement("i"); d.className="cf";
+    d.style.left=Math.random()*100+"%";
+    d.style.background=cs[i%cs.length];
+    d.style.animationDuration=(1.5+Math.random()*1.5)+"s";
+    d.style.animationDelay=(Math.random()*.5)+"s";
+    box.appendChild(d); setTimeout(()=>d.remove(),3600);
+  }
+}
+
+/* ================= TIPOS DE ATIVIDADE ================= */
+const TIPOS = {};
+
+/* texto explicativo */
+TIPOS.txt = { rot:"Entenda primeiro", auto:true, ini(){ $("#zone").innerHTML=""; } };
+
+/* múltipla escolha */
+TIPOS.mc = {
+  rot:"Escolha a resposta", auto:false,
+  ini(a){
+    if(!a._o){ const p=a.o.map((t,i)=>({t,i})); mix(p); a._o=p.map(x=>x.t); a._c=p.findIndex(x=>x.i===a.c); }
+    $("#zone").innerHTML = `<div class="opts">${a._o.map((t,j)=>
+      `<button class="opt" data-j="${j}"><span class="ol">${"ABCDE"[j]}</span><span>${esc(t)}</span></button>`).join("")}</div>`;
+    $("#zone").querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+      if(S.checked) return;
+      S.st = +b.dataset.j;
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.style.borderColor = (+x.dataset.j===S.st)?"var(--a2)":"");
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.style.background = (+x.dataset.j===S.st)?"rgba(255,255,255,.08)":"");
+    }));
+  },
+  ver(a){
+    if(S.st===null) return false;
+    const bs=[...$("#zone").querySelectorAll(".opt")], ok = S.st===a._c;
+    if(ok){ bs.forEach((b,j)=>{ b.disabled=true; b.style.borderColor="";b.style.background="";
+             b.classList.add(j===a._c?"ok":"off"); }); }
+    else { bs[S.st].classList.add("er"); setTimeout(()=>bs[S.st].classList.remove("er"),460); }
+    return ok;
+  }
+};
+
+/* ligar pares */
+TIPOS.par = {
+  rot:"Ligue os pares", auto:false,
+  ini(a){
+    a._fe = []; S.st = {sel:null, lado:null};
+    const E=a.p.map((x,i)=>({t:x[0],i})), D=a.p.map((x,i)=>({t:x[1],i}));
+    a._E = a._E || mix(E); a._D = a._D || mix(D);
+    $("#zone").innerHTML = `<div class="pairs">
+      <div style="display:grid;gap:10px">${a._E.map(x=>`<button class="pair" data-l="e" data-i="${x.i}">${esc(x.t)}</button>`).join("")}</div>
+      <div style="display:grid;gap:10px">${a._D.map(x=>`<button class="pair" data-l="d" data-i="${x.i}">${esc(x.t)}</button>`).join("")}</div>
+    </div>`;
+    $("#zone").querySelectorAll(".pair").forEach(b=>b.addEventListener("click",()=>{
+      const lado=b.dataset.l, i=+b.dataset.i;
+      if(S.st.sel===null || S.st.lado===lado){
+        $("#zone").querySelectorAll(".pair").forEach(x=>x.classList.remove("sel"));
+        b.classList.add("sel"); S.st={sel:i, lado};
+        return;
+      }
+      const outro = $("#zone").querySelector(`.pair[data-l="${S.st.lado}"][data-i="${S.st.sel}"]`);
+      if(i===S.st.sel){
+        b.classList.add("ok"); outro.classList.remove("sel"); outro.classList.add("ok");
+        a._fe.push(i); S.st={sel:null,lado:null};
+        if(a._fe.length===a.p.length){ $("#fb").innerHTML=""; }
+      } else {
+        b.classList.add("er"); outro.classList.add("er");
+        if(S.primeira){ S.erros++; S.primeira=false; }
+        setTimeout(()=>{ b.classList.remove("er"); outro.classList.remove("er","sel"); },460);
+        S.st={sel:null,lado:null};
+      }
+    }));
+  },
+  ver(a){ return a._fe.length === a.p.length; }
+};
+
+/* classificar em categorias */
+TIPOS.cls = {
+  rot:"Classifique cada item", auto:false,
+  ini(a){
+    a._pos = {}; S.st = null;
+    const itens = a._it || (a._it = mix([].concat(...a.cat.map((c,ci)=>c.i.map(t=>({t,ci}))))));
+    $("#zone").innerHTML =
+      `<div class="pool" id="pool">${itens.map((x,k)=>`<button class="chip" data-k="${k}">${esc(x.t)}</button>`).join("")}</div>
+       <div class="buckets">${a.cat.map((c,ci)=>
+         `<div class="bucket" data-ci="${ci}"><div class="bucket-t"><i></i>${esc(c.n)}</div><div class="pool" data-in="${ci}"></div></div>`).join("")}</div>`;
+    function solta(ci){
+      if(S.st===null) return;
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("ok","er"));
+      const k=S.st; a._pos[k]=ci;
+      const b=$(`#zone .chip[data-k="${k}"]`); b.classList.remove("sel");
+      $(`#zone .pool[data-in="${ci}"]`).appendChild(b);
+      S.st=null; $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.remove("live"));
+    }
+    $("#zone").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",e=>{
+      e.stopPropagation();                    // nao deixa o clique chegar na categoria que o contem
+      if(S.checked) return;
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("ok","er"));
+      if(S.st===+b.dataset.k){ S.st=null; b.classList.remove("sel");
+        $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.remove("live")); return; }
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel"); S.st=+b.dataset.k;
+      $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.add("live"));
+    }));
+    $("#zone").querySelectorAll(".bucket").forEach(bk=>bk.addEventListener("click",()=>solta(+bk.dataset.ci)));
+  },
+  ver(a){
+    const itens=a._it;
+    if(Object.keys(a._pos).length !== itens.length) return false;
+    let ok=true;
+    itens.forEach((x,k)=>{
+      const b=$(`#zone .chip[data-k="${k}"]`), certo = a._pos[k]===x.ci;
+      b.classList.add(certo?"ok":"er"); if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll(".chip").forEach(b=>b.disabled=true);
+    else setTimeout(()=>$("#zone").querySelectorAll(".chip").forEach(b=>b.classList.remove("ok","er")),900);
+    return ok;
+  }
+};
+
+/* ordenar sequência */
+TIPOS.ord = {
+  rot:"Coloque na ordem", auto:false,
+  ini(a){
+    a._cur = a._cur || mix(a.o.map((t,i)=>({t,i})));
+    pinta(a);
+    function pinta(a){
+      $("#zone").innerHTML = `<div class="steps">${a._cur.map((x,k)=>
+        `<div class="step"><span class="step-n">${k+1}</span><span class="step-tx">${esc(x.t)}</span>
+         <span class="step-b">
+           <button class="arw" data-u="${k}" ${k===0?"disabled":""} aria-label="subir">&#9650;</button>
+           <button class="arw" data-d="${k}" ${k===a._cur.length-1?"disabled":""} aria-label="descer">&#9660;</button>
+         </span></div>`).join("")}</div>`;
+      $("#zone").querySelectorAll(".arw").forEach(b=>b.addEventListener("click",()=>{
+        if(S.checked) return;
+        const u=b.dataset.u, d=b.dataset.d;
+        if(u!==undefined){ const k=+u; [a._cur[k-1],a._cur[k]]=[a._cur[k],a._cur[k-1]]; }
+        else { const k=+d; [a._cur[k+1],a._cur[k]]=[a._cur[k],a._cur[k+1]]; }
+        pinta(a);
+      }));
+    }
+    a._pinta = pinta;
+  },
+  ver(a){
+    const sts=[...$("#zone").querySelectorAll(".step")];
+    let ok=true;
+    a._cur.forEach((x,k)=>{ const c = x.i===k; sts[k].classList.add(c?"ok":"er"); if(!c) ok=false; });
+    if(!ok) setTimeout(()=>sts.forEach(s=>s.classList.remove("ok","er")),900);
+    else $("#zone").querySelectorAll(".arw").forEach(b=>b.disabled=true);
+    return ok;
+  }
+};
+
+/* digitar resposta(s) */
+TIPOS.in = {
+  rot:"Digite a resposta", auto:false,
+  ini(a){
+    $("#zone").innerHTML = `<div class="ins">${a.f.map((c,k)=>
+      `<div class="inb"><label for="f${k}">${esc(c.l)}</label>
+       <input id="f${k}" type="text" inputmode="${c.num?"decimal":"text"}" placeholder="${esc(c.ph||"")}" data-k="${k}" autocomplete="off"></div>`).join("")}</div>`;
+    $("#zone").querySelectorAll("input").forEach(inp=>inp.addEventListener("keydown",e=>{
+      if(e.key==="Enter" && !S.checked){ e.preventDefault(); verificar(a); }
+    }));
+  },
+  ver(a){
+    let ok=true;
+    a.f.forEach((c,k)=>{
+      const inp=$(`#zone #f${k}`), v=norm(inp.value);
+      const certo = c.r.some(r=>norm(r)===v);
+      inp.classList.remove("ok","er"); inp.classList.add(certo?"ok":"er");
+      if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll("input").forEach(i=>i.disabled=true);
+    return ok;
+  }
+};
+
+/* preencher tabela */
+TIPOS.tab = {
+  rot:"Complete a tabela", auto:false,
+  ini(a){
+    let n=0;
+    const linhas = a.l.map(li=>`<tr>${li.map(cel=>
+      typeof cel==="string" ? `<td>${cel}</td>`
+      : `<td><input type="text" inputmode="decimal" data-k="${n++}" placeholder="?" autocomplete="off"></td>`).join("")}</tr>`).join("");
+    a._n = n;
+    $("#zone").innerHTML = `<div class="tw"><table><thead><tr>${a.h.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${linhas}</tbody></table></div>`;
+    $("#zone").querySelectorAll("input").forEach(inp=>inp.addEventListener("keydown",e=>{
+      if(e.key==="Enter" && !S.checked){ e.preventDefault(); verificar(a); }
+    }));
+  },
+  ver(a){
+    const resp=[].concat(...a.l.map(li=>li.filter(c=>typeof c!=="string")));
+    let ok=true;
+    $("#zone").querySelectorAll("input").forEach((inp,k)=>{
+      const v=norm(inp.value), certo=resp[k].r.some(r=>norm(r)===v);
+      inp.classList.remove("ok","er"); inp.classList.add(certo?"ok":"er");
+      if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll("input").forEach(i=>i.disabled=true);
+    return ok;
+  }
+};
+
+/* montar número com símbolos */
+TIPOS.num = {
+  rot:"Monte o número", auto:false,
+  ini(a){
+    a._usa = [];
+    $("#zone").innerHTML =
+      `<div class="syms">${a.s.map((x,k)=>
+        `<button class="sym" data-k="${k}"><span class="sym-g">${x.g}</span><span class="sym-v">${x.rot||x.v}</span></button>`).join("")}</div>
+       <div class="canvas" id="cv"><span class="ph">Toque nos símbolos acima para montar o número</span></div>
+       <div class="tot"><span>Total montado</span><b id="tt">0</b></div>`;
+    const pinta=()=>{
+      const cv=$("#cv");
+      cv.innerHTML = a._usa.length
+        ? a._usa.map((k,j)=>`<button class="cs" data-j="${j}" title="remover">${a.s[k].g}</button>`).join("")
+        : `<span class="ph">Toque nos símbolos acima para montar o número</span>`;
+      const soma = a._usa.reduce((t,k)=>t+a.s[k].v,0);
+      $("#tt").textContent = soma;
+      $("#tt").style.color = soma===a.alvo ? "var(--ok)" : (soma>a.alvo ? "var(--er)" : "var(--a2)");
+      cv.querySelectorAll(".cs").forEach(b=>b.addEventListener("click",()=>{
+        if(S.checked) return; a._usa.splice(+b.dataset.j,1); pinta();
+      }));
+    };
+    $("#zone").querySelectorAll(".sym").forEach(b=>b.addEventListener("click",()=>{
+      if(S.checked) return; a._usa.push(+b.dataset.k); pinta();
+    }));
+    a._pinta = pinta; pinta();
+  },
+  ver(a){
+    const soma=a._usa.reduce((t,k)=>t+a.s[k].v,0);
+    if(soma!==a.alvo) return false;
+    if(a.max && a._usa.length>a.max) return false;
+    $("#zone").querySelectorAll(".sym").forEach(b=>b.disabled=true);
+    return true;
+  }
+};
+
+/* expõe o estado para depuração e testes */
+window.BANK=BANK; window.S=S; window.P=P; window.TIPOS=TIPOS;
+
+/* ---------- início ---------- */
+$("#homeBtn").addEventListener("click", home);
+home();
+</script>
+</body>
+</html>

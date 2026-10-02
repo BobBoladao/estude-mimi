@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0D14">
+<title>Fundamentos do Ensino da Matemática</title>
+<style>
+:root{
+  --a1:#A78BFA; --a2:#8B9DFF; --a3:#38BDF8;
+  --bg:#0A0D14; --bg2:#0E1320;
+  --card:rgba(255,255,255,.045); --card2:rgba(255,255,255,.07);
+  --bd:rgba(255,255,255,.09); --bd2:rgba(255,255,255,.16);
+  --tx:#EAEEF7; --tx2:#AAB4C8; --tx3:#6E7A91;
+  --ok:#2DD4A8; --ok-bg:rgba(45,212,168,.13); --ok-bd:rgba(45,212,168,.45);
+  --er:#FF6B81; --er-bg:rgba(255,107,129,.12); --er-bd:rgba(255,107,129,.42);
+  --wa:#FFC24D; --wa-bg:rgba(255,194,77,.11); --wa-bd:rgba(255,194,77,.38);
+  --r:14px; --r2:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg); color:var(--tx); font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+  padding-bottom:env(safe-area-inset-bottom);
+  background-image:
+    radial-gradient(900px 480px at 12% -8%, color-mix(in srgb, var(--a1) 22%, transparent), transparent 70%),
+    radial-gradient(760px 420px at 92% 4%, color-mix(in srgb, var(--a3) 16%, transparent), transparent 72%);
+  background-attachment:fixed;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--a2);outline-offset:3px;border-radius:8px}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ============ TOPO ============ */
+.top{position:sticky;top:0;z-index:50;background:rgba(10,13,20,.82);backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--bd)}
+.top-in{max-width:860px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.01em;min-width:0}
+.logo-m{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;font-size:14px;font-weight:800;
+  background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;
+  box-shadow:0 4px 16px color-mix(in srgb, var(--a2) 42%, transparent)}
+.logo span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sp{flex:1}
+.xp{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--a2);
+  background:color-mix(in srgb, var(--a2) 13%, transparent);border:1px solid color-mix(in srgb, var(--a2) 28%, transparent);
+  padding:5px 11px;border-radius:999px;flex:none}
+.ghost{font-size:13px;font-weight:600;color:var(--tx2);padding:6px 12px;border-radius:999px;border:1px solid var(--bd);flex:none;
+  transition:.16s}
+.ghost:hover{color:var(--tx);border-color:var(--bd2);background:var(--card)}
+.bar{height:3px;background:rgba(255,255,255,.07)}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a1),var(--a3));
+  transition:width .5s cubic-bezier(.34,1.3,.4,1);box-shadow:0 0 12px var(--a2)}
+
+/* ============ TELAS ============ */
+.scr{display:none;animation:in .34s cubic-bezier(.2,.8,.3,1)}
+.scr.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* hero */
+.hero{padding:40px 0 26px}
+.kicker{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--a2);background:color-mix(in srgb, var(--a2) 12%, transparent);
+  border:1px solid color-mix(in srgb, var(--a2) 26%, transparent);padding:5px 12px;border-radius:999px;margin-bottom:16px}
+h1{font-size:36px;line-height:1.12;letter-spacing:-.03em;font-weight:800}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--a1),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--tx2);margin-top:12px;font-size:16.5px;max-width:56ch}
+
+/* módulos */
+.mods{display:grid;gap:13px;padding:8px 0 40px}
+.mod{position:relative;display:flex;align-items:center;gap:15px;text-align:left;width:100%;
+  background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:17px 18px;
+  transition:transform .18s cubic-bezier(.34,1.4,.5,1),border-color .18s,background .18s,box-shadow .18s}
+.mod:hover{transform:translateY(-3px);border-color:color-mix(in srgb, var(--a2) 44%, transparent);background:var(--card2);
+  box-shadow:0 14px 34px rgba(0,0,0,.42),0 0 0 1px color-mix(in srgb, var(--a2) 16%, transparent)}
+.mod:active{transform:translateY(-1px) scale(.995)}
+.mod-i{width:50px;height:50px;border-radius:15px;flex:none;display:grid;place-items:center;font-size:23px;
+  background:linear-gradient(140deg,color-mix(in srgb, var(--a1) 26%, transparent),color-mix(in srgb, var(--a3) 20%, transparent));
+  border:1px solid var(--bd2)}
+.mod-b{flex:1;min-width:0}
+.mod-t{font-size:16.5px;font-weight:700;letter-spacing:-.015em;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.mod-s{font-size:13.5px;color:var(--tx3);margin-top:3px;line-height:1.45}
+.mod-n{font-size:12px;font-weight:700;color:var(--tx3);background:rgba(255,255,255,.06);border:1px solid var(--bd);
+  padding:2px 8px;border-radius:999px;flex:none}
+.mod.done{border-color:var(--ok-bd);background:var(--ok-bg)}
+.mod.done .mod-i{background:linear-gradient(140deg,rgba(45,212,168,.3),rgba(45,212,168,.14));border-color:var(--ok-bd)}
+.chk{width:24px;height:24px;border-radius:999px;background:var(--ok);color:#04231B;display:grid;place-items:center;
+  font-size:13px;font-weight:900;flex:none;box-shadow:0 0 16px rgba(45,212,168,.5)}
+.mod-arrow{color:var(--tx3);font-size:19px;flex:none;transition:transform .18s,color .18s}
+.mod:hover .mod-arrow{transform:translateX(4px);color:var(--a2)}
+
+/* ============ ATIVIDADE ============ */
+.act{padding:22px 0 40px}
+.crumb{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--tx3);margin-bottom:16px;flex-wrap:wrap}
+.crumb b{color:var(--a2);font-weight:600}
+.dots{display:flex;gap:5px;margin-left:auto}
+.dot{width:7px;height:7px;border-radius:999px;background:rgba(255,255,255,.14);transition:.3s}
+.dot.on{background:var(--a2);box-shadow:0 0 9px var(--a2);transform:scale(1.35)}
+.dot.ok{background:var(--ok)}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:24px 22px;
+  box-shadow:0 18px 44px rgba(0,0,0,.34)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--a2);margin-bottom:11px}
+.enun{font-size:19px;line-height:1.45;font-weight:600;letter-spacing:-.015em}
+.enun b{color:var(--a2)}
+.ctx{font-size:14.5px;color:var(--tx2);margin-top:11px;line-height:1.6}
+.ctx b{color:var(--tx)}
+.mono{font-family:"Cascadia Mono",Consolas,monospace;font-size:14px;background:rgba(0,0,0,.35);
+  border:1px solid var(--bd);border-radius:10px;padding:11px 13px;margin-top:13px;color:var(--tx);
+  white-space:pre-wrap;line-height:1.7;overflow-x:auto}
+
+/* alternativas */
+.opts{display:grid;gap:10px;margin-top:20px}
+.opt{display:flex;align-items:flex-start;gap:12px;text-align:left;width:100%;
+  background:rgba(255,255,255,.035);border:1px solid var(--bd);border-radius:var(--r);padding:14px 15px;
+  font-size:15px;line-height:1.45;transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.opt:hover:not(:disabled){transform:translateY(-2px);border-color:color-mix(in srgb, var(--a2) 50%, transparent);
+  background:rgba(255,255,255,.07);box-shadow:0 8px 22px rgba(0,0,0,.34)}
+.opt:active:not(:disabled){transform:scale(.985)}
+.opt:disabled{cursor:default}
+.ol{width:26px;height:26px;border-radius:9px;flex:none;display:grid;place-items:center;font-size:12.5px;font-weight:800;
+  background:rgba(255,255,255,.08);border:1px solid var(--bd2);color:var(--tx2);transition:.15s}
+.opt:hover:not(:disabled) .ol{background:color-mix(in srgb, var(--a2) 24%, transparent);color:var(--tx);border-color:var(--a2)}
+.opt.ok{border-color:var(--ok-bd);background:var(--ok-bg);animation:pop .4s cubic-bezier(.34,1.5,.4,1)}
+.opt.ok .ol{background:var(--ok);color:#04231B;border-color:var(--ok)}
+.opt.er{border-color:var(--er-bd);background:var(--er-bg);animation:shake .42s}
+.opt.er .ol{background:var(--er);color:#2B0710;border-color:var(--er)}
+.opt.off{opacity:.42}
+@keyframes pop{0%{transform:scale(1)}42%{transform:scale(1.035)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}18%{transform:translateX(-7px)}38%{transform:translateX(6px)}
+  58%{transform:translateX(-4px)}78%{transform:translateX(3px)}}
+
+/* chips / pares / classificar */
+.pool{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.chip{font-size:14px;font-weight:500;padding:9px 14px;border-radius:999px;border:1px solid var(--bd2);
+  background:rgba(255,255,255,.05);transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.chip:hover:not(:disabled){transform:translateY(-2px);border-color:var(--a2);background:color-mix(in srgb, var(--a2) 15%, transparent);
+  box-shadow:0 7px 18px rgba(0,0,0,.36)}
+.chip:active:not(:disabled){transform:scale(.95)}
+.chip.sel{background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;border-color:transparent;font-weight:700;
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 22%, transparent)}
+.chip.used{opacity:.26;pointer-events:none;text-decoration:line-through}
+.chip.ok{background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok);font-weight:600}
+.chip.er{background:var(--er-bg);border-color:var(--er-bd);color:var(--er)}
+
+.buckets{display:grid;gap:12px;margin-top:18px}
+.bucket{border:1.5px dashed var(--bd2);border-radius:var(--r);padding:13px 15px;min-height:74px;transition:.18s;background:rgba(255,255,255,.02)}
+.bucket.live{border-color:var(--a2);background:color-mix(in srgb, var(--a2) 9%, transparent);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 12%, transparent)}
+.bucket-t{font-size:13px;font-weight:700;color:var(--tx2);margin-bottom:9px;display:flex;gap:8px;align-items:center}
+.bucket-t i{width:8px;height:8px;border-radius:999px;background:var(--a2);flex:none}
+.bucket .pool{margin-top:0}
+
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.pair{text-align:left;font-size:14.5px;line-height:1.4;padding:13px 14px;border-radius:var(--r);border:1px solid var(--bd);
+  background:rgba(255,255,255,.035);transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.pair:hover:not(:disabled){transform:translateY(-2px);border-color:var(--a2);background:rgba(255,255,255,.07);box-shadow:0 8px 20px rgba(0,0,0,.34)}
+.pair.sel{border-color:transparent;background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;font-weight:650;
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 22%, transparent)}
+.pair.ok{border-color:var(--ok-bd);background:var(--ok-bg);opacity:.72;pointer-events:none}
+.pair.er{animation:shake .42s;border-color:var(--er-bd);background:var(--er-bg)}
+
+/* ordenar */
+.steps{display:grid;gap:9px;margin-top:18px;counter-reset:s}
+.step{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--bd);
+  border-radius:var(--r);padding:12px 14px;font-size:14.5px;line-height:1.4;transition:.18s}
+.step-n{width:25px;height:25px;border-radius:8px;flex:none;display:grid;place-items:center;font-size:12.5px;font-weight:800;
+  background:color-mix(in srgb, var(--a2) 20%, transparent);color:var(--a2);border:1px solid color-mix(in srgb, var(--a2) 34%, transparent)}
+.step-tx{flex:1;min-width:0}
+.step-b{display:flex;flex-direction:column;gap:3px;flex:none}
+.arw{width:28px;height:21px;border-radius:7px;background:rgba(255,255,255,.07);border:1px solid var(--bd);
+  display:grid;place-items:center;font-size:10px;color:var(--tx2);transition:.14s}
+.arw:hover:not(:disabled){background:color-mix(in srgb, var(--a2) 26%, transparent);color:var(--tx);border-color:var(--a2);transform:scale(1.1)}
+.arw:disabled{opacity:.22;cursor:default}
+.step.ok{border-color:var(--ok-bd);background:var(--ok-bg)}
+.step.er{border-color:var(--er-bd);background:var(--er-bg)}
+
+/* input / tabela */
+.ins{display:flex;flex-wrap:wrap;gap:11px;margin-top:18px;align-items:flex-end}
+.inb{flex:1;min-width:140px}
+.inb label{display:block;font-size:12.5px;font-weight:600;color:var(--tx2);margin-bottom:6px}
+input[type=text],input[type=number]{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--bd2);border-radius:11px;
+  padding:12px 14px;color:var(--tx);font:inherit;font-size:15.5px;transition:.16s}
+input::placeholder{color:var(--tx3)}
+input:focus{outline:none;border-color:var(--a2);background:rgba(0,0,0,.42);box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 17%, transparent)}
+input.ok{border-color:var(--ok-bd);background:var(--ok-bg)}
+input.er{border-color:var(--er-bd);background:var(--er-bg);animation:shake .42s}
+.tw{overflow-x:auto;margin-top:18px;border:1px solid var(--bd);border-radius:var(--r);background:rgba(0,0,0,.22)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:380px}
+th{text-align:left;font-weight:700;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--tx2);
+  background:rgba(255,255,255,.05);padding:10px 13px;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.055);color:var(--tx2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td input{padding:8px 10px;font-size:14px;max-width:110px}
+td b{color:var(--tx)}
+
+/* símbolos (numerais) */
+.syms{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.sym{min-width:62px;padding:11px 13px;border-radius:13px;border:1px solid var(--bd2);background:rgba(255,255,255,.05);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:transform .15s cubic-bezier(.34,1.5,.5,1),background .15s,border-color .15s,box-shadow .15s}
+.sym:hover:not(:disabled){transform:translateY(-3px) scale(1.04);border-color:var(--a2);
+  background:color-mix(in srgb, var(--a2) 16%, transparent);box-shadow:0 9px 22px rgba(0,0,0,.4)}
+.sym:active:not(:disabled){transform:scale(.94)}
+.sym-g{font-size:23px;line-height:1}
+.sym-v{font-size:10.5px;color:var(--tx3);font-weight:700;letter-spacing:.04em}
+.canvas{margin-top:16px;border:1px solid var(--bd);border-radius:var(--r);background:rgba(0,0,0,.26);
+  padding:16px;min-height:86px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;align-content:center}
+.canvas .ph{color:var(--tx3);font-size:14px}
+.cs{font-size:25px;line-height:1;padding:5px 7px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid var(--bd);
+  animation:pop .3s cubic-bezier(.34,1.5,.4,1)}
+.tot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;
+  font-size:14px;color:var(--tx2);padding:0 2px}
+.tot b{font-size:21px;color:var(--a2);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* feedback e botões */
+.fb{margin-top:18px;border-radius:var(--r);padding:15px 17px;font-size:14.8px;line-height:1.6;
+  animation:in .3s cubic-bezier(.2,.8,.3,1)}
+.fb.ok{background:var(--ok-bg);border:1px solid var(--ok-bd)}
+.fb.er{background:var(--er-bg);border:1px solid var(--er-bd)}
+.fb.hint{background:var(--wa-bg);border:1px solid var(--wa-bd)}
+.fb-t{font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+.fb.ok .fb-t{color:var(--ok)} .fb.er .fb-t{color:var(--er)} .fb.hint .fb-t{color:var(--wa)}
+.fb b{color:var(--tx)}
+
+.nav{display:flex;gap:11px;margin-top:20px;flex-wrap:wrap}
+.btn{flex:1;min-width:140px;padding:14px 20px;border-radius:13px;font-size:15.5px;font-weight:700;letter-spacing:-.01em;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  transition:transform .16s cubic-bezier(.34,1.4,.5,1),box-shadow .16s,filter .16s,opacity .16s}
+.btn-p{background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;
+  box-shadow:0 8px 26px color-mix(in srgb, var(--a2) 36%, transparent)}
+.btn-p:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.1);
+  box-shadow:0 13px 34px color-mix(in srgb, var(--a2) 48%, transparent)}
+.btn-p:active:not(:disabled){transform:translateY(0) scale(.98)}
+.btn-g{background:rgba(255,255,255,.05);border:1px solid var(--bd2);color:var(--tx2);flex:0 0 auto;min-width:auto}
+.btn-g:hover:not(:disabled){background:rgba(255,255,255,.1);color:var(--tx);border-color:var(--bd2);transform:translateY(-2px)}
+.btn:disabled{opacity:.35;cursor:default;box-shadow:none;transform:none;filter:none}
+
+/* resultado */
+.done-w{text-align:center;padding:48px 0}
+.ring{width:132px;height:132px;margin:0 auto 22px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring-n{position:absolute;inset:0;display:grid;place-items:center;font-size:33px;font-weight:800;letter-spacing:-.03em}
+.done-w h2{font-size:28px;letter-spacing:-.025em;font-weight:800}
+.done-w p{color:var(--tx2);margin-top:9px;font-size:16px}
+.stats{display:flex;gap:11px;justify-content:center;margin:26px 0;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px 20px;min-width:104px}
+.stat b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.conf{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}
+.cf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{0%{transform:translateY(-30px) rotate(0);opacity:1}100%{transform:translateY(102vh) rotate(680deg);opacity:0}}
+
+@media(max-width:620px){
+  h1{font-size:28px} .sub{font-size:15px} .enun{font-size:17px}
+  .card{padding:19px 16px;border-radius:17px}
+  .pairs{grid-template-columns:1fr}
+  .hero{padding:28px 0 20px}
+  .mod{padding:14px 15px;gap:12px} .mod-i{width:44px;height:44px;font-size:20px;border-radius:13px}
+  .btn{min-width:100%}.btn-g{min-width:100%}
+  .stat{flex:1;min-width:88px;padding:12px 10px}
+}
+</style>
+</head>
+<body>
+<div class="conf" id="conf"></div>
+
+<header class="top">
+  <div class="top-in">
+    <div class="logo"><span class="logo-m">FM</span><span>Fundamentos</span></div>
+    <div class="sp"></div>
+    <div class="xp" id="xp">0 / 0</div>
+    <button class="ghost" id="homeBtn" hidden>Módulos</button>
+  </div>
+  <div class="bar"><i id="barFill"></i></div>
+</header>
+
+<div class="wrap">
+
+<section class="scr on" id="scHome">
+  <div class="hero">
+    <div class="kicker">Pedagogia · Galileu · 1º bimestre</div>
+    <h1>Fundamentos do <em>Ensino da Matemática</em></h1>
+    <p class="sub">História da Matemática, origem dos números, sistemas de numeração e técnicas de ensino — em módulos curtos, com jogos e desafios. Toque num módulo para começar.</p>
+  </div>
+  <div class="mods" id="modList"></div>
+</section>
+
+<section class="scr" id="scAct">
+  <div class="act">
+    <div class="crumb" id="crumb"></div>
+    <div class="card" id="actCard"></div>
+    <div class="nav" id="actNav"></div>
+  </div>
+</section>
+
+<section class="scr" id="scDone">
+  <div class="done-w" id="doneBox"></div>
+</section>
+
+</div>
+<script>
+const BANK = [{"id": "hist", "ic": "&#129529;", "t": "De onde veio a Matemática", "s": "Construção histórica, Paleolítico e Neolítico", "ats": [{"t": "txt", "q": "A Matemática <b>não surgiu pronta</b> e ninguém a inventou sozinho.", "ctx": "Ela foi sendo construída ao longo da história da humanidade, principalmente a partir das <b>necessidades</b> encontradas pelos seres humanos em cada período. Desde os primeiros grupos humanos já existiam conhecimentos sobre quantidades, tamanhos, formas, classificações, comparações e medidas — tudo para resolver situações práticas do dia a dia.<br><br>Guarde esta ideia, porque ela é a espinha dorsal da matéria inteira: <b>necessidade → conhecimento matemático</b>."}, {"t": "mc", "q": "Um aluno pergunta: “Quem inventou a Matemática?”. Qual resposta está de acordo com o conteúdo estudado?", "o": ["Ninguém em específico — ela foi construída ao longo da história, a partir das necessidades humanas.", "Foram os gregos antigos, que criaram a Matemática como a conhecemos hoje.", "Foram os egípcios, quando precisaram construir as pirâmides do Egito.", "Ela sempre existiu pronta na natureza, bastou o ser humano descobri-la."], "c": 0, "d": ["Pense em quem o texto responsabiliza pela construção: uma pessoa, um povo, ou a humanidade ao longo do tempo?"], "e": "A Matemática é um <b>conhecimento humano e histórico</b>, construído coletivamente ao longo do tempo e ligado ao desenvolvimento das sociedades. Os egípcios e os gregos contribuíram muito, mas não a inventaram."}, {"t": "cls", "q": "O Paleolítico Inferior durou cerca de <b>dois milhões de anos</b>. Separe o que pertence a esse período do que não pertence.", "cat": [{"n": "Existia no Paleolítico Inferior", "i": ["Caça e coleta de alimentos", "Instrumentos de pedra e pau", "Noções de maior e menor", "Noções de forma e simetria", "Classificação e seriação"]}, {"n": "NÃO existia ainda", "i": ["Números e símbolos matemáticos", "Agricultura e pecuária", "Cidades", "Matemática formal"]}], "d": ["O homem desse período já <i>pensava</i> matematicamente, mas ainda não tinha o quê para registrar isso?", "Agricultura e cidades são do Neolítico, bem mais à frente."], "e": "No Paleolítico Inferior o homem vivia da caça e da coleta e competia com os animais para sobreviver. Já tinha <b>esquemas mentais</b> — maior e menor, mais e menos, tamanho, forma, simetria, classificação, seriação — mas <b>não tinha números nem símbolos</b>. Era uma Matemática não formal."}, {"t": "mc", "q": "O que caracteriza a passagem do Paleolítico Inferior para o <b>Paleolítico Superior</b>?", "o": ["Os instrumentos ficaram mais elaborados e surgiram roupas rústicas, esculturas e pinturas.", "O homem começou a plantar e a domesticar animais, criando a agricultura.", "Surgiram as primeiras cidades e as classes sociais.", "Foram criados os primeiros sistemas de numeração escritos."], "c": 0, "d": ["Agricultura e pecuária são a marca do Neolítico, não do Paleolítico Superior."], "e": "No Paleolítico Superior os instrumentos se tornaram <b>mais elaborados</b> e apareceram roupas rústicas, esculturas e pinturas. A lógica continua a mesma: atividades humanas mais complexas → novas necessidades matemáticas."}, {"t": "ord", "q": "Coloque em ordem histórica a transformação que leva da caça ao surgimento das cidades.", "o": ["O homem vive da caça e da coleta, com instrumentos simples", "A população aumenta e a natureza já não produz alimento suficiente", "O homem domestica animais e planta seu próprio alimento: nascem agricultura e pecuária", "A produção cresce e passa a existir um excedente", "Surgem classes sociais, aldeias maiores e cidades", "Surge a necessidade de unidades de medida padronizadas"], "d": ["Tudo começa por um problema: faltou comida para uma população que cresceu.", "O excedente é o que permite alguém não precisar produzir o próprio alimento — e é aí que a sociedade se divide."], "e": "Essa é a cadeia completa do Neolítico: <b>crescimento populacional → agricultura e pecuária → excedente → classes sociais e cidades → necessidade de medidas padronizadas</b>. Cada degrau cria uma necessidade matemática nova."}, {"t": "in", "q": "Complete a ideia central da aula com uma única palavra.", "ctx": "“Os conhecimentos matemáticos foram sendo construídos principalmente a partir das ______________ encontradas pelos seres humanos em diferentes períodos.”", "f": [{"l": "Palavra que falta (no plural)", "r": ["necessidades", "necessidade"], "ph": "digite aqui"}], "d": ["É a palavra que aparece em quase todo parágrafo do roteiro.", "Começa com N."], "e": "<b>Necessidades.</b> Se cair uma questão aberta e você travar, comece a resposta por aqui: a Matemática se desenvolve para responder a necessidades concretas das sociedades."}]}, {"id": "cont", "ic": "&#129534;", "t": "Nasce a contagem", "s": "Correspondência um a um e os números naturais", "ats": [{"t": "txt", "q": "Como contar sem saber contar?", "ctx": "Imagine um pastor com um rebanho. De manhã, para cada ovelha que sai, ele separa <b>uma pedra</b> num saquinho. À noite, para cada ovelha que volta, ele tira <b>uma pedra</b>. Se o saquinho esvaziar, voltaram todas. Se sobrar pedra, faltou bicho.<br><br>Repare: ele <b>não precisa conhecer o símbolo 10</b>, nem saber dizer “dez”. Essa estratégia é a <b>correspondência um a um</b> — associar cada elemento de um conjunto a um único elemento de outro."}, {"t": "mc", "q": "O pastor saiu com o rebanho e separou <b>12 pedras</b>. Ao anoitecer, sobraram <b>3 pedras</b> no saquinho. O que isso significa?", "o": ["Voltaram 9 ovelhas e 3 ficaram para trás.", "Voltaram 12 ovelhas e 3 pedras se perderam.", "Voltaram 3 ovelhas e 9 ficaram para trás.", "Não é possível saber, porque ele não sabia contar até doze."], "c": 0, "d": ["Cada pedra retirada representa uma ovelha que voltou. Sobrou pedra = sobrou ovelha fora."], "e": "Cada pedra que sobra corresponde a um animal que não voltou: 12 − 3 = <b>9 ovelhas de volta, 3 fora</b>. E tudo isso sem usar um único número — é a potência da correspondência um a um."}, {"t": "cls", "q": "Segundo o conteúdo, de que formas o homem do Neolítico representava quantidades? Separe o que ele realmente usava.", "cat": [{"n": "Usava para representar quantidades", "i": ["Riscos em paus", "Riscos em ossos", "Nós em cordas", "Pedrinhas", "Palavras", "Os próprios dedos"]}, {"n": "Não é citado no conteúdo", "i": ["Algarismos de 0 a 9", "Ábaco de madeira com contas", "Tabletes de argila"]}], "d": ["Os dedos eram usados como uma espécie de “ábaco” — mas o ábaco em si não é citado como invenção do Neolítico.", "Os algarismos que usamos hoje são indo-arábicos, muito mais recentes."], "e": "As representações citadas são <b>riscos em paus, riscos em ossos, nós em cordas, pedrinhas e palavras</b> — além dos dedos, usados como um “ábaco” para pequenas contas. Esse processo está ligado à construção dos <b>números naturais</b>."}, {"t": "mc", "q": "Qual afirmação está de acordo com o conteúdo sobre o surgimento dos números?", "o": ["A necessidade de contar, controlar e organizar quantidades contribuiu para o desenvolvimento dos números.", "Os números apareceram porque um matemático antigo decidiu inventá-los e ensiná-los aos outros.", "Os números surgiram todos ao mesmo tempo, em todas as civilizações.", "Os números só passaram a existir depois da invenção da escrita formal."], "c": 0, "d": ["O roteiro tem um aviso em destaque exatamente sobre isso, começando com “Atenção!”."], "e": "O roteiro é explícito: os números <b>não apareceram porque alguém decidiu inventá-los</b>. Foi a necessidade de contar, controlar e organizar quantidades que levou ao seu desenvolvimento."}, {"t": "par", "q": "Ligue cada necessidade humana ao conhecimento matemático que ela ajudou a gerar.", "p": [["Controlar quantidades de um rebanho", "Contar"], ["Determinar tamanhos e áreas", "Medir"], ["Delimitar e medir terras", "Geometria"], ["Organizar e acompanhar o tempo", "Calendário"], ["Produzir instrumentos e objetos", "Formas e simetria"]], "d": ["Essa lista aparece no fim da aula de História da Matemática, na parte sobre o papel do professor."], "e": "Esse quadro é ouro para prova aberta: <b>contar</b> ← controlar quantidades; <b>medir</b> ← determinar tamanhos e áreas; <b>geometria</b> ← medir e delimitar terras; <b>calendário</b> ← organizar o tempo; <b>formas e simetria</b> ← produzir instrumentos."}, {"t": "in", "q": "Com o crescimento das comunidades e da produção, surgiu a necessidade de estabelecer unidades de medida de um certo tipo. Que tipo?", "f": [{"l": "Unidades de medida...", "r": ["padronizadas", "padronizada", "padrao", "padrão"], "ph": "uma palavra"}], "d": ["Se cada um mede do seu jeito, ninguém se entende no comércio nem na cobrança de tributos.", "Começa com P."], "e": "<b>Padronizadas.</b> Quando a produção vira excedente e há troca entre pessoas e cobrança de tributos, medir “mais ou menos” deixa de funcionar — é preciso que todos usem a mesma medida."}]}, {"id": "egito", "ic": "&#127963;&#65039;", "t": "O Nilo e o nascimento da Geometria", "s": "Excedente, tributos, Egito e as pirâmides", "ats": [{"t": "txt", "q": "Por que a Geometria nasceu à beira de um rio?", "ctx": "Todo ano o <b>rio Nilo</b> transbordava e as cheias apagavam os limites das propriedades rurais. Quando a água baixava, era preciso: <b>1)</b> verificar quanto de terra se perdeu, <b>2)</b> medir de novo a propriedade, <b>3)</b> determinar os novos limites e <b>4)</b> calcular o tributo correspondente à área que restou.<br><br>Ou seja: a Geometria não nasceu da curiosidade, nasceu de uma <b>conta de imposto</b>. É o que se chama de <b>caráter utilitário</b> da Geometria."}, {"t": "mc", "q": "Qual historiador grego relacionou o surgimento da Geometria à necessidade de medir novamente as terras afetadas pelas cheias do Nilo?", "o": ["Heródoto", "Pitágoras", "Euclides", "Arquimedes"], "c": 0, "d": ["É um historiador, não um matemático — essa é a pegadinha das outras alternativas."], "e": "<b>Heródoto</b>. Ele é historiador, não matemático — por isso as outras alternativas, que são de grandes matemáticos gregos, não servem."}, {"t": "ord", "q": "Ordene o que precisava ser feito depois de cada cheia do Nilo.", "o": ["A cheia do rio modifica os limites das propriedades", "Verificar quanto de terra foi perdido", "Medir novamente a propriedade", "Determinar os novos limites", "Calcular o tributo correspondente à área restante"], "d": ["Começa com o problema causado pela natureza e termina com a cobrança do imposto."], "e": "É esta sequência que mostra o <b>caráter utilitário</b> da Geometria: ela existe aqui para resolver um problema concreto de propriedade e tributação."}, {"t": "cls", "q": "Quais realizações são atribuídas aos egípcios no conteúdo estudado?", "cat": [{"n": "Atribuído aos egípcios", "i": ["Calendário de 365 dias", "A balança", "O relógio de sol", "Conhecimentos de construção", "Conhecimentos geométricos"]}, {"n": "Não atribuído a eles aqui", "i": ["A base 60 para medir o tempo", "O sistema posicional com zero", "O alfabeto usado como números"]}], "d": ["A base 60 é marca registrada de outro povo da Mesopotâmia.", "O zero posicional vem do sistema indo-arábico."], "e": "Aos egípcios o conteúdo atribui o <b>calendário de 365 dias, a balança, o relógio de sol</b> e conhecimentos de construção, matemáticos e geométricos. A base 60 é <b>babilônica</b>; o zero posicional é <b>indo-arábico</b>; letras como números é <b>grego e hebraico</b>."}, {"t": "in", "q": "Sobre os dois grandes monumentos citados na aula:", "ctx": "A <b>Pirâmide de Quéops</b> tem mais de ______ metros de altura. A <b>Esfinge de Gizé</b> tem corpo de ______ e cabeça humana.", "f": [{"l": "Altura da Pirâmide de Quéops (metros)", "r": ["146", "146 metros", "mais de 146"], "ph": "só o número", "num": true}, {"l": "Corpo da Esfinge", "r": ["leao", "leão", "de leao", "de leão"], "ph": "qual animal?"}], "d": ["A pirâmide passa dos 140 metros e foi construída por volta de 2560 a.C.", "A Esfinge fica na margem oeste do Nilo e é do terceiro milênio antes de Cristo."], "e": "A Pirâmide de Quéops tem mais de <b>146 metros</b> e é de aproximadamente <b>2560 a.C.</b> A Esfinge de Gizé tem <b>corpo de leão e cabeça humana</b>, fica na margem oeste do Nilo e é do terceiro milênio a.C."}, {"t": "mc", "q": "Por que conhecer a História da Matemática é importante para o <b>professor</b>?", "o": ["Porque permite mostrar que a Matemática foi construída pela humanidade, e não que ela é um conjunto de fórmulas que sempre existiram.", "Porque o professor precisa ensinar aos alunos as datas e os nomes dos matemáticos antigos.", "Porque a História da Matemática substitui o ensino dos conteúdos matemáticos atuais.", "Porque assim o professor consegue provar que a Matemática é mais difícil do que parece."], "c": 0, "d": ["O objetivo é dar sentido ao conteúdo, não acrescentar mais coisas para decorar."], "e": "A História da Matemática é um <b>recurso para tornar o ensino mais significativo</b>: em vez de fórmulas e regras que “sempre foram assim”, o aluno percebe que muitos conhecimentos surgiram para responder a problemas concretos."}]}, {"id": "sist", "ic": "&#128220;", "t": "Os sistemas de numeração", "s": "Babilônico, egípcio, grego, hebraico, romano e chinês", "ats": [{"t": "txt", "q": "Cada povo inventou o seu jeito de escrever quantidades.", "ctx": "Os sistemas de numeração <b>não surgiram todos ao mesmo tempo</b> nem foram criados por uma única civilização. Cada sociedade desenvolveu símbolos, regras e formas de organização próprias, a partir da sua cultura e das suas necessidades.<br><br>Agora vamos conhecer um por um — e você vai ver que dois deles continuam vivos no seu dia a dia."}, {"t": "mc", "q": "O sistema <b>babilônico</b> usava principalmente qual base?", "o": ["Base 60, chamada sexagesimal", "Base 10, chamada decimal", "Base 20, chamada vigesimal", "Base 2, chamada binária"], "c": 0, "d": ["Pense em quantos minutos tem uma hora."], "e": "Base <b>60</b> — o sistema <b>sexagesimal</b>. Os babilônios registravam os números com marcas em <b>tabletes de argila</b>."}, {"t": "cls", "q": "A base 60 dos babilônios continua viva hoje. Separe o que é herança sexagesimal do que é herança decimal.", "cat": [{"n": "Herança da base 60", "i": ["1 hora = 60 minutos", "1 minuto = 60 segundos", "1 grau = 60 minutos de arco", "A circunferência dividida em 360 graus"]}, {"n": "Herança da base 10", "i": ["10 unidades = 1 dezena", "10 dezenas = 1 centena", "Os algarismos de 0 a 9"]}], "d": ["Tudo que envolve tempo e ângulo costuma vir da Mesopotâmia."], "e": "Mesmo usando um sistema decimal no dia a dia, ainda carregamos vestígios da base 60 na <b>medição do tempo</b> e nos <b>ângulos</b>. Essa tradição vem da antiga Mesopotâmia."}, {"t": "num", "q": "Agora é com você: monte o número <b>23</b> no sistema egípcio.", "ctx": "O sistema egípcio tem um símbolo para cada potência de dez e os valores são <b>somados</b>. Toque nos símbolos para montar; toque num símbolo já colocado para removê-lo.<br><span style=\"color:var(--tx3);font-size:13px\">Os desenhos abaixo são representações simplificadas dos hieróglifos.</span>", "alvo": 23, "s": [{"g": "│", "v": 1, "rot": "1 · traço"}, {"g": "∩", "v": 10, "rot": "10 · arco"}, {"g": "℮", "v": 100, "rot": "100 · corda"}, {"g": "Ψ", "v": 1000, "rot": "1000 · lótus"}], "d": ["23 = duas dezenas + três unidades.", "Use dois arcos e três traços."], "e": "Dois símbolos de dez mais três de uma unidade: <b>10 + 10 + 1 + 1 + 1 = 23</b>. É exatamente o exemplo do roteiro. O sistema egípcio é <b>decimal</b> (base dez) e <b>aditivo</b> (os valores se somam)."}, {"t": "num", "q": "Mais difícil: monte o número <b>142</b> no sistema egípcio.", "ctx": "Lembre que os símbolos são somados, e que a posição não importa.", "alvo": 142, "s": [{"g": "│", "v": 1, "rot": "1 · traço"}, {"g": "∩", "v": 10, "rot": "10 · arco"}, {"g": "℮", "v": 100, "rot": "100 · corda"}, {"g": "Ψ", "v": 1000, "rot": "1000 · lótus"}], "d": ["142 = 100 + 40 + 2.", "Uma corda, quatro arcos e dois traços."], "e": "Uma corda (100), quatro arcos (40) e dois traços (2): <b>100 + 10 + 10 + 10 + 10 + 1 + 1 = 142</b>. Repare o inconveniente desse sistema: para escrever 999 seriam necessários 27 símbolos."}, {"t": "cls", "q": "Classifique as características do <b>sistema egípcio</b>.", "cat": [{"n": "Verdadeiro sobre o sistema egípcio", "i": ["Usa a base dez", "É aditivo: os valores são somados", "Tem um símbolo para cada potência de dez", "Foi usado em registros, comércio e construções"]}, {"n": "Falso sobre o sistema egípcio", "i": ["É posicional", "Usa o zero", "Usa letras do alfabeto"]}], "d": ["A pergunta decisiva: o valor do símbolo muda se ele trocar de lugar?"], "e": "O sistema egípcio é <b>decimal, aditivo e NÃO posicional</b> — o valor de cada símbolo é sempre o mesmo, apareça ele onde aparecer. Usar letras do alfabeto é característica dos sistemas <b>grego e hebraico</b>."}, {"t": "par", "q": "Ligue cada sistema de numeração à sua marca registrada.", "p": [["Babilônico", "Base 60 e tabletes de argila"], ["Egípcio", "Decimal, aditivo e não posicional"], ["Grego e hebraico", "Letras do alfabeto valendo números"], ["Romano", "Letras latinas que se somam ou subtraem"], ["Chinês", "Caracteres próprios e bastões de contagem"], ["Indo-arábico", "Dez algarismos, posicional, com zero"]], "d": ["Dois sistemas usam letras do alfabeto para contar — e um deles usa o alfabeto latino."], "e": "Esse quadro resolve metade das questões sobre sistemas de numeração. Repare que <b>grego, hebraico e romano</b> usam letras; a diferença é o alfabeto e, no romano, a possibilidade de <b>subtrair</b>."}, {"t": "mc", "q": "Sobre o <b>sistema romano</b>, qual afirmação está correta?", "o": ["Os valores podem ser somados ou subtraídos, dependendo da posição dos símbolos.", "Os valores são sempre somados, nunca subtraídos.", "É um sistema posicional que utiliza o zero.", "Deixou completamente de ser usado e não aparece mais em nenhuma situação."], "c": 0, "d": ["Compare IV com VI: os mesmos dois símbolos, resultados diferentes."], "e": "No sistema romano os valores <b>podem ser somados ou subtraídos</b> conforme a posição. E ele continua presente: séculos, capítulos de livros, nomes de reis e papas, mostradores de relógio e eventos."}, {"t": "in", "q": "O conteúdo cita que <b>o século XXI corresponde ao século 21</b>. Use a mesma lógica:", "f": [{"l": "O século XIX corresponde ao século...", "r": ["19", "19º", "dezenove"], "ph": "número", "num": true}, {"l": "E o século XV ao século...", "r": ["15", "15º", "quinze"], "ph": "número", "num": true}], "d": ["X = 10, I = 1, V = 5. Depois do X, cada I soma 1.", "XIX = 10 + 9. XV = 10 + 5."], "e": "<b>XIX = 19</b> (dez mais nove, com o IX valendo 9 por subtração) e <b>XV = 15</b> (dez mais cinco). Lembre: quando o símbolo menor vem antes, ele subtrai."}, {"t": "mc", "q": "No sistema egípcio, o número 8 podia ser escrito em duas fileiras de quatro marcas, e o 9 em três fileiras de três. Qual a explicação possível apresentada no conteúdo?", "o": ["A organização em grupos menores facilita o reconhecimento visual da quantidade.", "Era uma exigência religiosa dos sacerdotes egípcios.", "Era a única forma de caber as marcas no tablete de argila.", "Serve para indicar a posição de cada algarismo no número."], "c": 0, "d": ["Pense em quantas marcas em fila você consegue reconhecer de relance, sem contar uma a uma."], "e": "A explicação é a <b>facilidade de percepção visual de pequenas quantidades</b>. Organizar em grupos menores torna mais fácil reconhecer a quantidade sem contar — e isso liga representação numérica a percepção, um tema importante para o ensino."}]}, {"id": "indo", "ic": "&#128161;", "t": "O sistema que usamos hoje", "s": "Indo-arábico: base dez, valor posicional e o zero", "ats": [{"t": "txt", "q": "Dez algarismos, infinitos números.", "ctx": "O sistema que o mundo usa hoje é o <b>indo-arábico</b>: desenvolveu-se na <b>Índia</b> e foi difundido por estudiosos do <b>mundo islâmico</b>, chegando depois à Europa.<br><br>Ele usa apenas dez algarismos — <b>0, 1, 2, 3, 4, 5, 6, 7, 8 e 9</b> — e com eles representa qualquer quantidade. Isso só é possível por causa de duas ideias geniais: o <b>valor posicional</b> e o <b>zero</b>."}, {"t": "mc", "q": "Por que esse sistema é chamado de <b>decimal</b>?", "o": ["Porque utiliza a base dez: os agrupamentos são de dez em dez.", "Porque foi criado por dez matemáticos indianos.", "Porque usa vírgula para separar as casas decimais.", "Porque só consegue representar números de até dez algarismos."], "c": 0, "d": ["Base dez significa que dez de uma ordem formam uma da ordem seguinte."], "e": "Decimal porque usa a <b>base dez</b>: 10 unidades formam 1 dezena, 10 dezenas formam 1 centena, 10 centenas formam 1 unidade de milhar."}, {"t": "in", "q": "No número <b>222</b>, o algarismo 2 aparece três vezes — mas vale coisas diferentes. Quanto vale cada um?", "ctx": "Preencha da esquerda para a direita.", "f": [{"l": "O primeiro 2 vale", "r": ["200", "200 unidades", "duzentos"], "ph": "quanto?", "num": true}, {"l": "O segundo 2 vale", "r": ["20", "20 unidades", "vinte"], "ph": "quanto?", "num": true}, {"l": "O terceiro 2 vale", "r": ["2", "2 unidades", "dois"], "ph": "quanto?", "num": true}], "d": ["Da direita para a esquerda, as posições são: unidade, dezena, centena.", "200 + 20 + 2 = 222."], "e": "<b>200 + 20 + 2 = 222.</b> Isso é o <b>valor posicional</b>: o valor de um algarismo depende da posição que ele ocupa. É o que permite escrever números enormes com só dez símbolos — algo impossível no sistema egípcio ou no romano."}, {"t": "mc", "q": "Compare os números <b>25</b> e <b>205</b>. Qual é o papel do zero em 205?", "o": ["Ele ocupa a posição das dezenas, indicando que não há dezenas e garantindo o valor correto dos outros algarismos.", "Ele não tem função nenhuma, serve apenas para deixar o número mais comprido.", "Ele multiplica o número 25 por dez.", "Ele indica que o número é negativo ou aproximado."], "c": 0, "d": ["Em 205 temos duas centenas, nenhuma dezena e cinco unidades. Tire o zero e o que acontece?"], "e": "O zero indica a <b>ausência de unidades naquela posição</b> e permite diferenciar os números. Em 25 há duas dezenas e cinco unidades; em 205 há duas centenas, <b>nenhuma dezena</b> e cinco unidades. A utilização do zero num sistema posicional foi uma contribuição fundamental para a Matemática."}, {"t": "cls", "q": "Decisão rápida: cada característica pertence a qual sistema?", "cat": [{"n": "Indo-arábico (o nosso)", "i": ["Posicional", "Usa o zero", "Apenas dez algarismos", "Representa números enormes com poucos símbolos"]}, {"n": "Egípcio", "i": ["Aditivo", "Não posicional", "Um símbolo diferente para cada potência de dez"]}], "d": ["Os dois são de base dez — o que os separa é a posição importar ou não."], "e": "Atenção a esta armadilha: <b>os dois são decimais</b>. A diferença está em o sistema ser <b>posicional</b> (indo-arábico) ou <b>aditivo e não posicional</b> (egípcio), e na existência do <b>zero</b>."}, {"t": "mc", "q": "Para o futuro professor dos anos iniciais, por que estudar a origem dos números é importante?", "o": ["Porque ajuda a compreender que construir o conceito de número envolve experiências e formas de pensamento que vão além de memorizar símbolos.", "Porque as crianças precisam aprender os sistemas babilônico e egípcio antes do nosso.", "Porque o professor deve ensinar os alunos a escrever com números romanos no lugar dos nossos.", "Porque a memorização dos símbolos é o objetivo principal do ensino de Matemática."], "c": 0, "d": ["O texto fala em ir <i>além</i> da simples memorização de símbolos."], "e": "A construção do conceito de número envolve <b>experiências, representações e formas de pensamento</b> — não só memorizar símbolos. Em sala, o professor pode propor que as crianças comparem quantidades, agrupem objetos, criem registros de contagem, estabeleçam correspondências e até <b>inventem seus próprios símbolos</b>."}]}, {"id": "rp", "ic": "&#127919;", "t": "Resolução de Problemas × Exercícios", "s": "As duas técnicas de ensino e quando usar cada uma", "ats": [{"t": "txt", "q": "Duas técnicas diferentes — e nenhuma delas é a vilã.", "ctx": "Na <b>Resolução de Problemas</b>, o aluno é desafiado a resolver uma situação que exige reflexão e estratégia. O problema pode vir <b>antes</b> de ele conhecer formalmente o conteúdo. O aluno é ativo; o professor é <b>mediador</b>.<br><br>Na <b>Aplicação de Exercícios</b>, o aluno pratica um conteúdo que <b>já foi apresentado</b>, usando procedimentos e algoritmos conhecidos para resolver questões semelhantes.<br><br>Guarde desde já a conclusão da aula: <b>a aplicação de exercícios não é uma prática inadequada</b>. As duas são importantes."}, {"t": "cls", "q": "Classifique cada característica na técnica correspondente.", "cat": [{"n": "Resolução de Problemas", "i": ["Parte de uma situação que exige investigação", "Estimula a elaboração de estratégias próprias", "Admite diferentes caminhos de resolução", "Favorece a construção de conceitos", "O aluno investiga e busca soluções"]}, {"n": "Aplicação de Exercícios", "i": ["Parte de um conteúdo já estudado", "Favorece a fixação de procedimentos", "Aplica procedimentos conhecidos", "Consolida conhecimentos já adquiridos", "O aluno pratica e aperfeiçoa habilidades"]}], "d": ["Pergunte-se: o aluno está <i>descobrindo</i> um caminho ou <i>repetindo</i> um caminho que já aprendeu?"], "e": "Essa é literalmente a tabela comparativa do roteiro. O verbo entrega tudo: <b>investigar, elaborar, construir</b> → Resolução de Problemas; <b>praticar, fixar, aplicar, consolidar</b> → Aplicação de Exercícios."}, {"t": "mc", "q": "Uma professora apresenta: “João tinha 15 figurinhas e ganhou algumas do amigo. Agora tem 23. Quantas ele ganhou?”. Que técnica é essa?", "o": ["Resolução de Problemas, porque o aluno precisa interpretar, identificar informações e elaborar uma estratégia.", "Aplicação de Exercícios, porque envolve uma operação de subtração.", "Nenhuma das duas, porque não há conta armada para resolver.", "Aplicação de Exercícios, porque a resposta é um número exato."], "c": 0, "d": ["O fato de a resposta ser um número não define a técnica. O que define é o que o aluno precisa fazer para chegar lá."], "e": "É <b>Resolução de Problemas</b> — e é o exemplo exato do roteiro. O aluno precisa interpretar a situação, identificar as informações e elaborar uma estratégia. Note que a conta por trás é simples; o desafio está na interpretação."}, {"t": "mc", "q": "Depois de estudar a adição, a professora propõe: a) 25 + 14 = ___  b) 37 + 22 = ___  c) 46 + 31 = ___. Que técnica é essa?", "o": ["Aplicação de Exercícios, porque o aluno pratica um procedimento já apresentado.", "Resolução de Problemas, porque o aluno precisa pensar para chegar ao resultado.", "Aplicação de Exercícios, porque os números são maiores que dez.", "Resolução de Problemas, porque existem três itens diferentes."], "c": 0, "d": ["A expressão-chave do enunciado é “depois de estudar a adição”."], "e": "É <b>Aplicação de Exercícios</b>, e é o outro exemplo do roteiro. O conteúdo já foi apresentado e o objetivo é que os alunos pratiquem o procedimento e ganhem domínio sobre ele."}, {"t": "mc", "q": "Qual é a conclusão do roteiro sobre as duas técnicas?", "o": ["Ambas são importantes, e a escolha depende dos objetivos de aprendizagem, do conteúdo e das necessidades dos alunos.", "A Resolução de Problemas é sempre superior e deve substituir os exercícios.", "A Aplicação de Exercícios é uma prática ultrapassada e inadequada.", "O professor deve usar as duas técnicas sempre na mesma aula e na mesma proporção."], "c": 0, "d": ["O roteiro faz questão de dizer, em negrito, que a aplicação de exercícios NÃO é inadequada."], "e": "As duas são importantes. A Resolução de Problemas favorece <b>investigação, reflexão e construção</b>; a Aplicação de Exercícios favorece <b>prática, consolidação e aperfeiçoamento</b>. O professor precisa compreender <b>o que deseja ensinar</b> e escolher a estratégia mais adequada para alcançar esse objetivo."}, {"t": "cls", "q": "Última rodada: cada frase pertence a qual técnica?", "cat": [{"n": "Resolução de Problemas", "i": ["O professor atua como mediador", "O problema pode vir antes do conteúdo formal", "Desenvolve autonomia e argumentação", "Estimula o raciocínio lógico e a criatividade"]}, {"n": "Aplicação de Exercícios", "i": ["Desenvolve agilidade e segurança no procedimento", "Contribui para automatizar procedimentos", "Ajuda a identificar dificuldades e erros", "Desenvolve a habilidade de realizar cálculos"]}], "d": ["“Automatizar”, “agilidade” e “cálculo” são palavras de exercício. “Autonomia”, “criatividade” e “argumentação” são de problema."], "e": "Pronto — você cobriu as duas listas de características do roteiro. Se cair uma dissertativa, estruture assim: diga o que é cada técnica, dê um exemplo de cada (figurinhas × contas de somar) e termine dizendo que a escolha depende do objetivo de aprendizagem."}]}, {"id": "final", "ic": "&#127942;", "t": "Desafio final", "s": "Mistura tudo — faça este por último", "ats": [{"t": "mc", "q": "Qual alternativa descreve corretamente a Matemática do Paleolítico Inferior?", "o": ["Era constituída por esquemas mentais de comparação e organização, sem números nem símbolos formais.", "Era uma matemática formal, com símbolos próprios gravados em pedra.", "Baseava-se no sistema decimal e no uso do zero.", "Já utilizava unidades de medida padronizadas para a agricultura."], "c": 0, "e": "Esquemas mentais que permitiam <b>comparar, modificar tamanhos e quantidades e organizar objetos</b>. Nada de matemática formal, nada de números."}, {"t": "cls", "q": "Coloque cada acontecimento no período certo.", "cat": [{"n": "Paleolítico", "i": ["Caça e coleta", "Instrumentos de pedra e pau", "Pinturas e esculturas rústicas"]}, {"n": "Neolítico", "i": ["Agricultura e pecuária", "Contagens maiores e registros", "Produção excedente", "Surgimento das cidades"]}], "e": "A fronteira entre os dois é a <b>produção do próprio alimento</b>. Antes dela: caça e coleta. Depois dela: excedente, classes sociais e cidades."}, {"t": "num", "q": "Última montagem: represente o número <b>1204</b> no sistema egípcio.", "ctx": "Cuidado — este número tem uma armadilha.", "alvo": 1204, "s": [{"g": "│", "v": 1, "rot": "1 · traço"}, {"g": "∩", "v": 10, "rot": "10 · arco"}, {"g": "℮", "v": 100, "rot": "100 · corda"}, {"g": "Ψ", "v": 1000, "rot": "1000 · lótus"}], "d": ["1204 = 1000 + 200 + 0 dezenas + 4 unidades.", "A armadilha é o zero: no sistema egípcio você simplesmente não coloca nada no lugar das dezenas."], "e": "Um lótus, duas cordas e quatro traços: <b>1000 + 100 + 100 + 1 + 1 + 1 + 1 = 1204</b>. E aqui está a grande sacada: como o sistema <b>não é posicional</b>, o egípcio não precisava do zero — bastava não desenhar nenhum arco. O zero só se torna indispensável quando a <b>posição</b> passa a dar valor ao símbolo."}, {"t": "par", "q": "Ligue cada necessidade concreta ao conhecimento que ela gerou, segundo o roteiro.", "p": [["Cheias do rio Nilo apagavam os limites das terras", "Geometria"], ["Saber se todas as ovelhas voltaram ao curral", "Correspondência um a um"], ["Controlar colheitas e épocas de plantio", "Registros de contagem"], ["Comércio e tributos entre muitas pessoas", "Medidas padronizadas"], ["Acompanhar a passagem do tempo", "Calendário de 365 dias"]], "e": "Todo o roteiro em cinco linhas. Se você entendeu este quadro, entendeu a aula: <b>a Matemática responde a necessidades</b>."}, {"t": "mc", "q": "Uma professora propõe que as crianças inventem seus próprios símbolos para representar quantidades e depois comparem as formas criadas. Essa atividade se apoia em qual ideia do roteiro?", "o": ["Que os números são instrumentos culturais criados para atender às necessidades humanas.", "Que as crianças devem aprender primeiro o sistema romano e depois o nosso.", "Que a memorização dos símbolos é o objetivo central do ensino.", "Que só o sistema indo-arábico é um sistema de numeração válido."], "c": 0, "e": "Exatamente: ao inventar símbolos, a criança vive o mesmo processo que a humanidade viveu e percebe que os números são <b>instrumentos culturais</b> — não verdades que caíram do céu."}, {"t": "ord", "q": "Para fechar: ordene a história dos sistemas de numeração como o roteiro apresenta.", "o": ["Correspondência um a um com pedras, dedos e riscos", "Sistemas antigos: babilônico (base 60) e egípcio (decimal aditivo)", "Sistemas que usam letras do alfabeto: grego e hebraico", "Sistema romano, com letras latinas que somam e subtraem", "Sistema indo-arábico: dez algarismos, posicional e com zero"], "d": ["A ordem do roteiro vai do mais simples e antigo ao que usamos hoje."], "e": "Essa é a espinha da aula “Origem dos Números”. E a conclusão é sempre a mesma: os sistemas <b>não surgiram todos ao mesmo tempo nem foram criados por uma única civilização</b> — são resultado de processos históricos e culturais diferentes."}]}];
+const KEY = "fund_mat_v1";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mix = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+const norm = s => String(s).trim().toLowerCase().replace(/\s+/g," ").replace(/,/g,".")
+  .normalize("NFD").replace(/[̀-ͯ]/g,"");
+
+let P = { done: [] };
+try { const r = localStorage.getItem(KEY); if(r) P = JSON.parse(r); } catch(e){}
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(P)); }catch(e){} };
+
+const S = { m:null, i:0, st:null, checked:false, hint:0, acertos:0, erros:0, primeira:true };
+const TOTAL = BANK.reduce((n,m)=>n+m.ats.length,0);
+
+/* ---------- navegação ---------- */
+function scr(id){
+  document.querySelectorAll(".scr").forEach(s=>s.classList.toggle("on", s.id===id));
+  $("#homeBtn").hidden = (id==="scHome");
+  try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); }
+}
+function pintaTopo(){
+  const feitas = BANK.reduce((n,m)=> n + (P.done.includes(m.id)? m.ats.length : 0), 0);
+  $("#xp").textContent = feitas + " / " + TOTAL;
+  $("#barFill").style.width = (feitas/TOTAL*100) + "%";
+}
+function home(){
+  scr("scHome"); pintaTopo();
+  $("#modList").innerHTML = BANK.map((m,k)=>{
+    const d = P.done.includes(m.id);
+    return `<button class="mod ${d?"done":""}" data-k="${k}">
+      <span class="mod-i">${m.ic}</span>
+      <span class="mod-b">
+        <span class="mod-t">${esc(m.t)} <span class="mod-n">${m.ats.length} etapas</span></span>
+        <span class="mod-s">${esc(m.s)}</span>
+      </span>
+      ${d?'<span class="chk">&#10003;</span>':'<span class="mod-arrow">&rarr;</span>'}
+    </button>`;
+  }).join("");
+  $("#modList").querySelectorAll(".mod").forEach(b=>
+    b.addEventListener("click",()=>abrir(+b.dataset.k)));
+}
+function abrir(k){
+  S.m=k; S.i=0; S.acertos=0; S.erros=0;
+  scr("scAct"); render();
+}
+
+/* ---------- render ---------- */
+function render(){
+  const m = BANK[S.m], a = m.ats[S.i];
+  S.st = null; S.checked = false; S.hint = 0; S.primeira = true;
+  $("#crumb").innerHTML = `<b>${esc(m.t)}</b> <span>&middot;</span> <span>etapa ${S.i+1} de ${m.ats.length}</span>
+    <span class="dots">${m.ats.map((_,j)=>`<i class="dot ${j===S.i?"on":(j<S.i?"ok":"")}"></i>`).join("")}</span>`;
+  const T = TIPOS[a.t];
+  $("#actCard").innerHTML =
+    `<div class="tag">${T.rot}</div><div class="enun">${a.q}</div>` +
+    (a.ctx?`<div class="ctx">${a.ctx}</div>`:"") +
+    (a.mono?`<div class="mono">${esc(a.mono)}</div>`:"") +
+    `<div id="zone"></div><div id="fb"></div>`;
+  T.ini(a);
+  botoes(a);
+}
+function botoes(a){
+  const T = TIPOS[a.t], ultima = S.i === BANK[S.m].ats.length-1;
+  const temDica = a.d && a.d.length;
+  let html = "";
+  if(T.auto){ html = `<button class="btn btn-p" id="bMain">${ultima?"Concluir módulo":"Continuar"} &rarr;</button>`; }
+  else if(!S.checked){
+    html = (temDica && S.hint < a.d.length ? `<button class="btn btn-g" id="bDica">&#128161; Dica</button>` : "")
+         + `<button class="btn btn-p" id="bMain">Verificar</button>`;
+  } else {
+    html = `<button class="btn btn-p" id="bMain">${ultima?"Concluir módulo":"Continuar"} &rarr;</button>`;
+  }
+  $("#actNav").innerHTML = html;
+  const bm = $("#bMain");
+  bm.addEventListener("click", ()=>{
+    if(T.auto || S.checked) avanca();
+    else verificar(a);
+  });
+  if($("#bDica")) $("#bDica").addEventListener("click", ()=>{
+    const d = a.d[S.hint]; S.hint++;
+    $("#fb").innerHTML = `<div class="fb hint"><div class="fb-t">Dica ${S.hint}</div>${d}</div>`;
+    botoes(a);
+  });
+}
+function verificar(a){
+  const T = TIPOS[a.t], ok = T.ver(a);
+  if(ok){
+    S.checked = true;
+    if(S.primeira) S.acertos++; 
+    $("#fb").innerHTML = `<div class="fb ok"><div class="fb-t">&#10003; Isso mesmo</div>${a.e}</div>`;
+    botoes(a);
+  } else {
+    if(S.primeira){ S.erros++; S.primeira = false; }
+    const mais = (a.d && S.hint < a.d.length) ? " Toque em <b>Dica</b> para uma pista." : "";
+    $("#fb").innerHTML = `<div class="fb er"><div class="fb-t">Ainda não</div>${a.err||"Não foi dessa vez — ajuste e tente de novo."}${mais}</div>`;
+    botoes(a);
+  }
+}
+function avanca(){
+  const m = BANK[S.m];
+  if(S.i < m.ats.length-1){ S.i++; render(); return; }
+  if(!P.done.includes(m.id)){ P.done.push(m.id); save(); }
+  concluido();
+}
+
+/* ---------- conclusão ---------- */
+function concluido(){
+  const m = BANK[S.m];
+  const n = m.ats.filter(a=>!TIPOS[a.t].auto).length;   // telas de leitura não entram na nota
+  const pct = n ? Math.round(S.acertos/n*100) : 100;
+  const C=2*Math.PI*58, off=C*(1-pct/100);
+  const falta = BANK.filter(x=>!P.done.includes(x.id));
+  const msg = pct>=85 ? "Mandou muito bem. Esse assunto está dominado."
+            : pct>=60 ? "Bom resultado. Vale reler as explicações das que você errou."
+            : "Refaça este módulo uma vez — na segunda passada ele gruda.";
+  $("#doneBox").innerHTML = `
+    <div class="ring">
+      <svg width="132" height="132" viewBox="0 0 132 132">
+        <circle cx="66" cy="66" r="58" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="11"/>
+        <circle cx="66" cy="66" r="58" fill="none" stroke="url(#g)" stroke-width="11" stroke-linecap="round"
+          stroke-dasharray="${C}" stroke-dashoffset="${C}" id="arc"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="var(--a1)"/><stop offset="1" stop-color="var(--a3)"/></linearGradient></defs>
+      </svg>
+      <div class="ring-n">${pct}%</div>
+    </div>
+    <h2>Módulo concluído</h2>
+    <p>${esc(m.t)}</p>
+    <div class="stats">
+      <div class="stat"><b style="color:var(--ok)">${S.acertos}/${n}</b><span>de primeira</span></div>
+      <div class="stat"><b style="color:var(--er)">${S.erros}</b><span>com tentativa</span></div>
+      <div class="stat"><b>${BANK.length - falta.length}/${BANK.length}</b><span>módulos</span></div>
+    </div>
+    <p style="margin-bottom:22px">${msg}</p>
+    <div class="nav" style="max-width:420px;margin:0 auto">
+      ${falta.length?`<button class="btn btn-p" id="bNext">Próximo módulo &rarr;</button>`
+        :`<button class="btn btn-p" id="bNext">Ver todos os módulos</button>`}
+      <button class="btn btn-g" id="bAgain">Refazer</button>
+    </div>`;
+  scr("scDone"); pintaTopo();
+  setTimeout(()=>{ const arc=$("#arc"); if(arc){ arc.style.transition="stroke-dashoffset 1.1s cubic-bezier(.3,1,.4,1)"; arc.style.strokeDashoffset=off; } },90);
+  if(pct>=60) confete();
+  $("#bAgain").addEventListener("click",()=>abrir(S.m));
+  $("#bNext").addEventListener("click",()=>{
+    if(falta.length){ abrir(BANK.indexOf(falta[0])); } else home();
+  });
+}
+function confete(){
+  const cs=["var(--a1)","var(--a3)","var(--ok)","var(--wa)","#fff"], box=$("#conf");
+  for(let i=0;i<46;i++){
+    const d=document.createElement("i"); d.className="cf";
+    d.style.left=Math.random()*100+"%";
+    d.style.background=cs[i%cs.length];
+    d.style.animationDuration=(1.5+Math.random()*1.5)+"s";
+    d.style.animationDelay=(Math.random()*.5)+"s";
+    box.appendChild(d); setTimeout(()=>d.remove(),3600);
+  }
+}
+
+/* ================= TIPOS DE ATIVIDADE ================= */
+const TIPOS = {};
+
+/* texto explicativo */
+TIPOS.txt = { rot:"Entenda primeiro", auto:true, ini(){ $("#zone").innerHTML=""; } };
+
+/* múltipla escolha */
+TIPOS.mc = {
+  rot:"Escolha a resposta", auto:false,
+  ini(a){
+    if(!a._o){ const p=a.o.map((t,i)=>({t,i})); mix(p); a._o=p.map(x=>x.t); a._c=p.findIndex(x=>x.i===a.c); }
+    $("#zone").innerHTML = `<div class="opts">${a._o.map((t,j)=>
+      `<button class="opt" data-j="${j}"><span class="ol">${"ABCDE"[j]}</span><span>${esc(t)}</span></button>`).join("")}</div>`;
+    $("#zone").querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+      if(S.checked) return;
+      S.st = +b.dataset.j;
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.style.borderColor = (+x.dataset.j===S.st)?"var(--a2)":"");
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.style.background = (+x.dataset.j===S.st)?"rgba(255,255,255,.08)":"");
+    }));
+  },
+  ver(a){
+    if(S.st===null) return false;
+    const bs=[...$("#zone").querySelectorAll(".opt")], ok = S.st===a._c;
+    if(ok){ bs.forEach((b,j)=>{ b.disabled=true; b.style.borderColor="";b.style.background="";
+             b.classList.add(j===a._c?"ok":"off"); }); }
+    else { bs[S.st].classList.add("er"); setTimeout(()=>bs[S.st].classList.remove("er"),460); }
+    return ok;
+  }
+};
+
+/* ligar pares */
+TIPOS.par = {
+  rot:"Ligue os pares", auto:false,
+  ini(a){
+    a._fe = []; S.st = {sel:null, lado:null};
+    const E=a.p.map((x,i)=>({t:x[0],i})), D=a.p.map((x,i)=>({t:x[1],i}));
+    a._E = a._E || mix(E); a._D = a._D || mix(D);
+    $("#zone").innerHTML = `<div class="pairs">
+      <div style="display:grid;gap:10px">${a._E.map(x=>`<button class="pair" data-l="e" data-i="${x.i}">${esc(x.t)}</button>`).join("")}</div>
+      <div style="display:grid;gap:10px">${a._D.map(x=>`<button class="pair" data-l="d" data-i="${x.i}">${esc(x.t)}</button>`).join("")}</div>
+    </div>`;
+    $("#zone").querySelectorAll(".pair").forEach(b=>b.addEventListener("click",()=>{
+      const lado=b.dataset.l, i=+b.dataset.i;
+      if(S.st.sel===null || S.st.lado===lado){
+        $("#zone").querySelectorAll(".pair").forEach(x=>x.classList.remove("sel"));
+        b.classList.add("sel"); S.st={sel:i, lado};
+        return;
+      }
+      const outro = $("#zone").querySelector(`.pair[data-l="${S.st.lado}"][data-i="${S.st.sel}"]`);
+      if(i===S.st.sel){
+        b.classList.add("ok"); outro.classList.remove("sel"); outro.classList.add("ok");
+        a._fe.push(i); S.st={sel:null,lado:null};
+        if(a._fe.length===a.p.length){ $("#fb").innerHTML=""; }
+      } else {
+        b.classList.add("er"); outro.classList.add("er");
+        if(S.primeira){ S.erros++; S.primeira=false; }
+        setTimeout(()=>{ b.classList.remove("er"); outro.classList.remove("er","sel"); },460);
+        S.st={sel:null,lado:null};
+      }
+    }));
+  },
+  ver(a){ return a._fe.length === a.p.length; }
+};
+
+/* classificar em categorias */
+TIPOS.cls = {
+  rot:"Classifique cada item", auto:false,
+  ini(a){
+    a._pos = {}; S.st = null;
+    const itens = a._it || (a._it = mix([].concat(...a.cat.map((c,ci)=>c.i.map(t=>({t,ci}))))));
+    $("#zone").innerHTML =
+      `<div class="pool" id="pool">${itens.map((x,k)=>`<button class="chip" data-k="${k}">${esc(x.t)}</button>`).join("")}</div>
+       <div class="buckets">${a.cat.map((c,ci)=>
+         `<div class="bucket" data-ci="${ci}"><div class="bucket-t"><i></i>${esc(c.n)}</div><div class="pool" data-in="${ci}"></div></div>`).join("")}</div>`;
+    function solta(ci){
+      if(S.st===null) return;
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("ok","er"));
+      const k=S.st; a._pos[k]=ci;
+      const b=$(`#zone .chip[data-k="${k}"]`); b.classList.remove("sel");
+      $(`#zone .pool[data-in="${ci}"]`).appendChild(b);
+      S.st=null; $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.remove("live"));
+    }
+    $("#zone").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",e=>{
+      e.stopPropagation();                    // nao deixa o clique chegar na categoria que o contem
+      if(S.checked) return;
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("ok","er"));
+      if(S.st===+b.dataset.k){ S.st=null; b.classList.remove("sel");
+        $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.remove("live")); return; }
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel"); S.st=+b.dataset.k;
+      $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.add("live"));
+    }));
+    $("#zone").querySelectorAll(".bucket").forEach(bk=>bk.addEventListener("click",()=>solta(+bk.dataset.ci)));
+  },
+  ver(a){
+    const itens=a._it;
+    if(Object.keys(a._pos).length !== itens.length) return false;
+    let ok=true;
+    itens.forEach((x,k)=>{
+      const b=$(`#zone .chip[data-k="${k}"]`), certo = a._pos[k]===x.ci;
+      b.classList.add(certo?"ok":"er"); if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll(".chip").forEach(b=>b.disabled=true);
+    else setTimeout(()=>$("#zone").querySelectorAll(".chip").forEach(b=>b.classList.remove("ok","er")),900);
+    return ok;
+  }
+};
+
+/* ordenar sequência */
+TIPOS.ord = {
+  rot:"Coloque na ordem", auto:false,
+  ini(a){
+    a._cur = a._cur || mix(a.o.map((t,i)=>({t,i})));
+    pinta(a);
+    function pinta(a){
+      $("#zone").innerHTML = `<div class="steps">${a._cur.map((x,k)=>
+        `<div class="step"><span class="step-n">${k+1}</span><span class="step-tx">${esc(x.t)}</span>
+         <span class="step-b">
+           <button class="arw" data-u="${k}" ${k===0?"disabled":""} aria-label="subir">&#9650;</button>
+           <button class="arw" data-d="${k}" ${k===a._cur.length-1?"disabled":""} aria-label="descer">&#9660;</button>
+         </span></div>`).join("")}</div>`;
+      $("#zone").querySelectorAll(".arw").forEach(b=>b.addEventListener("click",()=>{
+        if(S.checked) return;
+        const u=b.dataset.u, d=b.dataset.d;
+        if(u!==undefined){ const k=+u; [a._cur[k-1],a._cur[k]]=[a._cur[k],a._cur[k-1]]; }
+        else { const k=+d; [a._cur[k+1],a._cur[k]]=[a._cur[k],a._cur[k+1]]; }
+        pinta(a);
+      }));
+    }
+    a._pinta = pinta;
+  },
+  ver(a){
+    const sts=[...$("#zone").querySelectorAll(".step")];
+    let ok=true;
+    a._cur.forEach((x,k)=>{ const c = x.i===k; sts[k].classList.add(c?"ok":"er"); if(!c) ok=false; });
+    if(!ok) setTimeout(()=>sts.forEach(s=>s.classList.remove("ok","er")),900);
+    else $("#zone").querySelectorAll(".arw").forEach(b=>b.disabled=true);
+    return ok;
+  }
+};
+
+/* digitar resposta(s) */
+TIPOS.in = {
+  rot:"Digite a resposta", auto:false,
+  ini(a){
+    $("#zone").innerHTML = `<div class="ins">${a.f.map((c,k)=>
+      `<div class="inb"><label for="f${k}">${esc(c.l)}</label>
+       <input id="f${k}" type="text" inputmode="${c.num?"decimal":"text"}" placeholder="${esc(c.ph||"")}" data-k="${k}" autocomplete="off"></div>`).join("")}</div>`;
+    $("#zone").querySelectorAll("input").forEach(inp=>inp.addEventListener("keydown",e=>{
+      if(e.key==="Enter" && !S.checked){ e.preventDefault(); verificar(a); }
+    }));
+  },
+  ver(a){
+    let ok=true;
+    a.f.forEach((c,k)=>{
+      const inp=$(`#zone #f${k}`), v=norm(inp.value);
+      const certo = c.r.some(r=>norm(r)===v);
+      inp.classList.remove("ok","er"); inp.classList.add(certo?"ok":"er");
+      if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll("input").forEach(i=>i.disabled=true);
+    return ok;
+  }
+};
+
+/* preencher tabela */
+TIPOS.tab = {
+  rot:"Complete a tabela", auto:false,
+  ini(a){
+    let n=0;
+    const linhas = a.l.map(li=>`<tr>${li.map(cel=>
+      typeof cel==="string" ? `<td>${cel}</td>`
+      : `<td><input type="text" inputmode="decimal" data-k="${n++}" placeholder="?" autocomplete="off"></td>`).join("")}</tr>`).join("");
+    a._n = n;
+    $("#zone").innerHTML = `<div class="tw"><table><thead><tr>${a.h.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${linhas}</tbody></table></div>`;
+    $("#zone").querySelectorAll("input").forEach(inp=>inp.addEventListener("keydown",e=>{
+      if(e.key==="Enter" && !S.checked){ e.preventDefault(); verificar(a); }
+    }));
+  },
+  ver(a){
+    const resp=[].concat(...a.l.map(li=>li.filter(c=>typeof c!=="string")));
+    let ok=true;
+    $("#zone").querySelectorAll("input").forEach((inp,k)=>{
+      const v=norm(inp.value), certo=resp[k].r.some(r=>norm(r)===v);
+      inp.classList.remove("ok","er"); inp.classList.add(certo?"ok":"er");
+      if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll("input").forEach(i=>i.disabled=true);
+    return ok;
+  }
+};
+
+/* montar número com símbolos */
+TIPOS.num = {
+  rot:"Monte o número", auto:false,
+  ini(a){
+    a._usa = [];
+    $("#zone").innerHTML =
+      `<div class="syms">${a.s.map((x,k)=>
+        `<button class="sym" data-k="${k}"><span class="sym-g">${x.g}</span><span class="sym-v">${x.rot||x.v}</span></button>`).join("")}</div>
+       <div class="canvas" id="cv"><span class="ph">Toque nos símbolos acima para montar o número</span></div>
+       <div class="tot"><span>Total montado</span><b id="tt">0</b></div>`;
+    const pinta=()=>{
+      const cv=$("#cv");
+      cv.innerHTML = a._usa.length
+        ? a._usa.map((k,j)=>`<button class="cs" data-j="${j}" title="remover">${a.s[k].g}</button>`).join("")
+        : `<span class="ph">Toque nos símbolos acima para montar o número</span>`;
+      const soma = a._usa.reduce((t,k)=>t+a.s[k].v,0);
+      $("#tt").textContent = soma;
+      $("#tt").style.color = soma===a.alvo ? "var(--ok)" : (soma>a.alvo ? "var(--er)" : "var(--a2)");
+      cv.querySelectorAll(".cs").forEach(b=>b.addEventListener("click",()=>{
+        if(S.checked) return; a._usa.splice(+b.dataset.j,1); pinta();
+      }));
+    };
+    $("#zone").querySelectorAll(".sym").forEach(b=>b.addEventListener("click",()=>{
+      if(S.checked) return; a._usa.push(+b.dataset.k); pinta();
+    }));
+    a._pinta = pinta; pinta();
+  },
+  ver(a){
+    const soma=a._usa.reduce((t,k)=>t+a.s[k].v,0);
+    if(soma!==a.alvo) return false;
+    if(a.max && a._usa.length>a.max) return false;
+    $("#zone").querySelectorAll(".sym").forEach(b=>b.disabled=true);
+    return true;
+  }
+};
+
+/* expõe o estado para depuração e testes */
+window.BANK=BANK; window.S=S; window.P=P; window.TIPOS=TIPOS;
+
+/* ---------- início ---------- */
+$("#homeBtn").addEventListener("click", home);
+home();
+</script>
+</body>
+</html>
