@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0D14">
+<title>Estatística — Recuperação</title>
+<style>
+:root{
+  --a1:#FBBF24; --a2:#FB923C; --a3:#F472B6;
+  --bg:#0A0D14; --bg2:#0E1320;
+  --card:rgba(255,255,255,.045); --card2:rgba(255,255,255,.07);
+  --bd:rgba(255,255,255,.09); --bd2:rgba(255,255,255,.16);
+  --tx:#EAEEF7; --tx2:#AAB4C8; --tx3:#6E7A91;
+  --ok:#2DD4A8; --ok-bg:rgba(45,212,168,.13); --ok-bd:rgba(45,212,168,.45);
+  --er:#FF6B81; --er-bg:rgba(255,107,129,.12); --er-bd:rgba(255,107,129,.42);
+  --wa:#FFC24D; --wa-bg:rgba(255,194,77,.11); --wa-bd:rgba(255,194,77,.38);
+  --r:14px; --r2:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg); color:var(--tx); font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased; min-height:100vh;
+  padding-bottom:env(safe-area-inset-bottom);
+  background-image:
+    radial-gradient(900px 480px at 12% -8%, color-mix(in srgb, var(--a1) 22%, transparent), transparent 70%),
+    radial-gradient(760px 420px at 92% 4%, color-mix(in srgb, var(--a3) 16%, transparent), transparent 72%);
+  background-attachment:fixed;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--a2);outline-offset:3px;border-radius:8px}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ============ TOPO ============ */
+.top{position:sticky;top:0;z-index:50;background:rgba(10,13,20,.82);backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--bd)}
+.top-in{max-width:860px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.01em;min-width:0}
+.logo-m{width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;font-size:14px;font-weight:800;
+  background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;
+  box-shadow:0 4px 16px color-mix(in srgb, var(--a2) 42%, transparent)}
+.logo span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sp{flex:1}
+.xp{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--a2);
+  background:color-mix(in srgb, var(--a2) 13%, transparent);border:1px solid color-mix(in srgb, var(--a2) 28%, transparent);
+  padding:5px 11px;border-radius:999px;flex:none}
+.ghost{font-size:13px;font-weight:600;color:var(--tx2);padding:6px 12px;border-radius:999px;border:1px solid var(--bd);flex:none;
+  transition:.16s}
+.ghost:hover{color:var(--tx);border-color:var(--bd2);background:var(--card)}
+.bar{height:3px;background:rgba(255,255,255,.07)}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a1),var(--a3));
+  transition:width .5s cubic-bezier(.34,1.3,.4,1);box-shadow:0 0 12px var(--a2)}
+
+/* ============ TELAS ============ */
+.scr{display:none;animation:in .34s cubic-bezier(.2,.8,.3,1)}
+.scr.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* hero */
+.hero{padding:40px 0 26px}
+.kicker{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--a2);background:color-mix(in srgb, var(--a2) 12%, transparent);
+  border:1px solid color-mix(in srgb, var(--a2) 26%, transparent);padding:5px 12px;border-radius:999px;margin-bottom:16px}
+h1{font-size:36px;line-height:1.12;letter-spacing:-.03em;font-weight:800}
+h1 em{font-style:normal;background:linear-gradient(100deg,var(--a1),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--tx2);margin-top:12px;font-size:16.5px;max-width:56ch}
+
+/* módulos */
+.mods{display:grid;gap:13px;padding:8px 0 40px}
+.mod{position:relative;display:flex;align-items:center;gap:15px;text-align:left;width:100%;
+  background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:17px 18px;
+  transition:transform .18s cubic-bezier(.34,1.4,.5,1),border-color .18s,background .18s,box-shadow .18s}
+.mod:hover{transform:translateY(-3px);border-color:color-mix(in srgb, var(--a2) 44%, transparent);background:var(--card2);
+  box-shadow:0 14px 34px rgba(0,0,0,.42),0 0 0 1px color-mix(in srgb, var(--a2) 16%, transparent)}
+.mod:active{transform:translateY(-1px) scale(.995)}
+.mod-i{width:50px;height:50px;border-radius:15px;flex:none;display:grid;place-items:center;font-size:23px;
+  background:linear-gradient(140deg,color-mix(in srgb, var(--a1) 26%, transparent),color-mix(in srgb, var(--a3) 20%, transparent));
+  border:1px solid var(--bd2)}
+.mod-b{flex:1;min-width:0}
+.mod-t{font-size:16.5px;font-weight:700;letter-spacing:-.015em;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.mod-s{font-size:13.5px;color:var(--tx3);margin-top:3px;line-height:1.45}
+.mod-n{font-size:12px;font-weight:700;color:var(--tx3);background:rgba(255,255,255,.06);border:1px solid var(--bd);
+  padding:2px 8px;border-radius:999px;flex:none}
+.mod.done{border-color:var(--ok-bd);background:var(--ok-bg)}
+.mod.done .mod-i{background:linear-gradient(140deg,rgba(45,212,168,.3),rgba(45,212,168,.14));border-color:var(--ok-bd)}
+.chk{width:24px;height:24px;border-radius:999px;background:var(--ok);color:#04231B;display:grid;place-items:center;
+  font-size:13px;font-weight:900;flex:none;box-shadow:0 0 16px rgba(45,212,168,.5)}
+.mod-arrow{color:var(--tx3);font-size:19px;flex:none;transition:transform .18s,color .18s}
+.mod:hover .mod-arrow{transform:translateX(4px);color:var(--a2)}
+
+/* ============ ATIVIDADE ============ */
+.act{padding:22px 0 40px}
+.crumb{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--tx3);margin-bottom:16px;flex-wrap:wrap}
+.crumb b{color:var(--a2);font-weight:600}
+.dots{display:flex;gap:5px;margin-left:auto}
+.dot{width:7px;height:7px;border-radius:999px;background:rgba(255,255,255,.14);transition:.3s}
+.dot.on{background:var(--a2);box-shadow:0 0 9px var(--a2);transform:scale(1.35)}
+.dot.ok{background:var(--ok)}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r2);padding:24px 22px;
+  box-shadow:0 18px 44px rgba(0,0,0,.34)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--a2);margin-bottom:11px}
+.enun{font-size:19px;line-height:1.45;font-weight:600;letter-spacing:-.015em}
+.enun b{color:var(--a2)}
+.ctx{font-size:14.5px;color:var(--tx2);margin-top:11px;line-height:1.6}
+.ctx b{color:var(--tx)}
+.mono{font-family:"Cascadia Mono",Consolas,monospace;font-size:14px;background:rgba(0,0,0,.35);
+  border:1px solid var(--bd);border-radius:10px;padding:11px 13px;margin-top:13px;color:var(--tx);
+  white-space:pre-wrap;line-height:1.7;overflow-x:auto}
+
+/* alternativas */
+.opts{display:grid;gap:10px;margin-top:20px}
+.opt{display:flex;align-items:flex-start;gap:12px;text-align:left;width:100%;
+  background:rgba(255,255,255,.035);border:1px solid var(--bd);border-radius:var(--r);padding:14px 15px;
+  font-size:15px;line-height:1.45;transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.opt:hover:not(:disabled){transform:translateY(-2px);border-color:color-mix(in srgb, var(--a2) 50%, transparent);
+  background:rgba(255,255,255,.07);box-shadow:0 8px 22px rgba(0,0,0,.34)}
+.opt:active:not(:disabled){transform:scale(.985)}
+.opt:disabled{cursor:default}
+.ol{width:26px;height:26px;border-radius:9px;flex:none;display:grid;place-items:center;font-size:12.5px;font-weight:800;
+  background:rgba(255,255,255,.08);border:1px solid var(--bd2);color:var(--tx2);transition:.15s}
+.opt:hover:not(:disabled) .ol{background:color-mix(in srgb, var(--a2) 24%, transparent);color:var(--tx);border-color:var(--a2)}
+.opt.ok{border-color:var(--ok-bd);background:var(--ok-bg);animation:pop .4s cubic-bezier(.34,1.5,.4,1)}
+.opt.ok .ol{background:var(--ok);color:#04231B;border-color:var(--ok)}
+.opt.er{border-color:var(--er-bd);background:var(--er-bg);animation:shake .42s}
+.opt.er .ol{background:var(--er);color:#2B0710;border-color:var(--er)}
+.opt.off{opacity:.42}
+@keyframes pop{0%{transform:scale(1)}42%{transform:scale(1.035)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}18%{transform:translateX(-7px)}38%{transform:translateX(6px)}
+  58%{transform:translateX(-4px)}78%{transform:translateX(3px)}}
+
+/* chips / pares / classificar */
+.pool{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.chip{font-size:14px;font-weight:500;padding:9px 14px;border-radius:999px;border:1px solid var(--bd2);
+  background:rgba(255,255,255,.05);transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.chip:hover:not(:disabled){transform:translateY(-2px);border-color:var(--a2);background:color-mix(in srgb, var(--a2) 15%, transparent);
+  box-shadow:0 7px 18px rgba(0,0,0,.36)}
+.chip:active:not(:disabled){transform:scale(.95)}
+.chip.sel{background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;border-color:transparent;font-weight:700;
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 22%, transparent)}
+.chip.used{opacity:.26;pointer-events:none;text-decoration:line-through}
+.chip.ok{background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok);font-weight:600}
+.chip.er{background:var(--er-bg);border-color:var(--er-bd);color:var(--er)}
+
+.buckets{display:grid;gap:12px;margin-top:18px}
+.bucket{border:1.5px dashed var(--bd2);border-radius:var(--r);padding:13px 15px;min-height:74px;transition:.18s;background:rgba(255,255,255,.02)}
+.bucket.live{border-color:var(--a2);background:color-mix(in srgb, var(--a2) 9%, transparent);
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 12%, transparent)}
+.bucket-t{font-size:13px;font-weight:700;color:var(--tx2);margin-bottom:9px;display:flex;gap:8px;align-items:center}
+.bucket-t i{width:8px;height:8px;border-radius:999px;background:var(--a2);flex:none}
+.bucket .pool{margin-top:0}
+
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.pair{text-align:left;font-size:14.5px;line-height:1.4;padding:13px 14px;border-radius:var(--r);border:1px solid var(--bd);
+  background:rgba(255,255,255,.035);transition:transform .15s cubic-bezier(.34,1.4,.5,1),border-color .15s,background .15s,box-shadow .15s}
+.pair:hover:not(:disabled){transform:translateY(-2px);border-color:var(--a2);background:rgba(255,255,255,.07);box-shadow:0 8px 20px rgba(0,0,0,.34)}
+.pair.sel{border-color:transparent;background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;font-weight:650;
+  box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 22%, transparent)}
+.pair.ok{border-color:var(--ok-bd);background:var(--ok-bg);opacity:.72;pointer-events:none}
+.pair.er{animation:shake .42s;border-color:var(--er-bd);background:var(--er-bg)}
+
+/* ordenar */
+.steps{display:grid;gap:9px;margin-top:18px;counter-reset:s}
+.step{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--bd);
+  border-radius:var(--r);padding:12px 14px;font-size:14.5px;line-height:1.4;transition:.18s}
+.step-n{width:25px;height:25px;border-radius:8px;flex:none;display:grid;place-items:center;font-size:12.5px;font-weight:800;
+  background:color-mix(in srgb, var(--a2) 20%, transparent);color:var(--a2);border:1px solid color-mix(in srgb, var(--a2) 34%, transparent)}
+.step-tx{flex:1;min-width:0}
+.step-b{display:flex;flex-direction:column;gap:3px;flex:none}
+.arw{width:28px;height:21px;border-radius:7px;background:rgba(255,255,255,.07);border:1px solid var(--bd);
+  display:grid;place-items:center;font-size:10px;color:var(--tx2);transition:.14s}
+.arw:hover:not(:disabled){background:color-mix(in srgb, var(--a2) 26%, transparent);color:var(--tx);border-color:var(--a2);transform:scale(1.1)}
+.arw:disabled{opacity:.22;cursor:default}
+.step.ok{border-color:var(--ok-bd);background:var(--ok-bg)}
+.step.er{border-color:var(--er-bd);background:var(--er-bg)}
+
+/* input / tabela */
+.ins{display:flex;flex-wrap:wrap;gap:11px;margin-top:18px;align-items:flex-end}
+.inb{flex:1;min-width:140px}
+.inb label{display:block;font-size:12.5px;font-weight:600;color:var(--tx2);margin-bottom:6px}
+input[type=text],input[type=number]{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--bd2);border-radius:11px;
+  padding:12px 14px;color:var(--tx);font:inherit;font-size:15.5px;transition:.16s}
+input::placeholder{color:var(--tx3)}
+input:focus{outline:none;border-color:var(--a2);background:rgba(0,0,0,.42);box-shadow:0 0 0 4px color-mix(in srgb, var(--a2) 17%, transparent)}
+input.ok{border-color:var(--ok-bd);background:var(--ok-bg)}
+input.er{border-color:var(--er-bd);background:var(--er-bg);animation:shake .42s}
+.tw{overflow-x:auto;margin-top:18px;border:1px solid var(--bd);border-radius:var(--r);background:rgba(0,0,0,.22)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:380px}
+th{text-align:left;font-weight:700;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--tx2);
+  background:rgba(255,255,255,.05);padding:10px 13px;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:9px 13px;border-bottom:1px solid rgba(255,255,255,.055);color:var(--tx2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td input{padding:8px 10px;font-size:14px;max-width:110px}
+td b{color:var(--tx)}
+
+/* símbolos (numerais) */
+.syms{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.sym{min-width:62px;padding:11px 13px;border-radius:13px;border:1px solid var(--bd2);background:rgba(255,255,255,.05);
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:transform .15s cubic-bezier(.34,1.5,.5,1),background .15s,border-color .15s,box-shadow .15s}
+.sym:hover:not(:disabled){transform:translateY(-3px) scale(1.04);border-color:var(--a2);
+  background:color-mix(in srgb, var(--a2) 16%, transparent);box-shadow:0 9px 22px rgba(0,0,0,.4)}
+.sym:active:not(:disabled){transform:scale(.94)}
+.sym-g{font-size:23px;line-height:1}
+.sym-v{font-size:10.5px;color:var(--tx3);font-weight:700;letter-spacing:.04em}
+.canvas{margin-top:16px;border:1px solid var(--bd);border-radius:var(--r);background:rgba(0,0,0,.26);
+  padding:16px;min-height:86px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;align-content:center}
+.canvas .ph{color:var(--tx3);font-size:14px}
+.cs{font-size:25px;line-height:1;padding:5px 7px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid var(--bd);
+  animation:pop .3s cubic-bezier(.34,1.5,.4,1)}
+.tot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;
+  font-size:14px;color:var(--tx2);padding:0 2px}
+.tot b{font-size:21px;color:var(--a2);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* feedback e botões */
+.fb{margin-top:18px;border-radius:var(--r);padding:15px 17px;font-size:14.8px;line-height:1.6;
+  animation:in .3s cubic-bezier(.2,.8,.3,1)}
+.fb.ok{background:var(--ok-bg);border:1px solid var(--ok-bd)}
+.fb.er{background:var(--er-bg);border:1px solid var(--er-bd)}
+.fb.hint{background:var(--wa-bg);border:1px solid var(--wa-bd)}
+.fb-t{font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+.fb.ok .fb-t{color:var(--ok)} .fb.er .fb-t{color:var(--er)} .fb.hint .fb-t{color:var(--wa)}
+.fb b{color:var(--tx)}
+
+.nav{display:flex;gap:11px;margin-top:20px;flex-wrap:wrap}
+.btn{flex:1;min-width:140px;padding:14px 20px;border-radius:13px;font-size:15.5px;font-weight:700;letter-spacing:-.01em;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  transition:transform .16s cubic-bezier(.34,1.4,.5,1),box-shadow .16s,filter .16s,opacity .16s}
+.btn-p{background:linear-gradient(135deg,var(--a1),var(--a3));color:#08101C;
+  box-shadow:0 8px 26px color-mix(in srgb, var(--a2) 36%, transparent)}
+.btn-p:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.1);
+  box-shadow:0 13px 34px color-mix(in srgb, var(--a2) 48%, transparent)}
+.btn-p:active:not(:disabled){transform:translateY(0) scale(.98)}
+.btn-g{background:rgba(255,255,255,.05);border:1px solid var(--bd2);color:var(--tx2);flex:0 0 auto;min-width:auto}
+.btn-g:hover:not(:disabled){background:rgba(255,255,255,.1);color:var(--tx);border-color:var(--bd2);transform:translateY(-2px)}
+.btn:disabled{opacity:.35;cursor:default;box-shadow:none;transform:none;filter:none}
+
+/* resultado */
+.done-w{text-align:center;padding:48px 0}
+.ring{width:132px;height:132px;margin:0 auto 22px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring-n{position:absolute;inset:0;display:grid;place-items:center;font-size:33px;font-weight:800;letter-spacing:-.03em}
+.done-w h2{font-size:28px;letter-spacing:-.025em;font-weight:800}
+.done-w p{color:var(--tx2);margin-top:9px;font-size:16px}
+.stats{display:flex;gap:11px;justify-content:center;margin:26px 0;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:14px 20px;min-width:104px}
+.stat b{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--tx3);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.conf{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}
+.cf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{0%{transform:translateY(-30px) rotate(0);opacity:1}100%{transform:translateY(102vh) rotate(680deg);opacity:0}}
+
+
+/* questao de caderno */
+.gate{text-align:center;padding:26px 14px;border:1.5px dashed var(--bd2);border-radius:var(--r);margin-top:18px;
+  background:rgba(255,255,255,.025)}
+.gate-i{font-size:34px;margin-bottom:10px}
+.gate-t{font-size:17px;font-weight:700;letter-spacing:-.015em;margin-bottom:8px}
+.gate-s{font-size:14px;color:var(--tx2);max-width:46ch;margin:0 auto 20px;line-height:1.6}
+.sect{font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--a2);
+  margin:22px 0 2px;padding-top:4px}
+.sect:first-child{margin-top:16px}
+.r3{display:grid;grid-template-columns:auto auto;gap:4px 18px;justify-content:center;margin:14px auto;
+  font-size:16px;font-variant-numeric:tabular-nums;background:rgba(0,0,0,.28);border:1px solid var(--bd);
+  border-radius:12px;padding:14px 22px;width:fit-content}
+.r3 b{color:var(--a2)}
+.r3 i{color:var(--tx3);font-style:normal}
+
+@media(max-width:620px){
+  h1{font-size:28px} .sub{font-size:15px} .enun{font-size:17px}
+  .card{padding:19px 16px;border-radius:17px}
+  .pairs{grid-template-columns:1fr}
+  .hero{padding:28px 0 20px}
+  .mod{padding:14px 15px;gap:12px} .mod-i{width:44px;height:44px;font-size:20px;border-radius:13px}
+  .btn{min-width:100%}.btn-g{min-width:100%}
+  .stat{flex:1;min-width:88px;padding:12px 10px}
+}
+</style>
+</head>
+<body>
+<div class="conf" id="conf"></div>
+
+<header class="top">
+  <div class="top-in">
+    <div class="logo"><span class="logo-m">RC</span><span>Estatística · Recuperação</span></div>
+    <div class="sp"></div>
+    <div class="xp" id="xp">0 / 0</div>
+    <button class="ghost" id="homeBtn" hidden>Módulos</button>
+  </div>
+  <div class="bar"><i id="barFill"></i></div>
+</header>
+
+<div class="wrap">
+
+<section class="scr on" id="scHome">
+  <div class="hero">
+    <div class="kicker">Recuperação · 1º bimestre</div>
+    <h1>Tabela de <em>frequências</em>, do zero</h1>
+    <p class="sub">Enxuto e direto ao ponto: frequência absoluta, frequência relativa pela regra de três e <b>cinco exercícios completos</b> no formato exato da prova, para resolver no caderno e conferir aqui.</p>
+  </div>
+  <div class="mods" id="modList"></div>
+</section>
+
+<section class="scr" id="scAct">
+  <div class="act">
+    <div class="crumb" id="crumb"></div>
+    <div class="card" id="actCard"></div>
+    <div class="nav" id="actNav"></div>
+  </div>
+</section>
+
+<section class="scr" id="scDone">
+  <div class="done-w" id="doneBox"></div>
+</section>
+
+</div>
+<script>
+const BANK = [{"id": "base", "ic": "&#127919;", "t": "O essencial", "s": "Só o que cai: frequência e tipo de variável", "ats": [{"t": "txt", "q": "Duas palavras resolvem a prova inteira.", "ctx": "<b>Frequência absoluta (FA)</b> é <b>quantos</b>. É só contar: se 5 alunos caem naquela faixa, a FA é 5. Não tem conta nenhuma.<br><br><b>Frequência relativa (%)</b> é <b>quanto isso representa do total</b>. Aí sim tem conta — e é regra de três, que você já sabe fazer.<br><br>No fim, duas conferências obrigatórias: as FA somam o total de pessoas, e as porcentagens somam 100%."}, {"t": "mc", "q": "Numa turma de 20 alunos, 6 ficaram na faixa de 30 a 39 minutos. Qual é a <b>frequência absoluta</b> dessa classe?", "o": ["6", "20", "30", "12"], "c": 0, "d": ["FA é só a contagem: quantos caíram ali."], "e": "<b>FA = 6.</b> Nada de conta — frequência absoluta é a contagem pura de quantos elementos caíram naquela classe."}, {"t": "mc", "q": "E a <b>frequência relativa</b> dessa mesma classe, em porcentagem?", "ctx": "6 alunos de um total de 20.", "o": ["30%", "6%", "20%", "60%"], "c": 0, "d": ["Regra de três: 6 está para 20 assim como x está para 100."], "e": "<b>30%.</b> Pela regra de três: 6 × 100 ÷ 20 = 600 ÷ 20 = <b>30</b>. A frequência relativa diz o peso daquela classe dentro do total."}, {"t": "cls", "q": "A letra (a) da prova pede para classificar a variável. Separe nas quatro gavetas.", "cat": [{"n": "Qualitativa nominal — qualidade, sem ordem", "i": ["Cor dos olhos", "Bairro onde mora"]}, {"n": "Qualitativa ordinal — qualidade, com ordem", "i": ["Conceito: ótimo, bom, regular", "Faixa de renda: baixa, média, alta"]}, {"n": "Quantitativa discreta — número de CONTAR", "i": ["Número de livros lidos", "Número de faltas", "Quantidade de acertos"]}, {"n": "Quantitativa contínua — número de MEDIR", "i": ["Tempo em minutos", "Altura em metros", "Massa em quilos"]}], "d": ["Primeiro: é número ou é qualidade?", "Se for número: eu <i>contei</i> (discreta) ou <i>medi</i> com instrumento (contínua)?"], "e": "O atalho que resolve quase tudo: <b>contou → discreta; mediu → contínua</b>. Ninguém tem 2,5 filhos, mas alguém pode levar 12,5 minutos."}, {"t": "mc", "q": "“O <b>tempo, em minutos</b>, que cada aluno dedicou à leitura.” Como se classifica?", "o": ["Quantitativa contínua", "Quantitativa discreta", "Qualitativa ordinal", "Qualitativa nominal"], "c": 0, "d": ["Tempo se mede no relógio. E dá para ler por 12 minutos e meio."], "e": "<b>Quantitativa contínua.</b> Essa é literalmente a resposta da letra (a) do exercício que caiu na sua prova — decore."}, {"t": "mc", "q": "“O <b>número de livros</b> que cada aluno leu.” Como se classifica?", "o": ["Quantitativa discreta", "Quantitativa contínua", "Qualitativa nominal", "Qualitativa ordinal"], "c": 0, "d": ["Dá para ler meio livro e contar como meio? Na estatística da escola, não."], "e": "<b>Quantitativa discreta.</b> Livro se conta de um em um: 3, 4, 5. Nunca 3,7 livros."}]}, {"id": "r3", "ic": "&#10006;", "t": "Porcentagem com regra de três", "s": "Seu ponto forte — use ele para resolver a letra (b)", "ats": [{"t": "txt", "q": "A porcentagem da tabela é regra de três. Só isso.", "ctx": "A frequência absoluta está para o <b>total de pessoas</b> assim como a porcentagem está para <b>100</b>:<div class=\"r3\"><b>5</b><i>———</i><b>20</b><i>total</i><b>x</b><i>———</i><b>100</b><i>%</i></div><div style=\"text-align:center;font-size:15px\">x = 5 &times; 100 &divide; 20 = <b style=\"color:var(--a2)\">25%</b></div><br>Montou assim, multiplica em cruz e divide. <b>x = FA × 100 ÷ total.</b><br><br>Atalho que economiza tempo na prova: descubra quanto vale <b>uma pessoa</b>. Com 20 alunos, cada um vale 5%; com 25, cada um vale 4%; com 50, cada um vale 2%. Aí é só multiplicar."}, {"t": "in", "q": "Treine. Em uma turma de <b>20</b> alunos:", "f": [{"l": "4 alunos representam quanto %?", "r": ["20", "20%"], "ph": "só o número", "num": true}, {"l": "7 alunos representam quanto %?", "r": ["35", "35%"], "ph": "só o número", "num": true}, {"l": "9 alunos representam quanto %?", "r": ["45", "45%"], "ph": "só o número", "num": true}], "d": ["Com 20 alunos, cada aluno vale 5%. Multiplique por 5.", "4 × 100 ÷ 20 = 20."], "e": "<b>20%, 35% e 45%.</b> Com 20 alunos cada um vale 5%, então bastava multiplicar por 5."}, {"t": "in", "q": "Agora com <b>25</b> alunos:", "f": [{"l": "3 alunos representam quanto %?", "r": ["12", "12%"], "ph": "só o número", "num": true}, {"l": "7 alunos representam quanto %?", "r": ["28", "28%"], "ph": "só o número", "num": true}, {"l": "6 alunos representam quanto %?", "r": ["24", "24%"], "ph": "só o número", "num": true}], "d": ["Com 25 alunos, cada aluno vale 4%.", "3 × 100 ÷ 25 = 300 ÷ 25 = 12."], "e": "<b>12%, 28% e 24%.</b> Com 25 alunos cada um vale 4% — multiplique por 4 e pronto."}, {"t": "in", "q": "Com <b>50</b> alunos (cada um vale 2%):", "f": [{"l": "12 alunos representam quanto %?", "r": ["24", "24%"], "ph": "só o número", "num": true}, {"l": "7 alunos representam quanto %?", "r": ["14", "14%"], "ph": "só o número", "num": true}], "d": ["12 × 100 ÷ 50 = 1200 ÷ 50 = 24."], "e": "<b>24% e 14%.</b> Quanto maior o total, menos cada pessoa pesa — com 50 alunos cada um vale só 2%."}, {"t": "in", "q": "Cuidado: nem sempre dá número redondo. Com <b>40</b> alunos:", "f": [{"l": "3 alunos representam quanto %?", "r": ["7,5", "7,5%", "7.5", "7.5%"], "ph": "pode ter vírgula", "num": true}, {"l": "10 alunos representam quanto %?", "r": ["25", "25%"], "ph": "só o número", "num": true}], "d": ["3 × 100 ÷ 40 = 300 ÷ 40. Faça a divisão com calma, dá com vírgula.", "300 ÷ 40 = 7,5"], "e": "<b>7,5% e 25%.</b> Porcentagem com vírgula é normal e está certo — não arredonde por conta própria, a menos que a questão peça."}, {"t": "mc", "q": "Você terminou a tabela e as porcentagens somaram <b>97%</b>. O que isso significa?", "o": ["Tem erro em algum lugar: a soma precisa dar 100%.", "Está certo, pois a soma nunca dá exatamente 100%.", "Faltou uma classe na tabela, sempre que der 97%.", "Significa que 3% dos alunos não responderam à pesquisa."], "c": 0, "d": ["Essa soma é a sua conferência final antes de entregar."], "e": "<b>Tem erro.</b> Se as porcentagens não somam 100%, ou você contou alguém a menos, ou errou uma divisão. Refaça. Essa conferência vale ouro, porque te avisa do erro <i>antes</i> de entregar a prova."}]}, {"id": "guia", "ic": "&#128221;", "t": "Montando a tabela passo a passo", "s": "O exercício que caiu na prova, resolvido com você", "ats": [{"t": "txt", "q": "É este o exercício. Vamos fazer juntos.", "ctx": "Uma professora do Ensino Fundamental realizou uma pesquisa com <b>20 alunos do 5º ano</b> para verificar o <b>tempo, em minutos</b>, que cada estudante dedicou à leitura de um livro em determinado dia.<br><br>A questão pede: <b>a)</b> a variável e sua classificação; <b>b)</b> uma tabela com <b>5 intervalos de classe</b>, com frequência absoluta e em porcentagem; <b>c)</b> Quantos alunos dedicaram <b>menos de 30 minutos</b> à leitura?", "mono": "12, 25, 18, 35, 42, 27, 31, 15, 48, 22,\n38, 19, 33, 45, 28, 17, 39, 24, 51, 30"}, {"t": "in", "q": "<b>Passos 1 a 4.</b> Antes da tabela, encontre os números que definem as classes.", "mono": "12, 25, 18, 35, 42, 27, 31, 15, 48, 22,\n38, 19, 33, 45, 28, 17, 39, 24, 51, 30", "f": [{"l": "Total de dados", "r": ["20"], "ph": "?", "num": true}, {"l": "Menor valor", "r": ["12"], "ph": "?", "num": true}, {"l": "Maior valor", "r": ["51"], "ph": "?", "num": true}, {"l": "Amplitude (maior − menor)", "r": ["39"], "ph": "?", "num": true}, {"l": "Amplitude ÷ 5", "r": ["7,8", "7.8"], "ph": "pode ter vírgula", "num": true}, {"l": "Arredondando para cima", "r": ["8"], "ph": "?", "num": true}], "d": ["Conte os dados de cinco em cinco para não se perder.", "51 − 12 = 39. Depois divida por 5."], "e": "Total <b>20</b>, menor <b>12</b>, maior <b>51</b>, amplitude <b>39</b>, que dividida por 5 dá <b>7,8</b> → arredonda para <b>8</b>.<br><br>Começando em 12 e contando 8 valores por faixa, as classes são:<br><b>12 – 19 | 20 – 27 | 28 – 35 | 36 – 43 | 44 – 51</b>"}, {"t": "tab", "q": "<b>Passo 5.</b> Conte quantos caem em cada classe — essa é a FA.", "ctx": "Vá riscando cada número conforme conta, para não contar duas vezes.", "mono": "12, 25, 18, 35, 42, 27, 31, 15, 48, 22,\n38, 19, 33, 45, 28, 17, 39, 24, 51, 30", "h": ["Classe (minutos)", "FA"], "l": [["12 – 19", {"r": ["5"]}], ["20 – 27", {"r": ["4"]}], ["28 – 35", {"r": ["5"]}], ["36 – 43", {"r": ["3"]}], ["44 – 51", {"r": ["3"]}], ["<b>Total</b>", {"r": ["20"]}]], "d": ["Primeira classe (12 – 19): são 5 valores.", "Segunda classe (20 – 27): são 4 valores."], "e": "FA = <b>5, 4, 5, 3, 3</b>, somando <b>20</b>. Se a sua soma não tivesse dado 20, haveria erro de contagem."}, {"t": "tab", "q": "<b>Passo 6.</b> Agora a porcentagem, com a sua regra de três.", "ctx": "Com 20 alunos, cada aluno vale 5%.", "h": ["Classe", "FA", "%"], "l": [["12 – 19", "5", {"r": ["25", "25%"]}], ["20 – 27", "4", {"r": ["20", "20%"]}], ["28 – 35", "5", {"r": ["25", "25%"]}], ["36 – 43", "3", {"r": ["15", "15%"]}], ["44 – 51", "3", {"r": ["15", "15%"]}], ["<b>Total</b>", "<b>20</b>", {"r": ["100", "100%"]}]], "d": ["5 × 100 ÷ 20 = 25", "Atalho: cada aluno vale 5%, então multiplique a FA por 5."], "e": "<b>25%, 20%, 25%, 15%, 15%</b> — somando <b>100%</b>. Tabela conferida: FA somam 20 e as porcentagens somam 100."}, {"t": "in", "q": "<b>Letra (c).</b> Quantos alunos dedicaram <b>menos de 30 minutos</b> à leitura?", "ctx": "Atenção: 30 não é fronteira de classe nenhuma. Volte aos dados originais.", "mono": "12, 25, 18, 35, 42, 27, 31, 15, 48, 22,\n38, 19, 33, 45, 28, 17, 39, 24, 51, 30", "f": [{"l": "Quantidade de alunos", "r": ["10"], "ph": "?", "num": true}, {"l": "Isso dá quantos %?", "r": ["50", "50%"], "ph": "só o número", "num": true}], "d": ["“Menos de 30” não inclui o 30. Conte nos dados originais.", "São eles: 12, 25, 18, 27, 15, 22, 19, 28, 17 e 24."], "e": "<b>10 alunos</b>, ou <b>50%</b>.<br><br>Duas lições aqui. Primeira: <b>“menos de 30” não inclui o 30</b> — se fosse “até 30”, seria um a mais. Segunda: <b>a tabela não respondia essa pergunta</b>, porque o 28 e o 30 estão na mesma classe. Quando o número da pergunta cai no meio de uma classe, volte aos dados brutos."}]}, {"id": "prova1", "ic": "&#9997;&#65039;", "t": "Exercícios de prova · 1", "s": "Três questões completas — resolva no caderno", "ats": [{"t": "exerc", "q": "Exercício 2 — palavras na redação", "ctx": "Uma professora contou o <b>número de palavras</b> que cada um dos seus <b>25 alunos</b> escreveu em uma redação.<br><br><b>a)</b> Identifique a variável estatística estudada e classifique-a.<br><b>b)</b> Construa uma tabela de distribuição de frequências com <b>5 intervalos de classe</b>, com frequência absoluta e frequência absoluta em porcentagem.<br><b>c)</b> Quantos alunos escreveram <b>menos de 100 palavras</b>?", "mono": "105, 80, 94, 119, 92, 126, 101, 88, 115, 97,\n110, 85, 124, 99, 108, 90, 129, 113, 103, 95,\n121, 117, 98, 106, 109", "tabh": ["Classe", "FA", "%"], "tabl": [["80 – 89", {"r": ["3"]}, {"r": ["12", "12%"]}], ["90 – 99", {"r": ["7"]}, {"r": ["28", "28%"]}], ["100 – 109", {"r": ["6"]}, {"r": ["24", "24%"]}], ["110 – 119", {"r": ["5"]}, {"r": ["20", "20%"]}], ["120 – 129", {"r": ["4"]}, {"r": ["16", "16%"]}], ["<b>Total</b>", {"r": ["25"]}, {"r": ["100", "100%"]}]], "f": [{"l": "a) Qual é a variável estudada?", "r": ["numero de palavras", "numero de palavras escritas", "palavras escritas", "quantidade de palavras"], "ph": "em poucas palavras"}, {"l": "a) Classificação da variável", "r": ["quantitativa discreta", "discreta"], "ph": "ex: quantitativa discreta"}, {"l": "Amplitude (maior − menor)", "r": ["49"], "ph": "?", "num": true}, {"l": "Tamanho de cada classe", "r": ["10"], "ph": "?", "num": true}, {"l": "c) Resposta (quantidade)", "r": ["10"], "ph": "?", "num": true}, {"l": "c) Em porcentagem", "r": ["40", "40%"], "ph": "só o número", "num": true}], "d": ["Amplitude = maior − menor. Depois divida por 5 e arredonde para cima se sobrar vírgula.", "Classes: 80 – 89 | 90 – 99 | 100 – 109 | 110 – 119 | 120 – 129. São as duas primeiras classes inteiras — nenhum valor fica pela metade dessa vez."], "e": "<b>a)</b> Variável: <b>número de palavras escritas</b> — <b>quantitativa discreta</b>.<br><br><b>b)</b> Menor 80, maior 129, amplitude 129 − 80 = <b>49</b>. Dividindo por 5: 49 ÷ 5 = 9,8 → <b>10</b> valores por classe.<br><table style='margin-top:10px'><tr><th>Classe</th><th>FA</th><th>%</th></tr><tr><td>80 – 89</td><td>3</td><td>12%</td></tr><tr><td>90 – 99</td><td>7</td><td>28%</td></tr><tr><td>100 – 109</td><td>6</td><td>24%</td></tr><tr><td>110 – 119</td><td>5</td><td>20%</td></tr><tr><td>120 – 129</td><td>4</td><td>16%</td></tr><tr><td><b>Total</b></td><td><b>25</b></td><td><b>100%</b></td></tr></table><br><b>c)</b> Quantos alunos escreveram menos de 100 palavras? → <b>10</b>, que dá <b>40%</b>."}, {"t": "exerc", "q": "Exercício 3 — tempo de tela", "ctx": "A coordenação pesquisou, com <b>50 alunos</b>, o <b>tempo diário, em minutos, de uso do celular</b> antes de dormir.<br><br><b>a)</b> Identifique a variável estatística estudada e classifique-a.<br><b>b)</b> Construa uma tabela de distribuição de frequências com <b>5 intervalos de classe</b>, com frequência absoluta e frequência absoluta em porcentagem.<br><b>c)</b> Quantos alunos usaram o celular por <b>menos de 30 minutos</b>?", "mono": "33, 20, 41, 14, 52, 29, 36, 24, 45, 10,\n38, 27, 50, 16, 34, 43, 22, 31, 57, 12,\n39, 25, 47, 18, 35, 28, 44, 19, 32, 23,\n40, 26, 54, 30, 46, 21, 37, 48, 29, 51,\n36, 24, 42, 34, 17, 38, 55, 31, 46, 59", "tabh": ["Classe", "FA", "%"], "tabl": [["10 – 19", {"r": ["7"]}, {"r": ["14", "14%"]}], ["20 – 29", {"r": ["12"]}, {"r": ["24", "24%"]}], ["30 – 39", {"r": ["14"]}, {"r": ["28", "28%"]}], ["40 – 49", {"r": ["10"]}, {"r": ["20", "20%"]}], ["50 – 59", {"r": ["7"]}, {"r": ["14", "14%"]}], ["<b>Total</b>", {"r": ["50"]}, {"r": ["100", "100%"]}]], "f": [{"l": "a) Qual é a variável estudada?", "r": ["tempo de uso do celular", "tempo de celular", "tempo de uso", "tempo de tela", "tempo"], "ph": "em poucas palavras"}, {"l": "a) Classificação da variável", "r": ["quantitativa continua", "continua", "quantitativa continua"], "ph": "ex: quantitativa discreta"}, {"l": "Amplitude (maior − menor)", "r": ["49"], "ph": "?", "num": true}, {"l": "Tamanho de cada classe", "r": ["10"], "ph": "?", "num": true}, {"l": "c) Resposta (quantidade)", "r": ["19"], "ph": "?", "num": true}, {"l": "c) Em porcentagem", "r": ["38", "38%"], "ph": "só o número", "num": true}], "d": ["Amplitude = maior − menor. Depois divida por 5 e arredonde para cima se sobrar vírgula.", "Classes: 10 – 19 | 20 – 29 | 30 – 39 | 40 – 49 | 50 – 59. As duas primeiras classes já respondem: some as duas frequências."], "e": "<b>a)</b> Variável: <b>tempo de uso do celular, em minutos</b> — <b>quantitativa contínua</b>.<br><br><b>b)</b> Menor 10, maior 59, amplitude 59 − 10 = <b>49</b>. Dividindo por 5: 49 ÷ 5 = 9,8 → <b>10</b> valores por classe.<br><table style='margin-top:10px'><tr><th>Classe</th><th>FA</th><th>%</th></tr><tr><td>10 – 19</td><td>7</td><td>14%</td></tr><tr><td>20 – 29</td><td>12</td><td>24%</td></tr><tr><td>30 – 39</td><td>14</td><td>28%</td></tr><tr><td>40 – 49</td><td>10</td><td>20%</td></tr><tr><td>50 – 59</td><td>7</td><td>14%</td></tr><tr><td><b>Total</b></td><td><b>50</b></td><td><b>100%</b></td></tr></table><br><b>c)</b> Quantos alunos usaram o celular por menos de 30 minutos? → <b>19</b>, que dá <b>38%</b>."}, {"t": "exerc", "q": "Exercício 4 — livros lidos", "ctx": "Uma escola registrou <b>quantos livros</b> cada um dos <b>20 alunos</b> do 4º ano leu durante o semestre.<br><br><b>a)</b> Identifique a variável estatística estudada e classifique-a.<br><b>b)</b> Construa uma tabela de distribuição de frequências com <b>5 intervalos de classe</b>, com frequência absoluta e frequência absoluta em porcentagem.<br><b>c)</b> Quantos alunos leram <b>menos de 10 livros</b>?", "mono": "7, 13, 2, 18, 9, 21, 4, 11, 16, 6,\n23, 1, 14, 8, 19, 3, 12, 17, 5, 10", "tabh": ["Classe", "FA", "%"], "tabl": [["1 – 5", {"r": ["5"]}, {"r": ["25", "25%"]}], ["6 – 10", {"r": ["5"]}, {"r": ["25", "25%"]}], ["11 – 15", {"r": ["4"]}, {"r": ["20", "20%"]}], ["16 – 20", {"r": ["4"]}, {"r": ["20", "20%"]}], ["21 – 25", {"r": ["2"]}, {"r": ["10", "10%"]}], ["<b>Total</b>", {"r": ["20"]}, {"r": ["100", "100%"]}]], "f": [{"l": "a) Qual é a variável estudada?", "r": ["numero de livros", "numero de livros lidos", "livros lidos", "quantidade de livros"], "ph": "em poucas palavras"}, {"l": "a) Classificação da variável", "r": ["quantitativa discreta", "discreta"], "ph": "ex: quantitativa discreta"}, {"l": "Amplitude (maior − menor)", "r": ["22"], "ph": "?", "num": true}, {"l": "Tamanho de cada classe", "r": ["5"], "ph": "?", "num": true}, {"l": "c) Resposta (quantidade)", "r": ["9"], "ph": "?", "num": true}, {"l": "c) Em porcentagem", "r": ["45", "45%"], "ph": "só o número", "num": true}], "d": ["Amplitude = maior − menor. Depois divida por 5 e arredonde para cima se sobrar vírgula.", "Classes: 1 – 5 | 6 – 10 | 11 – 15 | 16 – 20 | 21 – 25. Armadilha: a segunda classe vai até 10, mas o aluno que leu exatamente 10 livros NÃO entra em “menos de 10”. Volte aos dados e conte um por um."], "e": "<b>a)</b> Variável: <b>número de livros lidos</b> — <b>quantitativa discreta</b>.<br><br><b>b)</b> Menor 1, maior 23, amplitude 23 − 1 = <b>22</b>. Dividindo por 5: 22 ÷ 5 = 4,4 → <b>5</b> valores por classe.<br><table style='margin-top:10px'><tr><th>Classe</th><th>FA</th><th>%</th></tr><tr><td>1 – 5</td><td>5</td><td>25%</td></tr><tr><td>6 – 10</td><td>5</td><td>25%</td></tr><tr><td>11 – 15</td><td>4</td><td>20%</td></tr><tr><td>16 – 20</td><td>4</td><td>20%</td></tr><tr><td>21 – 25</td><td>2</td><td>10%</td></tr><tr><td><b>Total</b></td><td><b>20</b></td><td><b>100%</b></td></tr></table><br><b>c)</b> Quantos alunos leram menos de 10 livros? → <b>9</b>, que dá <b>45%</b>."}]}, {"id": "prova2", "ic": "&#127942;", "t": "Exercícios de prova · 2", "s": "As duas últimas — a 6ª tem uma armadilha no enunciado", "ats": [{"t": "exerc", "q": "Exercício 5 — acertos na prova", "ctx": "Numa prova de 50 questões, registrou-se o <b>número de acertos</b> de cada um dos <b>40 alunos</b> da turma.<br><br><b>a)</b> Identifique a variável estatística estudada e classifique-a.<br><b>b)</b> Construa uma tabela de distribuição de frequências com <b>5 intervalos de classe</b>, com frequência absoluta e frequência absoluta em porcentagem.<br><b>c)</b> Quantos alunos acertaram <b>menos de 21 questões</b>?", "mono": "25, 1, 33, 18, 44, 10, 29, 37, 21, 48,\n15, 31, 5, 39, 23, 45, 13, 27, 35, 8,\n40, 19, 32, 50, 16, 36, 24, 41, 30, 11,\n38, 22, 47, 34, 17, 43, 26, 20, 49, 28", "tabh": ["Classe", "FA", "%"], "tabl": [["1 – 10", {"r": ["4"]}, {"r": ["10", "10%"]}], ["11 – 20", {"r": ["8"]}, {"r": ["20", "20%"]}], ["21 – 30", {"r": ["10"]}, {"r": ["25", "25%"]}], ["31 – 40", {"r": ["10"]}, {"r": ["25", "25%"]}], ["41 – 50", {"r": ["8"]}, {"r": ["20", "20%"]}], ["<b>Total</b>", {"r": ["40"]}, {"r": ["100", "100%"]}]], "f": [{"l": "a) Qual é a variável estudada?", "r": ["numero de acertos", "acertos", "quantidade de acertos", "numero de acertos na prova"], "ph": "em poucas palavras"}, {"l": "a) Classificação da variável", "r": ["quantitativa discreta", "discreta"], "ph": "ex: quantitativa discreta"}, {"l": "Amplitude (maior − menor)", "r": ["49"], "ph": "?", "num": true}, {"l": "Tamanho de cada classe", "r": ["10"], "ph": "?", "num": true}, {"l": "c) Resposta (quantidade)", "r": ["12"], "ph": "?", "num": true}, {"l": "c) Em porcentagem", "r": ["30", "30%"], "ph": "só o número", "num": true}], "d": ["Amplitude = maior − menor. Depois divida por 5 e arredonde para cima se sobrar vírgula.", "Classes: 1 – 10 | 11 – 20 | 21 – 30 | 31 – 40 | 41 – 50. As duas primeiras classes vão exatamente até 20 — some as duas frequências."], "e": "<b>a)</b> Variável: <b>número de acertos na prova</b> — <b>quantitativa discreta</b>.<br><br><b>b)</b> Menor 1, maior 50, amplitude 50 − 1 = <b>49</b>. Dividindo por 5: 49 ÷ 5 = 9,8 → <b>10</b> valores por classe.<br><table style='margin-top:10px'><tr><th>Classe</th><th>FA</th><th>%</th></tr><tr><td>1 – 10</td><td>4</td><td>10%</td></tr><tr><td>11 – 20</td><td>8</td><td>20%</td></tr><tr><td>21 – 30</td><td>10</td><td>25%</td></tr><tr><td>31 – 40</td><td>10</td><td>25%</td></tr><tr><td>41 – 50</td><td>8</td><td>20%</td></tr><tr><td><b>Total</b></td><td><b>40</b></td><td><b>100%</b></td></tr></table><br><b>c)</b> Quantos alunos acertaram menos de 21 questões? → <b>12</b>, que dá <b>30%</b>."}, {"t": "exerc", "q": "Exercício 6 — atividade física", "ctx": "Foi registrado o <b>tempo, em minutos</b>, que <b>25 alunos</b> dedicaram à atividade física em um dia.<br><br><b>a)</b> Identifique a variável estatística estudada e classifique-a.<br><b>b)</b> Construa uma tabela de distribuição de frequências com <b>5 intervalos de classe</b>, com frequência absoluta e frequência absoluta em porcentagem.<br><b>c)</b> Quantos alunos praticaram <b>até 50 minutos</b> de atividade física?", "mono": "52, 38, 67, 45, 73, 31, 58, 49, 36, 62,\n41, 55, 34, 70, 47, 39, 64, 43, 57, 33,\n50, 69, 42, 60, 35", "tabh": ["Classe", "FA", "%"], "tabl": [["31 – 39", {"r": ["7"]}, {"r": ["28", "28%"]}], ["40 – 48", {"r": ["5"]}, {"r": ["20", "20%"]}], ["49 – 57", {"r": ["5"]}, {"r": ["20", "20%"]}], ["58 – 66", {"r": ["4"]}, {"r": ["16", "16%"]}], ["67 – 75", {"r": ["4"]}, {"r": ["16", "16%"]}], ["<b>Total</b>", {"r": ["25"]}, {"r": ["100", "100%"]}]], "f": [{"l": "a) Qual é a variável estudada?", "r": ["tempo de atividade fisica", "tempo de atividade", "tempo"], "ph": "em poucas palavras"}, {"l": "a) Classificação da variável", "r": ["quantitativa continua", "continua", "quantitativa continua"], "ph": "ex: quantitativa discreta"}, {"l": "Amplitude (maior − menor)", "r": ["42"], "ph": "?", "num": true}, {"l": "Tamanho de cada classe", "r": ["9"], "ph": "?", "num": true}, {"l": "c) Resposta (quantidade)", "r": ["14"], "ph": "?", "num": true}, {"l": "c) Em porcentagem", "r": ["56", "56%"], "ph": "só o número", "num": true}], "d": ["Amplitude = maior − menor. Depois divida por 5 e arredonde para cima se sobrar vírgula.", "Classes: 31 – 39 | 40 – 48 | 49 – 57 | 58 – 66 | 67 – 75. ATENÇÃO: “até 50” é diferente de “menos de 50”. O aluno que fez exatamente 50 minutos ENTRA na conta."], "e": "<b>a)</b> Variável: <b>tempo de atividade física, em minutos</b> — <b>quantitativa contínua</b>.<br><br><b>b)</b> Menor 31, maior 73, amplitude 73 − 31 = <b>42</b>. Dividindo por 5: 42 ÷ 5 = 8,4 → <b>9</b> valores por classe.<br><table style='margin-top:10px'><tr><th>Classe</th><th>FA</th><th>%</th></tr><tr><td>31 – 39</td><td>7</td><td>28%</td></tr><tr><td>40 – 48</td><td>5</td><td>20%</td></tr><tr><td>49 – 57</td><td>5</td><td>20%</td></tr><tr><td>58 – 66</td><td>4</td><td>16%</td></tr><tr><td>67 – 75</td><td>4</td><td>16%</td></tr><tr><td><b>Total</b></td><td><b>25</b></td><td><b>100%</b></td></tr></table><br><b>c)</b> Quantos alunos praticaram até 50 minutos de atividade física? → <b>14</b>, que dá <b>56%</b>."}]}];
+const KEY = "estat_recup_v1";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mix = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; };
+const norm = s => String(s).trim().toLowerCase().replace(/\s+/g," ").replace(/,/g,".")
+  .normalize("NFD").replace(/[̀-ͯ]/g,"");
+
+let P = { done: [] };
+try { const r = localStorage.getItem(KEY); if(r) P = JSON.parse(r); } catch(e){}
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(P)); }catch(e){} };
+
+const S = { m:null, i:0, st:null, checked:false, hint:0, acertos:0, erros:0, primeira:true };
+const TOTAL = BANK.reduce((n,m)=>n+m.ats.length,0);
+
+/* ---------- navegação ---------- */
+function scr(id){
+  document.querySelectorAll(".scr").forEach(s=>s.classList.toggle("on", s.id===id));
+  $("#homeBtn").hidden = (id==="scHome");
+  try{ window.scrollTo({top:0,behavior:"instant"}); }catch(e){ window.scrollTo(0,0); }
+}
+function pintaTopo(){
+  const feitas = BANK.reduce((n,m)=> n + (P.done.includes(m.id)? m.ats.length : 0), 0);
+  $("#xp").textContent = feitas + " / " + TOTAL;
+  $("#barFill").style.width = (feitas/TOTAL*100) + "%";
+}
+function home(){
+  scr("scHome"); pintaTopo();
+  $("#modList").innerHTML = BANK.map((m,k)=>{
+    const d = P.done.includes(m.id);
+    return `<button class="mod ${d?"done":""}" data-k="${k}">
+      <span class="mod-i">${m.ic}</span>
+      <span class="mod-b">
+        <span class="mod-t">${esc(m.t)} <span class="mod-n">${m.ats.length} etapas</span></span>
+        <span class="mod-s">${esc(m.s)}</span>
+      </span>
+      ${d?'<span class="chk">&#10003;</span>':'<span class="mod-arrow">&rarr;</span>'}
+    </button>`;
+  }).join("");
+  $("#modList").querySelectorAll(".mod").forEach(b=>
+    b.addEventListener("click",()=>abrir(+b.dataset.k)));
+}
+function abrir(k){
+  S.m=k; S.i=0; S.acertos=0; S.erros=0;
+  scr("scAct"); render();
+}
+
+/* ---------- render ---------- */
+function render(){
+  const m = BANK[S.m], a = m.ats[S.i];
+  S.st = null; S.checked = false; S.hint = 0; S.primeira = true;
+  $("#crumb").innerHTML = `<b>${esc(m.t)}</b> <span>&middot;</span> <span>etapa ${S.i+1} de ${m.ats.length}</span>
+    <span class="dots">${m.ats.map((_,j)=>`<i class="dot ${j===S.i?"on":(j<S.i?"ok":"")}"></i>`).join("")}</span>`;
+  const T = TIPOS[a.t];
+  $("#actCard").innerHTML =
+    `<div class="tag">${T.rot}</div><div class="enun">${a.q}</div>` +
+    (a.ctx?`<div class="ctx">${a.ctx}</div>`:"") +
+    (a.mono?`<div class="mono">${esc(a.mono)}</div>`:"") +
+    `<div id="zone"></div><div id="fb"></div>`;
+  T.ini(a);
+  botoes(a);
+}
+function botoes(a){
+  const T = TIPOS[a.t], ultima = S.i === BANK[S.m].ats.length-1;
+  const temDica = a.d && a.d.length;
+  if(a.t==="exerc" && !a._rev){ $("#actNav").innerHTML = ""; return; }
+  let html = "";
+  if(T.auto){ html = `<button class="btn btn-p" id="bMain">${ultima?"Concluir módulo":"Continuar"} &rarr;</button>`; }
+  else if(!S.checked){
+    html = (temDica && S.hint < a.d.length ? `<button class="btn btn-g" id="bDica">&#128161; Dica</button>` : "")
+         + ((a.t==="exerc"||a.t==="tab") && !S.primeira ? `<button class="btn btn-g" id="bSol">Ver resolu&ccedil;&atilde;o</button>` : "")
+         + `<button class="btn btn-p" id="bMain">Verificar</button>`;
+  } else {
+    html = `<button class="btn btn-p" id="bMain">${ultima?"Concluir módulo":"Continuar"} &rarr;</button>`;
+  }
+  $("#actNav").innerHTML = html;
+  if($("#bSol")) $("#bSol").addEventListener("click",()=>{
+    S.checked = true;
+    $("#zone").querySelectorAll("input").forEach(i=>i.disabled=true);
+    $("#fb").innerHTML = `<div class="fb hint"><div class="fb-t">Resolu&ccedil;&atilde;o</div>${a.e}</div>`;
+    botoes(a);
+  });
+  const bm = $("#bMain");
+  bm.addEventListener("click", ()=>{
+    if(T.auto || S.checked) avanca();
+    else verificar(a);
+  });
+  if($("#bDica")) $("#bDica").addEventListener("click", ()=>{
+    const d = a.d[S.hint]; S.hint++;
+    $("#fb").innerHTML = `<div class="fb hint"><div class="fb-t">Dica ${S.hint}</div>${d}</div>`;
+    botoes(a);
+  });
+}
+function verificar(a){
+  const T = TIPOS[a.t], ok = T.ver(a);
+  if(ok){
+    S.checked = true;
+    if(S.primeira) S.acertos++; 
+    $("#fb").innerHTML = `<div class="fb ok"><div class="fb-t">&#10003; Isso mesmo</div>${a.e}</div>`;
+    botoes(a);
+  } else {
+    if(S.primeira){ S.erros++; S.primeira = false; }
+    const mais = (a.d && S.hint < a.d.length) ? " Toque em <b>Dica</b> para uma pista." : "";
+    $("#fb").innerHTML = `<div class="fb er"><div class="fb-t">Ainda não</div>${a.err||"Não foi dessa vez — ajuste e tente de novo."}${mais}</div>`;
+    botoes(a);
+  }
+}
+function avanca(){
+  const m = BANK[S.m];
+  if(S.i < m.ats.length-1){ S.i++; render(); return; }
+  if(!P.done.includes(m.id)){ P.done.push(m.id); save(); }
+  concluido();
+}
+
+/* ---------- conclusão ---------- */
+function concluido(){
+  const m = BANK[S.m];
+  const n = m.ats.filter(a=>!TIPOS[a.t].auto).length;   // telas de leitura não entram na nota
+  const pct = n ? Math.round(S.acertos/n*100) : 100;
+  const C=2*Math.PI*58, off=C*(1-pct/100);
+  const falta = BANK.filter(x=>!P.done.includes(x.id));
+  const msg = pct>=85 ? "Mandou muito bem. Esse assunto está dominado."
+            : pct>=60 ? "Bom resultado. Vale reler as explicações das que você errou."
+            : "Refaça este módulo uma vez — na segunda passada ele gruda.";
+  $("#doneBox").innerHTML = `
+    <div class="ring">
+      <svg width="132" height="132" viewBox="0 0 132 132">
+        <circle cx="66" cy="66" r="58" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="11"/>
+        <circle cx="66" cy="66" r="58" fill="none" stroke="url(#g)" stroke-width="11" stroke-linecap="round"
+          stroke-dasharray="${C}" stroke-dashoffset="${C}" id="arc"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="var(--a1)"/><stop offset="1" stop-color="var(--a3)"/></linearGradient></defs>
+      </svg>
+      <div class="ring-n">${pct}%</div>
+    </div>
+    <h2>Módulo concluído</h2>
+    <p>${esc(m.t)}</p>
+    <div class="stats">
+      <div class="stat"><b style="color:var(--ok)">${S.acertos}/${n}</b><span>de primeira</span></div>
+      <div class="stat"><b style="color:var(--er)">${S.erros}</b><span>com tentativa</span></div>
+      <div class="stat"><b>${BANK.length - falta.length}/${BANK.length}</b><span>módulos</span></div>
+    </div>
+    <p style="margin-bottom:22px">${msg}</p>
+    <div class="nav" style="max-width:420px;margin:0 auto">
+      ${falta.length?`<button class="btn btn-p" id="bNext">Próximo módulo &rarr;</button>`
+        :`<button class="btn btn-p" id="bNext">Ver todos os módulos</button>`}
+      <button class="btn btn-g" id="bAgain">Refazer</button>
+    </div>`;
+  scr("scDone"); pintaTopo();
+  setTimeout(()=>{ const arc=$("#arc"); if(arc){ arc.style.transition="stroke-dashoffset 1.1s cubic-bezier(.3,1,.4,1)"; arc.style.strokeDashoffset=off; } },90);
+  if(pct>=60) confete();
+  $("#bAgain").addEventListener("click",()=>abrir(S.m));
+  $("#bNext").addEventListener("click",()=>{
+    if(falta.length){ abrir(BANK.indexOf(falta[0])); } else home();
+  });
+}
+function confete(){
+  const cs=["var(--a1)","var(--a3)","var(--ok)","var(--wa)","#fff"], box=$("#conf");
+  for(let i=0;i<46;i++){
+    const d=document.createElement("i"); d.className="cf";
+    d.style.left=Math.random()*100+"%";
+    d.style.background=cs[i%cs.length];
+    d.style.animationDuration=(1.5+Math.random()*1.5)+"s";
+    d.style.animationDelay=(Math.random()*.5)+"s";
+    box.appendChild(d); setTimeout(()=>d.remove(),3600);
+  }
+}
+
+/* ================= TIPOS DE ATIVIDADE ================= */
+const TIPOS = {};
+
+/* texto explicativo */
+TIPOS.txt = { rot:"Entenda primeiro", auto:true, ini(){ $("#zone").innerHTML=""; } };
+
+/* múltipla escolha */
+TIPOS.mc = {
+  rot:"Escolha a resposta", auto:false,
+  ini(a){
+    if(!a._o){ const p=a.o.map((t,i)=>({t,i})); mix(p); a._o=p.map(x=>x.t); a._c=p.findIndex(x=>x.i===a.c); }
+    $("#zone").innerHTML = `<div class="opts">${a._o.map((t,j)=>
+      `<button class="opt" data-j="${j}"><span class="ol">${"ABCDE"[j]}</span><span>${esc(t)}</span></button>`).join("")}</div>`;
+    $("#zone").querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+      if(S.checked) return;
+      S.st = +b.dataset.j;
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.style.borderColor = (+x.dataset.j===S.st)?"var(--a2)":"");
+      $("#zone").querySelectorAll(".opt").forEach(x=>x.style.background = (+x.dataset.j===S.st)?"rgba(255,255,255,.08)":"");
+    }));
+  },
+  ver(a){
+    if(S.st===null) return false;
+    const bs=[...$("#zone").querySelectorAll(".opt")], ok = S.st===a._c;
+    if(ok){ bs.forEach((b,j)=>{ b.disabled=true; b.style.borderColor="";b.style.background="";
+             b.classList.add(j===a._c?"ok":"off"); }); }
+    else { bs[S.st].classList.add("er"); setTimeout(()=>bs[S.st].classList.remove("er"),460); }
+    return ok;
+  }
+};
+
+/* ligar pares */
+TIPOS.par = {
+  rot:"Ligue os pares", auto:false,
+  ini(a){
+    a._fe = []; S.st = {sel:null, lado:null};
+    const E=a.p.map((x,i)=>({t:x[0],i})), D=a.p.map((x,i)=>({t:x[1],i}));
+    a._E = a._E || mix(E); a._D = a._D || mix(D);
+    $("#zone").innerHTML = `<div class="pairs">
+      <div style="display:grid;gap:10px">${a._E.map(x=>`<button class="pair" data-l="e" data-i="${x.i}">${esc(x.t)}</button>`).join("")}</div>
+      <div style="display:grid;gap:10px">${a._D.map(x=>`<button class="pair" data-l="d" data-i="${x.i}">${esc(x.t)}</button>`).join("")}</div>
+    </div>`;
+    $("#zone").querySelectorAll(".pair").forEach(b=>b.addEventListener("click",()=>{
+      const lado=b.dataset.l, i=+b.dataset.i;
+      if(S.st.sel===null || S.st.lado===lado){
+        $("#zone").querySelectorAll(".pair").forEach(x=>x.classList.remove("sel"));
+        b.classList.add("sel"); S.st={sel:i, lado};
+        return;
+      }
+      const outro = $("#zone").querySelector(`.pair[data-l="${S.st.lado}"][data-i="${S.st.sel}"]`);
+      if(i===S.st.sel){
+        b.classList.add("ok"); outro.classList.remove("sel"); outro.classList.add("ok");
+        a._fe.push(i); S.st={sel:null,lado:null};
+        if(a._fe.length===a.p.length){ $("#fb").innerHTML=""; }
+      } else {
+        b.classList.add("er"); outro.classList.add("er");
+        if(S.primeira){ S.erros++; S.primeira=false; }
+        setTimeout(()=>{ b.classList.remove("er"); outro.classList.remove("er","sel"); },460);
+        S.st={sel:null,lado:null};
+      }
+    }));
+  },
+  ver(a){ return a._fe.length === a.p.length; }
+};
+
+/* classificar em categorias */
+TIPOS.cls = {
+  rot:"Classifique cada item", auto:false,
+  ini(a){
+    a._pos = {}; S.st = null;
+    const itens = a._it || (a._it = mix([].concat(...a.cat.map((c,ci)=>c.i.map(t=>({t,ci}))))));
+    $("#zone").innerHTML =
+      `<div class="pool" id="pool">${itens.map((x,k)=>`<button class="chip" data-k="${k}">${esc(x.t)}</button>`).join("")}</div>
+       <div class="buckets">${a.cat.map((c,ci)=>
+         `<div class="bucket" data-ci="${ci}"><div class="bucket-t"><i></i>${esc(c.n)}</div><div class="pool" data-in="${ci}"></div></div>`).join("")}</div>`;
+    function solta(ci){
+      if(S.st===null) return;
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("ok","er"));
+      const k=S.st; a._pos[k]=ci;
+      const b=$(`#zone .chip[data-k="${k}"]`); b.classList.remove("sel");
+      $(`#zone .pool[data-in="${ci}"]`).appendChild(b);
+      S.st=null; $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.remove("live"));
+    }
+    $("#zone").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",e=>{
+      e.stopPropagation();                    // nao deixa o clique chegar na categoria que o contem
+      if(S.checked) return;
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("ok","er"));
+      if(S.st===+b.dataset.k){ S.st=null; b.classList.remove("sel");
+        $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.remove("live")); return; }
+      $("#zone").querySelectorAll(".chip").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel"); S.st=+b.dataset.k;
+      $("#zone").querySelectorAll(".bucket").forEach(x=>x.classList.add("live"));
+    }));
+    $("#zone").querySelectorAll(".bucket").forEach(bk=>bk.addEventListener("click",()=>solta(+bk.dataset.ci)));
+  },
+  ver(a){
+    const itens=a._it;
+    if(Object.keys(a._pos).length !== itens.length) return false;
+    let ok=true;
+    itens.forEach((x,k)=>{
+      const b=$(`#zone .chip[data-k="${k}"]`), certo = a._pos[k]===x.ci;
+      b.classList.add(certo?"ok":"er"); if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll(".chip").forEach(b=>b.disabled=true);
+    else setTimeout(()=>$("#zone").querySelectorAll(".chip").forEach(b=>b.classList.remove("ok","er")),900);
+    return ok;
+  }
+};
+
+/* ordenar sequência */
+TIPOS.ord = {
+  rot:"Coloque na ordem", auto:false,
+  ini(a){
+    a._cur = a._cur || mix(a.o.map((t,i)=>({t,i})));
+    pinta(a);
+    function pinta(a){
+      $("#zone").innerHTML = `<div class="steps">${a._cur.map((x,k)=>
+        `<div class="step"><span class="step-n">${k+1}</span><span class="step-tx">${esc(x.t)}</span>
+         <span class="step-b">
+           <button class="arw" data-u="${k}" ${k===0?"disabled":""} aria-label="subir">&#9650;</button>
+           <button class="arw" data-d="${k}" ${k===a._cur.length-1?"disabled":""} aria-label="descer">&#9660;</button>
+         </span></div>`).join("")}</div>`;
+      $("#zone").querySelectorAll(".arw").forEach(b=>b.addEventListener("click",()=>{
+        if(S.checked) return;
+        const u=b.dataset.u, d=b.dataset.d;
+        if(u!==undefined){ const k=+u; [a._cur[k-1],a._cur[k]]=[a._cur[k],a._cur[k-1]]; }
+        else { const k=+d; [a._cur[k+1],a._cur[k]]=[a._cur[k],a._cur[k+1]]; }
+        pinta(a);
+      }));
+    }
+    a._pinta = pinta;
+  },
+  ver(a){
+    const sts=[...$("#zone").querySelectorAll(".step")];
+    let ok=true;
+    a._cur.forEach((x,k)=>{ const c = x.i===k; sts[k].classList.add(c?"ok":"er"); if(!c) ok=false; });
+    if(!ok) setTimeout(()=>sts.forEach(s=>s.classList.remove("ok","er")),900);
+    else $("#zone").querySelectorAll(".arw").forEach(b=>b.disabled=true);
+    return ok;
+  }
+};
+
+/* digitar resposta(s) */
+TIPOS.in = {
+  rot:"Digite a resposta", auto:false,
+  ini(a){
+    $("#zone").innerHTML = `<div class="ins">${a.f.map((c,k)=>
+      `<div class="inb"><label for="f${k}">${esc(c.l)}</label>
+       <input id="f${k}" type="text" inputmode="${c.num?"decimal":"text"}" placeholder="${esc(c.ph||"")}" data-k="${k}" autocomplete="off"></div>`).join("")}</div>`;
+    $("#zone").querySelectorAll("input").forEach(inp=>inp.addEventListener("keydown",e=>{
+      if(e.key==="Enter" && !S.checked){ e.preventDefault(); verificar(a); }
+    }));
+  },
+  ver(a){
+    let ok=true;
+    a.f.forEach((c,k)=>{
+      const inp=$(`#zone #f${k}`), v=norm(inp.value);
+      const certo = c.r.some(r=>norm(r)===v);
+      inp.classList.remove("ok","er"); inp.classList.add(certo?"ok":"er");
+      if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll("input").forEach(i=>i.disabled=true);
+    return ok;
+  }
+};
+
+/* preencher tabela */
+TIPOS.tab = {
+  rot:"Complete a tabela", auto:false,
+  ini(a){
+    let n=0;
+    const linhas = a.l.map(li=>`<tr>${li.map(cel=>
+      typeof cel==="string" ? `<td>${cel}</td>`
+      : `<td><input type="text" inputmode="decimal" data-k="${n++}" placeholder="?" autocomplete="off"></td>`).join("")}</tr>`).join("");
+    a._n = n;
+    $("#zone").innerHTML = `<div class="tw"><table><thead><tr>${a.h.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${linhas}</tbody></table></div>`;
+    $("#zone").querySelectorAll("input").forEach(inp=>inp.addEventListener("keydown",e=>{
+      if(e.key==="Enter" && !S.checked){ e.preventDefault(); verificar(a); }
+    }));
+  },
+  ver(a){
+    const resp=[].concat(...a.l.map(li=>li.filter(c=>typeof c!=="string")));
+    let ok=true;
+    $("#zone").querySelectorAll("input").forEach((inp,k)=>{
+      const v=norm(inp.value), certo=resp[k].r.some(r=>norm(r)===v);
+      inp.classList.remove("ok","er"); inp.classList.add(certo?"ok":"er");
+      if(!certo) ok=false;
+    });
+    if(ok) $("#zone").querySelectorAll("input").forEach(i=>i.disabled=true);
+    return ok;
+  }
+};
+
+/* montar número com símbolos */
+TIPOS.num = {
+  rot:"Monte o número", auto:false,
+  ini(a){
+    a._usa = [];
+    $("#zone").innerHTML =
+      `<div class="syms">${a.s.map((x,k)=>
+        `<button class="sym" data-k="${k}"><span class="sym-g">${x.g}</span><span class="sym-v">${x.rot||x.v}</span></button>`).join("")}</div>
+       <div class="canvas" id="cv"><span class="ph">Toque nos símbolos acima para montar o número</span></div>
+       <div class="tot"><span>Total montado</span><b id="tt">0</b></div>`;
+    const pinta=()=>{
+      const cv=$("#cv");
+      cv.innerHTML = a._usa.length
+        ? a._usa.map((k,j)=>`<button class="cs" data-j="${j}" title="remover">${a.s[k].g}</button>`).join("")
+        : `<span class="ph">Toque nos símbolos acima para montar o número</span>`;
+      const soma = a._usa.reduce((t,k)=>t+a.s[k].v,0);
+      $("#tt").textContent = soma;
+      $("#tt").style.color = soma===a.alvo ? "var(--ok)" : (soma>a.alvo ? "var(--er)" : "var(--a2)");
+      cv.querySelectorAll(".cs").forEach(b=>b.addEventListener("click",()=>{
+        if(S.checked) return; a._usa.splice(+b.dataset.j,1); pinta();
+      }));
+    };
+    $("#zone").querySelectorAll(".sym").forEach(b=>b.addEventListener("click",()=>{
+      if(S.checked) return; a._usa.push(+b.dataset.k); pinta();
+    }));
+    a._pinta = pinta; pinta();
+  },
+  ver(a){
+    const soma=a._usa.reduce((t,k)=>t+a.s[k].v,0);
+    if(soma!==a.alvo) return false;
+    if(a.max && a._usa.length>a.max) return false;
+    $("#zone").querySelectorAll(".sym").forEach(b=>b.disabled=true);
+    return true;
+  }
+};
+
+/* expõe o estado para depuração e testes */
+window.BANK=BANK; window.S=S; window.P=P; window.TIPOS=TIPOS;
+
+
+/* exercicio no formato da prova: resolve no papel, depois confere */
+TIPOS.exerc = {
+  rot:"Resolva no caderno", auto:false,
+  ini(a){
+    if(a._rev===undefined) a._rev = false;
+    const pinta = () => {
+      if(!a._rev){
+        $("#zone").innerHTML =
+          `<div class="gate">
+             <div class="gate-i">&#9999;&#65039;</div>
+             <div class="gate-t">Resolva no caderno antes de abrir</div>
+             <div class="gate-s">Na prova nao vai ter alternativa para chutar. Monte a tabela no papel, confira se as frequencias somam o total e se as porcentagens dao 100%. So depois volte aqui.</div>
+             <button class="btn btn-p" id="bRev" style="max-width:330px;margin:0 auto">Ja resolvi &mdash; conferir respostas &rarr;</button>
+           </div>`;
+        $("#bRev").addEventListener("click", ()=>{ a._rev = true; pinta(); botoes(a); });
+        return;
+      }
+      let n = 0, html = "";
+      if(a.tabh){
+        const linhas = a.tabl.map(li=>`<tr>${li.map(cel =>
+          typeof cel==="string" ? `<td>${cel}</td>`
+          : `<td><input type="text" inputmode="decimal" data-k="${n++}" placeholder="?" autocomplete="off"></td>`).join("")}</tr>`).join("");
+        html += `<div class="sect">b) Tabela de distribui&ccedil;&atilde;o de frequ&ecirc;ncias</div>
+          <div class="tw"><table><thead><tr>${a.tabh.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${linhas}</tbody></table></div>`;
+      }
+      if(a.f && a.f.length){
+        html += `<div class="sect">Letras a) e c)</div><div class="ins">${a.f.map((c,k)=>
+          `<div class="inb"><label for="f${k}">${esc(c.l)}</label>
+           <input id="f${k}" type="text" inputmode="${c.num?"decimal":"text"}" placeholder="${esc(c.ph||"")}" autocomplete="off"></div>`).join("")}</div>`;
+      }
+      $("#zone").innerHTML = html;
+      $("#zone").querySelectorAll("input").forEach(inp=>inp.addEventListener("keydown",e=>{
+        if(e.key==="Enter" && !S.checked){ e.preventDefault(); verificar(a); }
+      }));
+    };
+    a._pinta = pinta; pinta();
+  },
+  ver(a){
+    if(!a._rev) return false;
+    let ok = true;
+    if(a.tabh){
+      const resp = [].concat(...a.tabl.map(li=>li.filter(c=>typeof c!=="string")));
+      $("#zone").querySelectorAll("table input").forEach((inp,k)=>{
+        const certo = resp[k].r.some(r=>norm(r)===norm(inp.value));
+        inp.classList.remove("ok","er"); inp.classList.add(certo?"ok":"er");
+        if(!certo) ok = false;
+      });
+    }
+    if(a.f) a.f.forEach((c,k)=>{
+      const inp = $("#zone #f"+k);
+      const certo = c.r.some(r=>norm(r)===norm(inp.value));
+      inp.classList.remove("ok","er"); inp.classList.add(certo?"ok":"er");
+      if(!certo) ok = false;
+    });
+    if(ok) $("#zone").querySelectorAll("input").forEach(i=>i.disabled=true);
+    return ok;
+  }
+};
+
+/* ---------- inicio ---------- */
+$("#homeBtn").addEventListener("click", home);
+home();
+</script>
+</body>
+</html>
